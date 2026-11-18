@@ -20,5 +20,8 @@
       "type:lib"
     ]
   },
-  "dependencies": {}
+  "dependencies": {
+    "@tempodojo/core-metronome": "*",
+    "dexie": "^4.4.7"
+  }
 }

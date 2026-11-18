@@ -8,5 +8,11 @@
       "type:app",
       "scope:app"
     ]
+  },
+  "dependencies": {
+    "@tempodojo/core-metronome": "*",
+    "@tempodojo/audio-web": "*",
+    "@tempodojo/storage": "*",
+    "@tempodojo/ui-kit": "*"
   }
 }
