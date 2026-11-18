@@ -1,1 +1,5 @@
-export const CORE_METRONOME_VERSION = '0.0.1';
+export * from './types';
+export * from './meter';
+export * from './automator';
+export * from './tap-tempo';
+export type * from './presets';
