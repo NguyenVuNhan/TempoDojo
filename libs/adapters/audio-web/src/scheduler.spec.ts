@@ -78,7 +78,6 @@ describe('LookaheadScheduler', () => {
     const { clock, ticker, scheduler } = setup();
     const seen: ClickEvent[] = [];
     scheduler.start(settings(), (e) => seen.push(e));
-    clock.currentTime = 0.1;
     ticker.tick();
     clock.currentTime = 5.0;
     ticker.tick();
@@ -93,9 +92,11 @@ describe('LookaheadScheduler', () => {
     clock.currentTime = 0.5;
     ticker.tick(); // 0.55
     scheduler.update(settings({ bpm: 60 }));
-    clock.currentTime = 1.9;
-    ticker.tick();
-    expect(playedTimes(clock)).toEqual([0.05, 0.55, 1.05]);
+    clock.currentTime = 1.0;
+    ticker.tick(); // 1.05
+    clock.currentTime = 2.0;
+    ticker.tick(); // 2.05 (one second later at 60 BPM)
+    expect(playedTimes(clock)).toEqual([0.05, 0.55, 1.05, 2.05]);
   });
 
   it('stop() halts playback', () => {
