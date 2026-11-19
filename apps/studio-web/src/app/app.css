@@ -2,7 +2,7 @@
 .shell {
   height: 100dvh;
   display: grid;
-  grid-template-rows: minmax(0, 1fr) auto;
+  grid-template-rows: minmax(0, 1fr) auto auto;
 }
 
 /* The panel is a grid so the screen inside stretches to the space above the tab bar. */

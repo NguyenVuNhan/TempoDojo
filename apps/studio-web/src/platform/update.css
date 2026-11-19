@@ -1,0 +1,58 @@
+.update-bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px 16px;
+  background: var(--paper);
+  color: var(--ink);
+  border-top: 2px solid var(--ink);
+  padding: 12px max(clamp(16px, 5.5vw, 32px), calc((100% - 640px) / 2));
+}
+
+.update-bar p {
+  margin: 0;
+  font-family: var(--font-book);
+  font-weight: 400;
+  font-size: 1.125rem;
+  line-height: 1.2;
+}
+
+.update-bar div {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.update-bar button {
+  height: 48px;
+  padding: 0 18px;
+  border: 2px solid var(--ink);
+  border-radius: 0;
+  font-family: var(--font-label);
+  font-weight: 800;
+  font-size: 1rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+.update-bar button:first-child {
+  background: var(--ink);
+  color: var(--paper);
+}
+
+.update-bar button:first-child:active {
+  background: var(--paper);
+  color: var(--ink);
+}
+
+.update-bar button:last-child {
+  background: transparent;
+  color: var(--ink);
+}
+
+.update-bar button:last-child:active {
+  background: var(--ink);
+  color: var(--paper);
+}

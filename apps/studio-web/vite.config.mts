@@ -21,7 +21,7 @@ export default defineConfig(() => ({
     nxReadySignal(),
     alphaTab(),
     VitePWA({
-      registerType: 'autoUpdate',
+      registerType: 'prompt',
       includeAssets: ['favicon.ico', 'apple-touch-icon.png', 'icon.svg'],
       manifest: {
         name: 'TempoDojo',
@@ -63,6 +63,9 @@ export default defineConfig(() => ({
     watch: false,
     globals: true,
     environment: 'jsdom',
+    alias: {
+      'virtual:pwa-register/react': `${import.meta.dirname}/src/testing/pwa-register-stub.ts`,
+    },
     include: ['{src,tests}/**/*.{test,spec}.{js,mjs,cjs,ts,mts,cts,jsx,tsx}'],
     reporters: ['default'],
     coverage: {

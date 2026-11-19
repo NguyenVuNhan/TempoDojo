@@ -9,12 +9,12 @@ const COPY = 'A new version of TempoDojo is ready.';
 function fakeRegister() {
   let setNeed: (v: boolean) => void = () => undefined;
   const updateServiceWorker = vi.fn(async (_reload?: boolean) => undefined);
-  const register: RegisterSW = () => {
+  const useFakeRegister: RegisterSW = () => {
     const [needRefresh, setNeedRefresh] = useStateShim(false);
     setNeed = setNeedRefresh;
     return { needRefresh: [needRefresh, setNeedRefresh], updateServiceWorker };
   };
-  return { register, updateServiceWorker, arrive: () => act(() => setNeed(true)) };
+  return { register: useFakeRegister, updateServiceWorker, arrive: () => act(() => setNeed(true)) };
 }
 
 describe('useUpdate', () => {
