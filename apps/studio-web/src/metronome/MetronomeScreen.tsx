@@ -217,7 +217,7 @@ function NoteGlyph({ level }: { level: AccentLevel }) {
         <path d="M26 22 L36 36 C31 41 30 46 36 54 C30 52 26 56 30 66 C22 60 22 52 29 50 L22 39 C27 35 28 30 26 22 Z" />
       ) : (
         <>
-          {level === 'accent' && <path d="M15 8.5 L47 15.5 L15 22.5 L15 20.6 L39.5 15.5 L15 10.4 Z" />}
+          {level === 'accent' && <path d="M14 7 L48 15.5 L14 24 L14 19.6 L35.5 15.5 L14 11.4 Z" />}
           <path d="M40.2 76 L40.6 29 L42.6 29 L43 76 Z" />
           <ellipse cx="31" cy="79" rx="11.5" ry="8" transform="rotate(-22 31 79)" />
           {level === 'ghost' && (

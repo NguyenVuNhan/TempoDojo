@@ -107,11 +107,13 @@
 .sticking {
   grid-area: sticking;
   align-self: start;
+  container-type: inline-size;
   padding: clamp(32px, 7vh, 72px) 0 24px;
 }
 
 .line {
-  --note-h: clamp(110px, 19vh, 176px);
+  /* Never taller than the column allows (glyph aspect 60:100), so noteheads always sit on the staff line. */
+  --note-h: min(clamp(110px, 19vh, 176px), calc(100cqi / min(var(--pulses), 8) * 1.6));
   list-style: none;
   margin: 0;
   padding: 10px 0 4px;
@@ -217,8 +219,8 @@
 .pencil-ring {
   position: absolute;
   left: 50%;
-  top: 72%;
-  width: min(clamp(92px, 15vh, 136px), 96%);
+  top: 78%;
+  width: calc(var(--note-h) * 0.46);
   aspect-ratio: 1;
   transform: translate(-50%, -50%) rotate(-9deg);
   pointer-events: none;
