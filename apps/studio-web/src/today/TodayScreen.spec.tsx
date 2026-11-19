@@ -16,7 +16,7 @@ const metro: PracticeSource = { kind: 'metronome' };
 const para: PracticeSource = { kind: 'exercise', exerciseId: 'pas-16', track: 'hands' };
 
 let n = 0;
-const ev = (type: 'play' | 'stop', at: number, source = metro): PracticeEvent => ({ id: `e${++n}`, type, at, source });
+const ev = (type: 'play' | 'stop', at: number, source: PracticeSource = metro): PracticeEvent => ({ id: `e${++n}`, type, at, source });
 const twoSessions = [ev('play', MON), ev('stop', MON + 20 * MIN), ev('play', TUE, para), ev('stop', TUE + 15 * MIN, para)];
 
 function Harness(props: { repos: LadderRepos; events: PracticeEvent[]; onOpen: (e: Exercise) => void; onOpenMetro: () => void }) {
