@@ -38,10 +38,13 @@
   "include": ["src/**/*.js", "src/**/*.jsx", "src/**/*.ts", "src/**/*.tsx"],
   "references": [
     {
-      "path": "../../libs/core/practice/tsconfig.lib.json"
+      "path": "../../libs/adapters/youtube/tsconfig.lib.json"
     },
     {
-      "path": "../../libs/core/ladder/tsconfig.lib.json"
+      "path": "../../libs/adapters/pdf/tsconfig.lib.json"
+    },
+    {
+      "path": "../../libs/core/songlab/tsconfig.lib.json"
     },
     {
       "path": "../../libs/ui/kit/tsconfig.lib.json"
@@ -50,10 +53,19 @@
       "path": "../../libs/adapters/storage/tsconfig.lib.json"
     },
     {
-      "path": "../../libs/adapters/audio-web/tsconfig.lib.json"
+      "path": "../../libs/adapters/notation/tsconfig.lib.json"
+    },
+    {
+      "path": "../../libs/core/practice/tsconfig.lib.json"
     },
     {
       "path": "../../libs/core/metronome/tsconfig.lib.json"
+    },
+    {
+      "path": "../../libs/core/ladder/tsconfig.lib.json"
+    },
+    {
+      "path": "../../libs/adapters/audio-web/tsconfig.lib.json"
     }
   ]
 }

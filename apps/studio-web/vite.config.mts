@@ -3,6 +3,7 @@ import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import { nxReadySignal } from '@nx/vite/plugins/nx-ready-signal.plugin';
 import { VitePWA } from 'vite-plugin-pwa';
+import { alphaTab } from '@coderline/alphatab/vite';
 
 export default defineConfig(() => ({
   root: import.meta.dirname,
@@ -18,6 +19,7 @@ export default defineConfig(() => ({
   plugins: [
     react(),
     nxReadySignal(),
+    alphaTab(),
     VitePWA({
       registerType: 'autoUpdate',
       includeAssets: ['favicon.ico', 'apple-touch-icon.png', 'icon.svg'],
@@ -37,7 +39,8 @@ export default defineConfig(() => ({
         ],
       },
       workbox: {
-        globPatterns: ['**/*.{js,css,html,svg,png,ico,woff,woff2}'],
+        globPatterns: ['**/*.{js,css,html,svg,png,ico,woff,woff2,sf2,otf,eot}'],
+        maximumFileSizeToCacheInBytes: 6 * 1024 * 1024,
         navigateFallback: '/index.html',
       },
     }),
