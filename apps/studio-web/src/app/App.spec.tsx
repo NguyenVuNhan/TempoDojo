@@ -77,7 +77,8 @@ describe('App shell', () => {
 
   it('switching tabs while playing stops the click and logs the stop', async () => {
     const { engine, events } = setup('metro');
-    await act(async () => fireEvent.click(await screen.findByRole('button', { name: 'Play' })));
+    const play = await screen.findByRole('button', { name: 'Play' });
+    await act(async () => fireEvent.click(play));
     engine.stop.mockClear();
     fireEvent.click(tab('Today'));
     expect(engine.stop).toHaveBeenCalled();
