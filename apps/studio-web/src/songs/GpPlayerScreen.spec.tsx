@@ -156,3 +156,30 @@ describe('GpPlayerScreen', () => {
     expect(await screen.findByRole('alert')).toHaveProperty('textContent', 'This file could not be opened as a Guitar Pro or MusicXML score.');
   });
 });
+
+describe('GpPlayerScreen keys', () => {
+  it('Space plays and stops; arrows nudge the tempo, Shift for 5 %', async () => {
+    const { notation } = await setup();
+    fireEvent.keyDown(window, { key: ' ' });
+    expect(notation.play).toHaveBeenCalled();
+    fireEvent.keyDown(window, { key: 'PageDown' });
+    expect(notation.stop).toHaveBeenCalled();
+    fireEvent.keyDown(window, { key: 'ArrowUp' });
+    expect(percent()).toBe('101 %');
+    fireEvent.keyDown(window, { key: 'ArrowUp', shiftKey: true });
+    expect(percent()).toBe('106 %');
+    fireEvent.keyDown(window, { key: 'ArrowDown', shiftKey: true });
+    fireEvent.keyDown(window, { key: 'ArrowDown' });
+    expect(percent()).toBe('100 %');
+  });
+
+  it('keys ignore inputs', async () => {
+    const { notation } = await setup();
+    const from = screen.getByRole('spinbutton', { name: 'From bar' });
+    from.focus();
+    fireEvent.keyDown(from, { key: ' ' });
+    fireEvent.keyDown(from, { key: 'ArrowUp' });
+    expect(notation.play).not.toHaveBeenCalled();
+    expect(percent()).toBe('100 %');
+  });
+});

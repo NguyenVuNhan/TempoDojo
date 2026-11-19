@@ -129,3 +129,19 @@ describe('YoutubePlayerScreen', () => {
     expect(video.destroy).toHaveBeenCalled();
   });
 });
+
+describe('YoutubePlayerScreen keys', () => {
+  it('Space plays; arrows step through the allowed speeds', async () => {
+    const { video } = await setup({}, [0.5, 1, 1.5]);
+    fireEvent.keyDown(window, { key: ' ' });
+    expect(video.play).toHaveBeenCalled();
+    fireEvent.keyDown(window, { key: 'ArrowUp' });
+    expect(video.setRate).toHaveBeenLastCalledWith(1.5);
+    fireEvent.keyDown(window, { key: 'ArrowUp' });
+    expect(video.setRate).toHaveBeenLastCalledWith(1.5);
+    fireEvent.keyDown(window, { key: 'ArrowDown' });
+    fireEvent.keyDown(window, { key: 'ArrowDown' });
+    expect(video.setRate).toHaveBeenLastCalledWith(0.5);
+    expect(screen.getByRole('radio', { name: '0.5×' })).toHaveProperty('checked', true);
+  });
+});
