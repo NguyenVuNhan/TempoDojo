@@ -135,7 +135,16 @@ export function useMetronome({ engine, repo }: MetronomeDeps, opts: MetronomeOpt
     if (bpm !== null) setSettings({ bpm });
   }, [tapper, setSettings]);
 
-  useEffect(() => () => engine.stop(), [engine]);
+  useEffect(
+    () => () => {
+      if (playingRef.current) {
+        playingRef.current = false;
+        transportRef.current.onTransport?.('stop', transportRef.current.source);
+      }
+      engine.stop();
+    },
+    [engine],
+  );
 
   return { settings, setSettings, nudge, playing, start, stop, toggle, tap, position };
 }
