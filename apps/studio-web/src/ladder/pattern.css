@@ -1,20 +1,23 @@
 .pattern {
+  /* One bar, never wrapped: every voice keeps its beats under the others'. Slots shrink to fit the
+     column (container query) and the bar scrolls sideways only when even 18px slots do not fit. */
+  container-type: inline-size;
+  --beat-gap: 11px;
+  --slot: clamp(18px, calc((100cqi - (var(--beats) - 1) * var(--beat-gap)) / var(--slots)), 40px);
   display: grid;
-  gap: 10px;
-  padding: 18px 0;
+  gap: 12px;
+  padding: 16px 0 18px;
   border-top: 2px solid var(--ink);
   border-bottom: 2px solid var(--ink);
+  overflow-x: auto;
 }
 
 .pattern-line {
   display: grid;
-  grid-template-columns: 5.5em minmax(0, 1fr);
-  column-gap: 12px;
-  align-items: start;
+  gap: 4px;
 }
 
 .pattern-label {
-  padding-top: 16px;
   font: 500 0.75rem/1.2 var(--font-label);
   letter-spacing: 0.1em;
   text-transform: uppercase;
@@ -23,25 +26,25 @@
 
 .pattern-beats {
   display: flex;
-  flex-wrap: wrap;
-  row-gap: 14px;
-  column-gap: 10px;
-  align-items: baseline;
+  flex-wrap: nowrap;
+  align-items: end;
 }
 
 .beat {
   display: inline-flex;
-  align-items: baseline;
+  /* Slots align by their bottom edge: the accent row above must not shift the letters. */
+  align-items: end;
 }
 
 .beat + .beat {
   border-left: 1px solid var(--rule-soft);
-  padding-left: 10px;
+  margin-left: 5px;
+  padding-left: 5px;
 }
 
 .slot {
-  width: 2.1ch;
-  min-width: 30px;
+  width: var(--slot);
+  flex: none;
   display: inline-grid;
   grid-template-rows: 12px auto;
   justify-items: center;
@@ -67,7 +70,7 @@
 }
 
 .stroke {
-  font: 700 1.75rem/1 var(--font-book);
+  font: 700 min(1.75rem, calc(var(--slot) * 0.95))/1 var(--font-book);
   font-variant-numeric: lining-nums;
   color: var(--ink);
 }
@@ -90,8 +93,7 @@
 
 .slot[data-rest='true'] {
   grid-template-rows: auto;
-  padding-top: 12px;
-  font: 400 1.75rem/1 var(--font-book);
+  font: 400 min(1.75rem, calc(var(--slot) * 0.95))/1 var(--font-book);
   color: var(--ink-ghost);
 }
 

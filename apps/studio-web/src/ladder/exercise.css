@@ -61,10 +61,8 @@
 
 .ex-coord-note {
   margin: 0;
-  font: 400 1.0625rem/1.4 var(--font-book);
+  font: italic 400 1.0625rem/1.4 var(--font-book);
   color: var(--ink);
-  padding-left: 12px;
-  border-left: 2px solid var(--ink);
 }
 
 .ex-actions {

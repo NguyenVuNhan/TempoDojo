@@ -93,6 +93,7 @@
 }
 
 .week-bar {
+  min-width: 0;
   display: grid;
   justify-items: center;
   gap: 4px;
@@ -126,6 +127,13 @@
   text-transform: uppercase;
   color: var(--ink-soft);
   white-space: nowrap;
+  grid-column: 1 / 5;
+}
+
+/* Captions span half the chart each, so they never widen a bar column. */
+.week-caption-now {
+  grid-column: 5 / 9;
+  text-align: right;
 }
 
 .time-list {

@@ -97,9 +97,10 @@ export function StatsBlock({ sessions, intervals, now }: { sessions: Session[]; 
                   style={{ height: n === 0 ? '2px' : `${(n / maxWeekCount) * 100}%` }}
                 />
               </div>
-              <span className="week-caption">{i === weeklyCounts.length - 1 ? 'This week' : ''}</span>
             </div>
           ))}
+          <span className="week-caption">8 weeks ago</span>
+          <span className="week-caption week-caption-now">This week</span>
         </div>
       </div>
 

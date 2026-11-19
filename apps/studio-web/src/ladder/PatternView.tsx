@@ -1,3 +1,4 @@
+import type { CSSProperties } from 'react';
 import { parseSteps, type Exercise, type Step } from '@tempodojo/core-ladder';
 import { pulsesPerBar } from '@tempodojo/core-metronome';
 import { VOICE_LABEL } from './labels';
@@ -41,7 +42,12 @@ export function PatternView({ exercise }: { exercise: Exercise }) {
     .join('; ');
 
   return (
-    <div className="pattern" role="img" aria-label={ariaLabel}>
+    <div
+      className="pattern"
+      role="img"
+      aria-label={ariaLabel}
+      style={{ '--beats': beatCount, '--slots': beatCount * exercise.subdivision } as CSSProperties}
+    >
       {parsedLines.map((line, lineIdx) => (
         <div className="pattern-line" key={`${line.voice}-${lineIdx}`}>
           <span className="pattern-label">{VOICE_LABEL[line.voice]}</span>
