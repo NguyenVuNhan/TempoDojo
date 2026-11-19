@@ -37,7 +37,7 @@ describe('backup', () => {
     const a = await seed();
     const bytes = await exportBackup(a, () => 42);
     const data = await readBackup(bytes);
-    expect(data).toMatchObject({ version: 1, exportedAt: 42 });
+    expect(data).toMatchObject({ version: 2, exportedAt: 42 });
 
     const b = fresh();
     await b.progress.put({ ...emptyProgress('pas-01'), rank: 'gold' });
@@ -61,7 +61,7 @@ describe('backup', () => {
   });
 
   it('rejects a backup from a newer version', async () => {
-    const newer = JSON.stringify({ version: 2, exportedAt: 1, presets: [], lastSettings: null, progress: [], events: [], prefs: {} });
+    const newer = JSON.stringify({ version: 3, exportedAt: 1, presets: [], lastSettings: null, progress: [], events: [], prefs: {} });
     expect(await code(readBackup(zipOf({ [BACKUP_FILE]: newer })))).toBe('newer-version');
   });
 

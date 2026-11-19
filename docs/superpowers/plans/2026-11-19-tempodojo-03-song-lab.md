@@ -112,7 +112,7 @@ export function recordSectionClean(s: Section, percent: number): Section; // nev
 
 **Interfaces:**
 ```ts
-export interface StoredFile { id: string; name: string; type: string; blob: Blob; size: number; addedAt: number }
+export interface StoredFile { id: string; name: string; type: string; bytes: Uint8Array; size: number; addedAt: number } // bytes, not Blob: clones reliably in IndexedDB on iPad Safari and in tests
 export interface FileRepository { put(f: StoredFile): Promise<void>; get(id: string): Promise<StoredFile | undefined>; remove(id: string): Promise<void>; all(): Promise<StoredFile[]>; replaceAll(fs: StoredFile[]): Promise<void> }
 export interface SongRepository { list(): Promise<Song[]>; get(id: string): Promise<Song | undefined>; put(s: Song): Promise<void>; remove(id: string): Promise<void>; replaceAll(ss: Song[]): Promise<void> } // list: lastOpenedAt desc, then createdAt desc; remove also removes the song's file
 export async function storageUsage(): Promise<{ usedBytes: number; quotaBytes: number } | null>;

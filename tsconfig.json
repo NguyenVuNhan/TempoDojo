@@ -23,6 +23,18 @@
     },
     {
       "path": "./libs/core/practice"
+    },
+    {
+      "path": "./libs/core/songlab"
+    },
+    {
+      "path": "./libs/adapters/notation"
+    },
+    {
+      "path": "./libs/adapters/youtube"
+    },
+    {
+      "path": "./libs/adapters/pdf"
     }
   ],
   "compilerOptions": {}
