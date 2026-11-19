@@ -16,7 +16,10 @@
     "@tempodojo/core-practice": "*",
     "@tempodojo/notation": "*",
     "@tempodojo/storage": "*",
-    "@tempodojo/ui-kit": "*"
+    "@tempodojo/ui-kit": "*",
+    "@tempodojo/core-songlab": "*",
+    "@tempodojo/youtube": "*",
+    "@tempodojo/pdf": "*"
   },
   "devDependencies": {
     "@coderline/alphatab": "1.9.0",
