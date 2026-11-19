@@ -1,6 +1,7 @@
 import { act, fireEvent, render, screen, waitFor } from '@testing-library/react';
 import type { PracticeEvent } from '@tempodojo/core-practice';
 import type { KvRepository } from '@tempodojo/storage';
+import { memoryLadderRepos } from '../ladder/test-utils';
 import { FakeEngine, MemoryRepo } from '../metronome/test-utils';
 import { App, type AppDeps } from './app';
 
@@ -18,11 +19,19 @@ const setup = (lastTab?: string) => {
   const kv = new MemoryKv();
   if (lastTab) kv.rows.set('lastTab', lastTab);
   const events: PracticeEvent[] = [];
+  const { repos } = memoryLadderRepos();
   const deps: AppDeps = {
     engine: new FakeEngine(),
     presets: new MemoryRepo(),
     kv,
-    events: { add: vi.fn(async (e: PracticeEvent) => void events.push(e)) },
+    events: {
+      add: vi.fn(async (e: PracticeEvent) => void events.push(e)),
+      all: async () => [...events],
+      since: async (at: number) => events.filter((e) => e.at >= at),
+      replaceAll: async () => undefined,
+    },
+    progress: repos.progress,
+    prefs: repos.prefs,
   };
   render(<App deps={deps} />);
   return { deps, kv, events, engine: deps.engine as FakeEngine };
@@ -95,5 +104,23 @@ describe('App shell', () => {
     fireEvent.keyDown(tab('Ladder'), { key: 'ArrowLeft' });
     fireEvent.keyDown(tab('Today'), { key: 'ArrowLeft' });
     expect(tab('Metro').getAttribute('aria-selected')).toBe('true');
+  });
+
+  it('opens an exercise from the ladder and returns to the list', async () => {
+    setup('ladder');
+    fireEvent.click(await screen.findByRole('button', { name: /^Single Paradiddle(?!-)/ }));
+    expect(await screen.findByRole('heading', { level: 1, name: 'Single Paradiddle' })).toBeTruthy();
+    fireEvent.click(screen.getByRole('button', { name: 'Back' }));
+    expect(await screen.findByRole('heading', { name: 'Tier 1' })).toBeTruthy();
+  });
+
+  it('an exercise play is logged with its source, and switching tabs closes it', async () => {
+    const { events } = setup('ladder');
+    fireEvent.click(await screen.findByRole('button', { name: /^Single Paradiddle(?!-)/ }));
+    const play = await screen.findByRole('button', { name: 'Play' });
+    await act(async () => fireEvent.click(play));
+    fireEvent.click(tab('Today'));
+    await waitFor(() => expect(events.map((e) => [e.type, e.source.kind])).toEqual([['play', 'exercise'], ['stop', 'exercise']]));
+    expect(await screen.findByRole('heading', { level: 1, name: 'This week' })).toBeTruthy();
   });
 });
