@@ -108,7 +108,7 @@ describe('backup v2', () => {
     await a.files.put(file('f-a', [1, 2, 3]));
     const { unzipSync, strFromU8 } = await import('fflate');
     const entries = unzipSync(await exportBackup(a));
-    expect(Object.keys(entries).sort()).toEqual([BACKUP_FILE, 'files/f-a']);
+    expect(Object.keys(entries).sort()).toEqual(['files/f-a', BACKUP_FILE]);
     expect(strFromU8(entries[BACKUP_FILE])).not.toContain('"bytes"');
   });
 

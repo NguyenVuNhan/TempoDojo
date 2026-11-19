@@ -7,6 +7,11 @@ import {
 } from '@tempodojo/core-practice';
 import { TempoDojoDb } from './db';
 import { createPresetRepositoryFromDb } from './preset-repository';
+import {
+  createSongRepositoriesFromDb,
+  type FileRepository,
+  type SongRepository,
+} from './song-repository';
 
 const PREFS_KEY = 'prefs';
 
@@ -50,6 +55,8 @@ export function createDexieRepositories(dbName = 'tempodojo'): {
   events: EventRepository;
   prefs: PrefsRepository;
   kv: KvRepository;
+  songs: SongRepository;
+  files: FileRepository;
   db: TempoDojoDb;
 } {
   const db = new TempoDojoDb(dbName);
@@ -132,5 +139,5 @@ export function createDexieRepositories(dbName = 'tempodojo'): {
     },
   };
 
-  return { presets, progress, events, prefs, kv, db };
+  return { presets, progress, events, prefs, kv, ...createSongRepositoriesFromDb(db), db };
 }

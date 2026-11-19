@@ -19,6 +19,9 @@
     },
     {
       "path": "../../core/metronome/tsconfig.lib.json"
+    },
+    {
+      "path": "../../core/songlab/tsconfig.lib.json"
     }
   ],
   "exclude": [
