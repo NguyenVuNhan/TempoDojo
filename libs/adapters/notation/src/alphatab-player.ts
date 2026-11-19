@@ -76,6 +76,21 @@ export function createAlphaTabPlayer(el: HTMLElement, opts: NotationOptions): No
   settings.player.soundFont = new URL('/soundfont/sonivox.sf2', location.href).href;
 
   settings.display.layoutMode = alphaTab.LayoutMode.Page;
+  // The page already shows the title; keep the score to the notation itself.
+  for (const el of [
+    alphaTab.NotationElement.ScoreTitle,
+    alphaTab.NotationElement.ScoreSubTitle,
+    alphaTab.NotationElement.ScoreArtist,
+    alphaTab.NotationElement.ScoreAlbum,
+    alphaTab.NotationElement.ScoreWords,
+    alphaTab.NotationElement.ScoreMusic,
+    alphaTab.NotationElement.ScoreWordsAndMusic,
+    alphaTab.NotationElement.ScoreCopyright,
+    alphaTab.NotationElement.GuitarTuning,
+    alphaTab.NotationElement.ChordDiagrams,
+  ]) {
+    settings.notation.elements.set(el, false);
+  }
   settings.display.barsPerRow = opts.barsPerRow;
   settings.display.scale = 1;
   applyThemeColors(settings);
