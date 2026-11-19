@@ -83,12 +83,12 @@
 }
 
 .yt-ab-buttons button {
-  min-height: 64px;
+  min-height: 36px;
   border: 2px solid var(--ink);
   border-radius: 0;
   background: var(--paper);
   color: var(--ink);
-  font: 800 1.125rem/1 var(--font-label);
+  font: 800 0.875rem/1 var(--font-label);
   letter-spacing: 0.08em;
   text-transform: uppercase;
   cursor: pointer;
@@ -178,12 +178,12 @@
 
 .yt-play {
   width: 100%;
-  min-height: 84px;
+  min-height: 42px;
   border: 2px solid var(--ink);
   border-radius: 0;
   background: var(--ink);
   color: var(--paper);
-  font: 800 1.75rem/1 var(--font-label);
+  font: 800 1.125rem/1 var(--font-label);
   letter-spacing: 0.16em;
   text-transform: uppercase;
   cursor: pointer;
@@ -227,7 +227,7 @@
   grid-template-columns: minmax(0, 1fr);
 }
 
-/* Speed is this screen's tempo control: two even rows of four, 64px like the GP nudges. */
+/* Speed is this screen's tempo control: two even rows of four. */
 .yt-page .segmented {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
@@ -235,14 +235,14 @@
 }
 
 .yt-page .segmented span {
-  min-height: 64px;
+  min-height: 36px;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
 .yt-page .check {
-  min-height: 64px;
+  min-height: 36px;
   display: flex;
   align-items: center;
   padding-right: 12px;

@@ -144,9 +144,9 @@ export function PdfViewerScreen({
   // Render the active page whenever the document, page number, or container width changes.
   useEffect(() => {
     if (!doc || !canvasRef.current || !containerRef.current) return;
-    const width = containerRef.current.clientWidth || 600;
-    // The whole page stays on screen above the turn bar, so nothing needs scrolling mid-song.
-    const maxHeight = Math.max(320, window.innerHeight - 190);
+    const width = Math.min(containerRef.current.clientWidth || 600, 720);
+    // The whole page stays on screen below the top bar, so nothing needs scrolling mid-song.
+    const maxHeight = Math.max(320, window.innerHeight - 170);
     void doc.renderPage(page, canvasRef.current, width, maxHeight);
   }, [doc, page, containerWidth]);
 

@@ -85,7 +85,7 @@ export function StatsBlock({ sessions, intervals, now }: { sessions: Session[]; 
         <span className="stat-row-value">{avgMinutes} min</span>
       </p>
 
-      <div className="stat-group">
+      <div className="stat-group" data-stat-group="sessions">
         <h3 className="stat-label">Sessions per week</h3>
         <div className="week-bars">
           {weeklyCounts.map((n, i) => (
@@ -106,7 +106,7 @@ export function StatsBlock({ sessions, intervals, now }: { sessions: Session[]; 
       </div>
 
       {thisWeekRows.length > 0 && (
-        <div className="stat-group">
+        <div className="stat-group" data-stat-group="time">
           <h3 className="stat-label">Time this week</h3>
           <ul className="time-list" aria-label="Time this week">
             {thisWeekRows.map((row) => (
@@ -119,7 +119,7 @@ export function StatsBlock({ sessions, intervals, now }: { sessions: Session[]; 
         </div>
       )}
 
-      <div className="stat-group">
+      <div className="stat-group" data-stat-group="calendar">
         <h3 className="stat-label">Practice days</h3>
         <div role="img" aria-label="Practice days, last 12 weeks" className="calendar">
           {calendarDays.map((d) => (
@@ -130,6 +130,10 @@ export function StatsBlock({ sessions, intervals, now }: { sessions: Session[]; 
               data-future={d.future ? '' : undefined}
             />
           ))}
+        </div>
+        <div className="cal-captions" aria-hidden="true">
+          <span>12 weeks ago</span>
+          <span>This week</span>
         </div>
         <div className="calendar-legend" aria-hidden="true">
           <span>Less</span>

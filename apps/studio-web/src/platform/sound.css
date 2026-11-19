@@ -4,8 +4,8 @@
 
 .sound-banner button {
   width: 100%;
-  min-height: 64px;
-  padding: 12px 16px;
+  min-height: 40px;
+  padding: 8px 12px;
   background: var(--ink);
   color: var(--paper);
   border: 0;
@@ -13,7 +13,7 @@
   box-shadow: none;
   font-family: var(--font-book);
   font-weight: 700;
-  font-size: 1.25rem;
+  font-size: 1rem;
   line-height: 1.2;
   cursor: pointer;
   transition: background-color 80ms ease-out, color 80ms ease-out;
@@ -52,15 +52,15 @@
 
 .sound-tip button {
   flex: 0 0 auto;
-  min-height: 48px;
-  padding: 0 16px;
+  min-height: 34px;
+  padding: 0 12px;
   background: transparent;
   color: var(--ink);
   border: 2px solid var(--ink);
   border-radius: 0;
   font-family: var(--font-label);
   font-weight: 800;
-  font-size: 1rem;
+  font-size: 0.8125rem;
   letter-spacing: 0.08em;
   text-transform: uppercase;
   cursor: pointer;

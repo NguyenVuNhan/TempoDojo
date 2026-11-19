@@ -36,8 +36,8 @@
 
 .ladder-row {
   width: 100%;
-  min-height: 64px;
-  padding: 14px 0;
+  min-height: 44px;
+  padding: 8px 0;
   border: 0;
   border-bottom: 1px solid var(--rule-soft);
   background: none;

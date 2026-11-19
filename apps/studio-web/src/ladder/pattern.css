@@ -1,25 +1,26 @@
 .pattern {
-  /* One bar, never wrapped: every voice keeps its beats under the others'. Slots shrink to fit the
-     column (container query) and the bar scrolls sideways only when even 18px slots do not fit. */
+  /* One bar, never wrapped: every voice keeps its beats under the others'. Slots shrink cleanly so
+     multi-voice and dense patterns fit without scrollbars, reusing the tab rule above. */
   container-type: inline-size;
-  --beat-gap: 11px;
-  --slot: clamp(18px, calc((100cqi - 20px - (var(--beats) - 1) * var(--beat-gap)) / var(--slots)), 64px);
+  --beat-gap: 8px;
+  --slot: clamp(12px, calc((100cqi - 16px - (var(--beats) - 1) * var(--beat-gap)) / var(--slots)), 44px);
   display: grid;
-  gap: 12px;
-  /* 10px side room so the pencil ring on the first or last note is not clipped by the scroller. */
-  padding: 16px 10px 18px;
-  border-top: 2px solid var(--ink);
+  height: 100%;
+  align-content: center;
+  gap: 10px;
+  padding: 10px 8px 12px;
+  border-top: 0;
   border-bottom: 2px solid var(--ink);
-  overflow-x: auto;
+  overflow: hidden;
 }
 
 .pattern-line {
   display: grid;
-  gap: 4px;
+  gap: 2px;
 }
 
 .pattern-label {
-  font: 500 0.75rem/1.2 var(--font-label);
+  font: 500 0.6875rem/1.1 var(--font-label);
   letter-spacing: 0.1em;
   text-transform: uppercase;
   color: var(--ink-soft);
@@ -47,7 +48,7 @@
   width: var(--slot);
   flex: none;
   display: inline-grid;
-  grid-template-rows: calc(var(--slot) * 0.3) auto;
+  grid-template-rows: calc(var(--slot) * 0.276) auto;
   position: relative;
   justify-items: center;
   align-items: end;
@@ -56,7 +57,7 @@
 
 .accent {
   grid-row: 1;
-  width: calc(var(--slot) * 0.4);
+  width: calc(var(--slot) * 0.414);
   height: calc(var(--slot) * 0.23);
   align-self: center;
   fill: currentColor;
@@ -72,7 +73,7 @@
 }
 
 .stroke {
-  font: 700 min(3rem, calc(var(--slot) * 0.95))/1 var(--font-book);
+  font: 700 min(1.875rem, calc(var(--slot) * 0.943))/1 var(--font-book);
   font-variant-numeric: lining-nums;
   color: var(--ink);
 }
@@ -83,25 +84,25 @@
 }
 
 .grace {
-  font: 700 calc(var(--slot) * 0.5)/1 var(--font-book);
+  font: 700 calc(var(--slot) * 0.506)/1 var(--font-book);
   vertical-align: super;
   margin-right: 1px;
   color: var(--ink);
 }
 
 .paren {
-  font: 400 calc(var(--slot) * 0.8)/1 var(--font-book);
+  font: 400 calc(var(--slot) * 0.805)/1 var(--font-book);
   color: var(--ink-ghost);
 }
 
 .slot[data-rest='true'] {
   grid-template-rows: auto;
-  font: 400 min(3rem, calc(var(--slot) * 0.95))/1 var(--font-book);
+  font: 400 min(1.875rem, calc(var(--slot) * 0.943))/1 var(--font-book);
   color: var(--ink-ghost);
 }
 
 .buzz {
-  font: italic 700 calc(var(--slot) * 0.5)/1 var(--font-book);
+  font: italic 700 calc(var(--slot) * 0.506)/1 var(--font-book);
   color: var(--ink);
 }
 
@@ -113,5 +114,5 @@
 
 .pattern .pencil-ring {
   top: 50%;
-  width: calc(var(--slot) * 1.35);
+  width: calc(var(--slot) * 1.3225);
 }

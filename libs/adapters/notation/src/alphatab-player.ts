@@ -73,6 +73,10 @@ export function createAlphaTabPlayer(el: HTMLElement, opts: NotationOptions): No
   settings.player.playerMode = alphaTab.PlayerMode.EnabledSynthesizer;
   settings.player.enableCursor = true;
   settings.player.enableUserInteraction = true;
+  settings.player.scrollMode = alphaTab.ScrollMode.Continuous;
+  settings.player.scrollOffsetY = -8;
+  settings.player.nativeBrowserSmoothScroll = false;
+  settings.player.scrollSpeed = 150;
   if (opts.scrollElement) {
     settings.player.scrollElement = opts.scrollElement;
   }
@@ -81,6 +85,7 @@ export function createAlphaTabPlayer(el: HTMLElement, opts: NotationOptions): No
   settings.core.fontDirectory = new URL('/font/', location.href).href;
 
   settings.display.layoutMode = alphaTab.LayoutMode.Page;
+  settings.display.staveProfile = alphaTab.StaveProfile.Score;
   // The page already shows the title; keep the score to the notation itself.
   for (const el of [
     alphaTab.NotationElement.ScoreTitle,
@@ -101,6 +106,33 @@ export function createAlphaTabPlayer(el: HTMLElement, opts: NotationOptions): No
   applyThemeColors(settings);
 
   const api = new alphaTab.AlphaTabApi(el, settings);
+  const scrollContainer = opts.scrollElement ?? el;
+  let lastSystemY = -1;
+  const centerOnBeat = (beatBounds: alphaTab.rendering.BeatBounds, force: boolean) => {
+    const barBounds = beatBounds.barBounds.masterBarBounds.visualBounds;
+    if (!force && barBounds.y === lastSystemY) {
+      return;
+    }
+    lastSystemY = barBounds.y;
+    const viewportHeight = scrollContainer.clientHeight;
+    const targetY = Math.max(0, Math.round(barBounds.y + barBounds.h / 2 - viewportHeight / 2));
+    api.uiFacade.scrollToY(
+      api.uiFacade.getScrollContainer(),
+      targetY,
+      force ? 0 : api.settings.player.scrollSpeed,
+    );
+  };
+  api.customScrollHandler = {
+    [Symbol.dispose]() {
+      lastSystemY = -1;
+    },
+    forceScrollTo(currentBeatBounds) {
+      centerOnBeat(currentBeatBounds, true);
+    },
+    onBeatCursorUpdating(startBeat) {
+      centerOnBeat(startBeat, false);
+    },
+  };
   const offPlayingAttr = api.playerStateChanged.on((e) => {
     el.toggleAttribute('data-at-playing', e.state === alphaTab.synth.PlayerState.Playing);
   });
@@ -117,6 +149,7 @@ export function createAlphaTabPlayer(el: HTMLElement, opts: NotationOptions): No
   themeObserver.observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
 
   let activeRange: { startTick: number; endTick: number; startBarDuration: number } | null = null;
+  let suppressRangeEvent = false;
 
   return {
     load(bytes: Uint8Array): Promise<ScoreInfo> {
@@ -136,6 +169,14 @@ export function createAlphaTabPlayer(el: HTMLElement, opts: NotationOptions): No
           settled = true;
           cleanup();
           const info = scoreInfoFrom(score);
+          for (const track of score.tracks) {
+            for (const staff of track.staves) {
+              staff.showTablature = false;
+              staff.showNumbered = false;
+              staff.showSlash = false;
+              staff.showStandardNotation = true;
+            }
+          }
           if (score.tracks.length > 0) {
             const drumIndex = pickDrumTrack(score.tracks);
             api.renderTracks([score.tracks[drumIndex]]);
@@ -194,32 +235,38 @@ export function createAlphaTabPlayer(el: HTMLElement, opts: NotationOptions): No
     },
 
     setLoop(range: { startBar: number; endBar: number } | null): void {
-      if (range === null) {
-        activeRange = null;
-        api.playbackRange = null;
-        api.isLooping = false;
-        return;
-      }
-      const score = api.score;
-      if (!score || score.masterBars.length === 0) {
-        return;
-      }
-      const ticks = barRangeToTicks(score.masterBars, range.startBar, range.endBar);
-      const clampedStart = Math.max(1, Math.min(score.masterBars.length, range.startBar));
-      const startBarDuration = score.masterBars[clampedStart - 1].calculateDuration();
+      suppressRangeEvent = true;
+      try {
+        if (range === null) {
+          activeRange = null;
+          api.playbackRange = null;
+          api.isLooping = false;
+          return;
+        }
+        const score = api.score;
+        if (!score || score.masterBars.length === 0) {
+          return;
+        }
+        const ticks = barRangeToTicks(score.masterBars, range.startBar, range.endBar);
+        const clampedStart = Math.max(1, Math.min(score.masterBars.length, range.startBar));
+        const startBarDuration = score.masterBars[clampedStart - 1].calculateDuration();
 
-      const pbRange = new alphaTab.synth.PlaybackRange();
-      pbRange.startTick = ticks.startTick;
-      pbRange.endTick = ticks.endTick;
+        const pbRange = new alphaTab.synth.PlaybackRange();
+        pbRange.startTick = ticks.startTick;
+        pbRange.endTick = ticks.endTick;
 
-      activeRange = {
-        startTick: ticks.startTick,
-        endTick: ticks.endTick,
-        startBarDuration,
-      };
-      api.playbackRange = pbRange;
-      api.isLooping = true;
-      api.tickPosition = ticks.startTick;
+        activeRange = {
+          startTick: ticks.startTick,
+          endTick: ticks.endTick,
+          startBarDuration,
+        };
+        api.playbackRange = pbRange;
+        api.isLooping = true;
+        api.tickPosition = ticks.startTick;
+        api.scrollToCursor();
+      } finally {
+        suppressRangeEvent = false;
+      }
     },
 
     setCountIn(on: boolean): void {
@@ -290,6 +337,37 @@ export function createAlphaTabPlayer(el: HTMLElement, opts: NotationOptions): No
           cb();
         }
         prevTick = e.currentTick;
+      });
+    },
+
+    onRangeChange(cb: (range: { startBar: number; endBar: number } | null) => void): () => void {
+      return api.playbackRangeChanged.on((e) => {
+        if (suppressRangeEvent) {
+          return;
+        }
+        const pb = e.playbackRange;
+        const masterBars = api.score?.masterBars;
+        if (!pb || (pb.startTick === 0 && pb.endTick === 0) || !masterBars || masterBars.length === 0) {
+          activeRange = null;
+          api.isLooping = false;
+          cb(null);
+          return;
+        }
+        const firstBar = findBarAtTick(masterBars, pb.startTick);
+        const lastBar = findBarAtTick(masterBars, Math.max(pb.startTick, pb.endTick - 1));
+        if (firstBar === null || lastBar === null) {
+          return;
+        }
+        const startBar = Math.min(firstBar, lastBar);
+        const endBar = Math.max(firstBar, lastBar);
+        const startBarDuration = masterBars[startBar - 1].calculateDuration();
+        activeRange = {
+          startTick: pb.startTick,
+          endTick: pb.endTick,
+          startBarDuration,
+        };
+        api.isLooping = true;
+        cb({ startBar, endBar });
       });
     },
 

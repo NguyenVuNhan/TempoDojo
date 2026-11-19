@@ -95,125 +95,124 @@ export function MetronomeScreen({ deps, onTransport, tip }: MetronomeScreenProps
 
   return (
     <main className="page" data-playing={playing}>
-      <header className="running-head">
-        <span className="head-title">{presetName ?? 'Metronome'}</span>
-        <button type="button" className="head-button" onClick={() => setSheet('presets')}>
-          Presets
-        </button>
-      </header>
+          <header className="running-head">
+            <span className="head-title">{presetName ?? 'Metronome'}</span>
+            <button type="button" className="head-button" onClick={() => setSheet('presets')}>
+              Presets
+            </button>
+          </header>
 
-      {/* The banner is the action when sound is blocked; the tip would only repeat it. */}
-      {!sound.blocked && tip}
+          {!sound.blocked && tip}
 
-      <section className="heading" aria-label="Tempo">
-        <div
-          className="bpm"
-          data-testid="bpm-readout"
-          role="slider"
-          aria-label="Tempo, drag up or down"
-          aria-valuemin={20}
-          aria-valuemax={400}
-          aria-valuenow={shownBpm}
-          tabIndex={0}
-          onPointerDown={onPointerDown}
-          onPointerMove={onPointerMove}
-          onPointerUp={endDrag}
-          onPointerCancel={endDrag}
-          onWheel={onWheel}
-        >
-          <span className="bpm-value">{shownBpm}</span>
-          <span className="bpm-unit">BPM</span>
-        </div>
-        <button type="button" className="tempo-line" onClick={() => setSheet('settings')}>
-          <span className="visually-hidden">Edit meter: </span>
-          <MetronomeMark unit={settings.meter.beatUnit} /> = {shownBpm} · {settings.meter.beatsPerBar}/
-          {settings.meter.denominator} · {SUBDIVISION_NAMES[settings.subdivision]}
-        </button>
-        <button type="button" className="tempo-line trainer-line" onClick={() => setSheet('trainer')}>
-          Trainer: {trainerSummary(settings)}
-        </button>
-      </section>
+          <section className="heading" aria-label="Tempo">
+            <div
+              className="bpm"
+              data-testid="bpm-readout"
+              role="slider"
+              aria-label="Tempo, drag up or down"
+              aria-valuemin={20}
+              aria-valuemax={400}
+              aria-valuenow={shownBpm}
+              tabIndex={0}
+              onPointerDown={onPointerDown}
+              onPointerMove={onPointerMove}
+              onPointerUp={endDrag}
+              onPointerCancel={endDrag}
+              onWheel={onWheel}
+            >
+              <span className="bpm-value">{shownBpm}</span>
+              <span className="bpm-unit">BPM</span>
+            </div>
+            <button type="button" className="tempo-line" onClick={() => setSheet('settings')}>
+              <span className="visually-hidden">Edit meter: </span>
+              <MetronomeMark unit={settings.meter.beatUnit} /> = {shownBpm} · {settings.meter.beatsPerBar}/
+              {settings.meter.denominator} · {SUBDIVISION_NAMES[settings.subdivision]}
+            </button>
+            <button type="button" className="tempo-line trainer-line" onClick={() => setSheet('trainer')}>
+              Trainer: {trainerSummary(settings)}
+            </button>
+          </section>
 
-      <section className="sticking" aria-label="Beats in the bar" data-muted={position?.muted ?? false}>
-        <ol className="line" data-wrap={pulses > 4} style={{ ['--pulses' as string]: pulses }}>
-          {settings.accents.map((level, i) => {
-            const active = playing && position?.pulse === i;
-            return (
-              <li key={i}>
-                <button
-                  type="button"
-                  className="note"
-                  data-level={level}
-                  data-active={active}
-                  aria-label={`Beat ${i + 1}: ${level}`}
-                  onClick={() => cycleAccent(i)}
-                >
-                  <NoteGlyph level={level} />
-                  {active && <PencilRing downbeat={i === 0} />}
-                </button>
-                <span className="count" aria-hidden>
-                  {i + 1}
-                </span>
-              </li>
-            );
-          })}
-        </ol>
-        <p className="bar-count" aria-live="off">
-          <span>{where}</span>
-          <span>
-            <span className="visually-hidden">{timeLabel} </span>
-            {time}
-          </span>
-        </p>
-      </section>
+          <section className="sticking" aria-label="Beats in the bar" data-muted={position?.muted ?? false}>
+            <ol className="line" data-wrap={pulses > 4} style={{ ['--pulses' as string]: pulses }}>
+              {settings.accents.map((level, i) => {
+                const active = playing && position?.pulse === i;
+                return (
+                  <li key={i}>
+                    <button
+                      type="button"
+                      className="note"
+                      data-level={level}
+                      data-active={active}
+                      aria-label={`Beat ${i + 1}: ${level}`}
+                      onClick={() => cycleAccent(i)}
+                    >
+                      <NoteGlyph level={level} />
+                      {active && <PencilRing downbeat={i === 0} />}
+                    </button>
+                    <span className="count" aria-hidden>
+                      {i + 1}
+                    </span>
+                  </li>
+                );
+              })}
+            </ol>
+            <p className="bar-count" aria-live="off">
+              <span>{where}</span>
+              <span>
+                <span className="visually-hidden">{timeLabel} </span>
+                {time}
+              </span>
+            </p>
+          </section>
 
-      <section className="transport" aria-label="Transport">
-        <SoundBanner blocked={sound.blocked} onResume={() => void sound.resume()} />
-        <div className="nudges">
-          <button type="button" onClick={() => m.nudge(-5)} aria-label="Decrease tempo by 5">
-            −5
-          </button>
-          <button type="button" onClick={() => m.nudge(-1)} aria-label="Decrease tempo by 1">
-            −1
-          </button>
-          <button type="button" className="tap" onClick={m.tap} aria-label="Tap tempo">
-            Tap
-          </button>
-          <button type="button" onClick={() => m.nudge(1)} aria-label="Increase tempo by 1">
-            +1
-          </button>
-          <button type="button" onClick={() => m.nudge(5)} aria-label="Increase tempo by 5">
-            +5
-          </button>
-        </div>
-        <button type="button" className="play" onClick={m.toggle} aria-pressed={playing}>
-          {playing ? 'Stop' : 'Play'}
-        </button>
-      </section>
+          <section className="transport" aria-label="Transport">
+            <SoundBanner blocked={sound.blocked} onResume={() => void sound.resume()} />
+            <div className="nudges">
+              <button type="button" onClick={() => m.nudge(-5)} aria-label="Decrease tempo by 5">
+                −5
+              </button>
+              <button type="button" onClick={() => m.nudge(-1)} aria-label="Decrease tempo by 1">
+                −1
+              </button>
+              <button type="button" className="tap" onClick={m.tap} aria-label="Tap tempo">
+                Tap
+              </button>
+              <button type="button" onClick={() => m.nudge(1)} aria-label="Increase tempo by 1">
+                +1
+              </button>
+              <button type="button" onClick={() => m.nudge(5)} aria-label="Increase tempo by 5">
+                +5
+              </button>
+            </div>
+            <button type="button" className="play" onClick={m.toggle} aria-pressed={playing}>
+              {playing ? 'Stop' : 'Play'}
+            </button>
+          </section>
 
-      <SettingsSheet open={sheet === 'settings'} settings={settings} onChange={m.setSettings} onClose={() => setSheet(null)} />
-      <TrainerSheet
-        open={sheet === 'trainer'}
-        settings={settings}
-        onChange={m.setSettings}
-        countdownSec={countdownSec}
-        onCountdownChange={(sec) => {
-          setCountdownSec(sec);
-          timer.reset();
-        }}
-        onClose={() => setSheet(null)}
-      />
-      <PresetsSheet
-        open={sheet === 'presets'}
-        repo={resolved.repo}
-        current={settings}
-        onLoad={(preset) => {
-          m.setSettings(preset.settings);
-          setPresetName(preset.name);
-          setSheet(null);
-        }}
-        onClose={() => setSheet(null)}
-      />
+          <SettingsSheet open={sheet === 'settings'} settings={settings} onChange={m.setSettings} onClose={() => setSheet(null)} />
+          <TrainerSheet
+            open={sheet === 'trainer'}
+            settings={settings}
+            onChange={m.setSettings}
+            countdownSec={countdownSec}
+            onCountdownChange={(sec) => {
+              setCountdownSec(sec);
+              timer.reset();
+            }}
+            onClose={() => setSheet(null)}
+          />
+          <PresetsSheet
+            open={sheet === 'presets'}
+            repo={resolved.repo}
+            current={settings}
+            onLoad={(preset) => {
+              m.setSettings(preset.settings);
+              setPresetName(preset.name);
+              setSheet(null);
+            }}
+            onClose={() => setSheet(null)}
+          />
     </main>
   );
 }

@@ -64,6 +64,7 @@ export function GpPlayerScreen({
   const trainer = useLoopTrainer(current.trainer, basePercent);
   const effective = trainer.percent;
 
+  const scrollRef = useRef<HTMLDivElement>(null);
   const scoreRef = useRef<HTMLDivElement>(null);
   const playerRef = useRef<NotationPlayer | null>(null);
 
@@ -87,6 +88,8 @@ export function GpPlayerScreen({
   effectiveRef.current = effective;
   const onPassRef = useRef(trainer.onPass);
   onPassRef.current = trainer.onPass;
+  const resetTrainerRef = useRef(trainer.reset);
+  resetTrainerRef.current = trainer.reset;
 
   const persist = (patch: Partial<Song>) => {
     const next = { ...currentRef.current, ...patch };
@@ -101,6 +104,7 @@ export function GpPlayerScreen({
     let unsubBar: (() => void) | undefined;
     let unsubPlaying: (() => void) | undefined;
     let unsubPass: (() => void) | undefined;
+    let unsubRange: (() => void) | undefined;
 
     void libraryRef.current.touch(song.id);
 
@@ -117,13 +121,14 @@ export function GpPlayerScreen({
       }
 
       const el = scoreRef.current;
+      const scrollEl = scrollRef.current ?? el;
       if (!el) return;
 
+      const width = scrollEl.clientWidth || el.clientWidth;
       player = playersRef.current.notation(el, {
-        // Two bars a row, engraved large enough to read from the throne (finish review).
-        barsPerRow: 2,
-        scale: el.clientWidth < 600 ? 1.25 : 1.8,
-        scrollElement: el,
+        barsPerRow: width < 600 ? 3 : 4,
+        scale: width < 600 ? 0.75 : 0.85,
+        scrollElement: scrollEl,
       });
       playerRef.current = player;
 
@@ -144,6 +149,17 @@ export function GpPlayerScreen({
         unsubBar = player.onBar((b) => setBar(b));
         unsubPlaying = player.onPlaying((p) => setPlaying(p));
         unsubPass = player.onLoopPass(() => onPassRef.current());
+        unsubRange = player.onRangeChange?.((r) => {
+          if (r) {
+            setFromInput(String(r.startBar));
+            setToInput(String(r.endBar));
+            setLoopEnabled(true);
+            resetTrainerRef.current();
+          } else {
+            setLoopEnabled(false);
+            resetTrainerRef.current();
+          }
+        });
       } catch (err) {
         if (!cancelled && err instanceof NotationError) {
           setLoadError(true);
@@ -166,6 +182,7 @@ export function GpPlayerScreen({
         unsubBar?.();
         unsubPlaying?.();
         unsubPass?.();
+        unsubRange?.();
         player.destroy();
         playerRef.current = null;
       }
@@ -278,25 +295,14 @@ export function GpPlayerScreen({
         <span>Guitar Pro</span>
       </header>
 
-      <div className="gp-content">
-        <div className="gp-head-block">
-          <h1 className="gp-title">{current.title}</h1>
-          {info && <p className="gp-file-tempo">{`${info.tempo} BPM in the file`}</p>}
-        </div>
-
-        {loadError && (
-          <p role="alert" className="gp-error">
-            {LOAD_ERROR_MESSAGE}
-          </p>
-        )}
-
-        <div className="gp-score" ref={scoreRef} hidden={loadError} />
-
+      <div className="gp-head-block">
+        <h1 className="gp-title" title={current.title}>{current.title}</h1>
+        {info && <p className="gp-file-tempo">{`${info.tempo} BPM in the file`}</p>}
       </div>
 
       <section className="gp-controls" aria-label="Loop and tracks">
-        <div className="gp-loop-row">
-          <label className="num">
+        <span className="visually-hidden">
+          <label>
             <span>From bar</span>
             <input
               type="number"
@@ -306,7 +312,7 @@ export function GpPlayerScreen({
               onChange={(e) => handleFromChange(e.target.value)}
             />
           </label>
-          <label className="num">
+          <label>
             <span>To bar</span>
             <input
               type="number"
@@ -316,17 +322,7 @@ export function GpPlayerScreen({
               onChange={(e) => handleToChange(e.target.value)}
             />
           </label>
-          <div className="gp-loop-check">
-            <label className="check">
-              <input
-                type="checkbox"
-                checked={loopEnabled}
-                onChange={(e) => handleLoopToggle(e.target.checked)}
-              />
-              <span>Loop</span>
-            </label>
-          </div>
-        </div>
+        </span>
 
         <div className="gp-toggles-row">
           <label className="check">
@@ -345,27 +341,55 @@ export function GpPlayerScreen({
             />
             <span>Click</span>
           </label>
-          <button
-            type="button"
-            className="text-button"
-            onClick={() => setTracksOpen(true)}
-          >
-            Tracks
-          </button>
-          <button
-            type="button"
-            className="text-button"
-            onClick={() => setSectionsOpen(true)}
-          >
-            Sections
-          </button>
+          <label className="check">
+            <input
+              type="checkbox"
+              checked={loopEnabled}
+              onChange={(e) => handleLoopToggle(e.target.checked)}
+            />
+            <span>Loop</span>
+          </label>
+
+          <div className="gp-drawer-actions">
+            <button
+              type="button"
+              className="text-button"
+              onClick={() => setTracksOpen(true)}
+            >
+              Tracks
+            </button>
+            <button
+              type="button"
+              className="text-button"
+              onClick={() => setSectionsOpen(true)}
+            >
+              Sections
+            </button>
+          </div>
         </div>
 
-        <TrainerControls
-          trainer={current.trainer}
-          onChange={(t) => persist({ trainer: t })}
-        />
+        <div className="gp-loop-disclosure" data-loop={loopEnabled || current.trainer !== null}>
+          {loopEnabled && (
+            <span className="gp-loop-range">{`Bars ${fromInput}–${toInput}`}</span>
+          )}
+          <TrainerControls
+            trainer={current.trainer}
+            onChange={(t) => persist({ trainer: t })}
+          />
+        </div>
       </section>
+
+      <div className="gp-content">
+        {loadError && (
+          <p role="alert" className="gp-error">
+            {LOAD_ERROR_MESSAGE}
+          </p>
+        )}
+
+        <div className="gp-score" ref={scrollRef} hidden={loadError}>
+          <div className="gp-score-surface" ref={scoreRef} />
+        </div>
+      </div>
 
       <section className="gp-transport" aria-label="Transport">
         <div className="gp-percent-row">

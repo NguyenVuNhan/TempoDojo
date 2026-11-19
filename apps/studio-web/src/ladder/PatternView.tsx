@@ -48,6 +48,62 @@ export function PatternView({ exercise, live = null }: { exercise: Exercise; liv
     .map((line) => `${VOICE_LABEL[line.voice]}: ${line.steps.map(describeStep).join(', ')}`)
     .join('; ');
 
+  const patternContent = parsedLines.map((line, lineIdx) => (
+    <div className="pattern-line" key={`${line.voice}-${lineIdx}`}>
+      <span className="pattern-label">{VOICE_LABEL[line.voice]}</span>
+      <div className="pattern-beats">
+        {Array.from({ length: beatCount }, (_, beatIdx) => {
+          const beatSteps = line.steps.slice(beatIdx * sub, (beatIdx + 1) * sub);
+          return (
+            <span className="beat" key={beatIdx}>
+              {beatSteps.map((step, slotIdx) => {
+                const ring =
+                  live !== null && lineIdx === 0 && beatIdx === live.pulse && slotIdx === 0 ? (
+                    <PencilRing key={`${live.bar}-${live.pulse}`} downbeat={live.pulse === 0} />
+                  ) : null;
+                if (step.rest) {
+                  return (
+                    <span className="slot" key={slotIdx} data-accent={false} data-rest={true}>
+                      ·
+                      {ring}
+                    </span>
+                  );
+                }
+                const grace = graceText(step);
+                return (
+                  <span
+                    className="slot"
+                    key={slotIdx}
+                    data-accent={step.accent}
+                    data-rest={false}
+                    data-ghost={step.ghost || undefined}
+                  >
+                    {step.accent && (
+                      <svg className="accent" viewBox="12 5 38 21" aria-hidden="true">
+                        <path
+                          d="M14 7 L48 15.5 L14 24 L14 19.6 L35.5 15.5 L14 11.4 Z"
+                          fill="currentColor"
+                        />
+                      </svg>
+                    )}
+                    <span className="glyph-row">
+                      {ring}
+                      {grace && <span className="grace">{grace}</span>}
+                      {step.ghost && <span className="paren">(</span>}
+                      <span className="stroke">{step.hand}</span>
+                      {step.ghost && <span className="paren">)</span>}
+                      {step.grace === 'buzz' && <span className="buzz">z</span>}
+                    </span>
+                  </span>
+                );
+              })}
+            </span>
+          );
+        })}
+      </div>
+    </div>
+  ));
+
   return (
     <div
       className="pattern"
@@ -55,61 +111,7 @@ export function PatternView({ exercise, live = null }: { exercise: Exercise; liv
       aria-label={ariaLabel}
       style={{ '--beats': beatCount, '--slots': beatCount * exercise.subdivision } as CSSProperties}
     >
-      {parsedLines.map((line, lineIdx) => (
-        <div className="pattern-line" key={`${line.voice}-${lineIdx}`}>
-          <span className="pattern-label">{VOICE_LABEL[line.voice]}</span>
-          <div className="pattern-beats">
-            {Array.from({ length: beatCount }, (_, beatIdx) => {
-              const beatSteps = line.steps.slice(beatIdx * sub, (beatIdx + 1) * sub);
-              return (
-                <span className="beat" key={beatIdx}>
-                  {beatSteps.map((step, slotIdx) => {
-                    const ring =
-                      live !== null && lineIdx === 0 && beatIdx === live.pulse && slotIdx === 0 ? (
-                        <PencilRing key={`${live.bar}-${live.pulse}`} downbeat={live.pulse === 0} />
-                      ) : null;
-                    if (step.rest) {
-                      return (
-                        <span className="slot" key={slotIdx} data-accent={false} data-rest={true}>
-                          ·
-                          {ring}
-                        </span>
-                      );
-                    }
-                    const grace = graceText(step);
-                    return (
-                      <span
-                        className="slot"
-                        key={slotIdx}
-                        data-accent={step.accent}
-                        data-rest={false}
-                        data-ghost={step.ghost || undefined}
-                      >
-                        {step.accent && (
-                          <svg className="accent" viewBox="12 5 38 21" aria-hidden="true">
-                            <path
-                              d="M14 7 L48 15.5 L14 24 L14 19.6 L35.5 15.5 L14 11.4 Z"
-                              fill="currentColor"
-                            />
-                          </svg>
-                        )}
-                        <span className="glyph-row">
-                          {ring}
-                          {grace && <span className="grace">{grace}</span>}
-                          {step.ghost && <span className="paren">(</span>}
-                          <span className="stroke">{step.hand}</span>
-                          {step.ghost && <span className="paren">)</span>}
-                          {step.grace === 'buzz' && <span className="buzz">z</span>}
-                        </span>
-                      </span>
-                    );
-                  })}
-                </span>
-              );
-            })}
-          </div>
-        </div>
-      ))}
+      {patternContent}
     </div>
   );
 }

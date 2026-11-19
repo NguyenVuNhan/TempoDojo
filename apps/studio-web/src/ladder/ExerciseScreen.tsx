@@ -58,6 +58,7 @@ export function ExerciseScreen({
   const [logOpen, setLogOpen] = useState(false);
   const [cleanInput, setCleanInput] = useState('');
   const [rankTestOpen, setRankTestOpen] = useState(false);
+  const [sectionTab, setSectionTab] = useState<'practice' | 'info'>('practice');
 
   const nowRef = useRef(now);
   nowRef.current = now;
@@ -194,7 +195,7 @@ export function ExerciseScreen({
   };
 
   return (
-    <main className="ex-page" data-playing={playing}>
+    <main className="ex-page" data-playing={playing} data-ex-tab={sectionTab}>
       <header className="running-head">
         <button type="button" className="head-button" onClick={onBack}>
           Back
@@ -204,10 +205,74 @@ export function ExerciseScreen({
         </span>
       </header>
 
-      <div className="ex-content">
-        <h1 className="ex-title">{exercise.name}</h1>
-        <PatternView exercise={exercise} live={playing && position && !position.countIn ? position : null} />
+      <section className="ex-heading" aria-label="Tempo">
+        <div className="ex-bpm-row">
+          <div className="ex-bpm" data-testid="exercise-bpm">
+            <span className="ex-bpm-value">{shownBpm}</span>
+            <span className="ex-bpm-unit">BPM</span>
+          </div>
+          <span className="ex-note-value">{NOTE_VALUE[exercise.subdivision]}</span>
+        </div>
+        {showClimb && (
+          <label className="check ex-climb">
+            <input
+              type="checkbox"
+              checked={climbing}
+              onChange={(e) => toggleClimb(e.target.checked)}
+            />
+            <span>
+              Climb to {RANK_LABEL[next.rank]} {next.bpm}
+            </span>
+          </label>
+        )}
+      </section>
 
+      <div className="ex-header-block">
+        <div className="ex-tabs" role="tablist" aria-label="Exercise sections">
+          <button
+            type="button"
+            role="tab"
+            id="ex-tab-practice"
+            aria-selected={sectionTab === 'practice'}
+            aria-controls="ex-panel-practice"
+            className="ex-tab"
+            onClick={() => setSectionTab('practice')}
+          >
+            Practice
+          </button>
+          <button
+            type="button"
+            role="tab"
+            id="ex-tab-info"
+            aria-selected={sectionTab === 'info'}
+            aria-controls="ex-panel-info"
+            className="ex-tab"
+            onClick={() => setSectionTab('info')}
+          >
+            Targets &amp; Tip
+          </button>
+        </div>
+      </div>
+
+      <div id="ex-panel-practice" role="tabpanel" aria-labelledby="ex-tab-practice" className="ex-panel-practice">
+        <PatternView exercise={exercise} live={playing && position && !position.countIn ? position : null} />
+        <div className="ex-bar-count">
+          <h1 className="ex-title">{exercise.name}</h1>
+          <span className="ex-timer">
+            <span className="visually-hidden">Time played </span>
+            {(() => {
+              const totalSec = Math.floor(
+                (accumulatedMsRef.current +
+                  (playing && playStartRef.current !== null ? Math.max(0, now() - playStartRef.current) : 0)) /
+                  1000,
+              );
+              return `${String(Math.floor(totalSec / 60)).padStart(2, '0')}:${String(totalSec % 60).padStart(2, '0')}`;
+            })()}
+          </span>
+        </div>
+      </div>
+
+      <div id="ex-panel-info" role="tabpanel" aria-labelledby="ex-tab-info" className="ex-panel-info">
         <div className="ex-actions">
           <button type="button" className="text-button" onClick={openLogSheet}>
             Log clean tempo
@@ -255,27 +320,6 @@ export function ExerciseScreen({
 
       <section className="ex-transport" aria-label="Transport">
         <SoundBanner blocked={sound.blocked} onResume={() => void sound.resume()} />
-        <div className="ex-bpm-row">
-          <div className="ex-bpm" data-testid="exercise-bpm">
-            <span className="ex-bpm-value">{shownBpm}</span>
-            <span className="ex-bpm-unit">BPM</span>
-          </div>
-          <span className="ex-note-value">{NOTE_VALUE[exercise.subdivision]}</span>
-        </div>
-
-        {showClimb && (
-          <label className="check">
-            <input
-              type="checkbox"
-              checked={climbing}
-              onChange={(e) => toggleClimb(e.target.checked)}
-            />
-            <span>
-              Climb to {RANK_LABEL[next.rank]} {next.bpm}
-            </span>
-          </label>
-        )}
-
         <div className="ex-nudges">
           <button type="button" onClick={() => nudge(-5)} aria-label="Decrease tempo by 5">
             −5
