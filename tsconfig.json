@@ -17,6 +17,12 @@
     },
     {
       "path": "./libs/ui/kit"
+    },
+    {
+      "path": "./libs/core/ladder"
+    },
+    {
+      "path": "./libs/core/practice"
     }
   ],
   "compilerOptions": {}

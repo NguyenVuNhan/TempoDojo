@@ -22,21 +22,21 @@ export default [
           allow: ['^.*/eslint(\\.base)?\\.config\\.[cm]?[jt]s$'],
           depConstraints: [
             {
-              sourceTag: "scope:core",
-              onlyDependOnLibsWithTags: ["scope:core"],
-              allowedExternalImports: ["vitest"],
+              sourceTag: 'scope:core',
+              onlyDependOnLibsWithTags: ['scope:core'],
+              allowedExternalImports: ['vitest'],
             },
             {
-              sourceTag: "scope:adapter",
-              onlyDependOnLibsWithTags: ["scope:core", "scope:adapter"],
+              sourceTag: 'scope:adapter',
+              onlyDependOnLibsWithTags: ['scope:core', 'scope:adapter'],
             },
             {
-              sourceTag: "scope:ui",
-              onlyDependOnLibsWithTags: ["scope:core", "scope:ui"],
+              sourceTag: 'scope:ui',
+              onlyDependOnLibsWithTags: ['scope:core', 'scope:ui'],
             },
             {
-              sourceTag: "type:app",
-              onlyDependOnLibsWithTags: ["*"],
+              sourceTag: 'type:app',
+              onlyDependOnLibsWithTags: ['*'],
             },
           ],
         },
