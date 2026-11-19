@@ -1,0 +1,18 @@
+{
+  "name": "@tempodojo/studio-web",
+  "version": "0.0.1",
+  "private": true,
+  "nx": {
+    "name": "studio-web",
+    "tags": [
+      "type:app",
+      "scope:app"
+    ]
+  },
+  "dependencies": {
+    "@tempodojo/core-metronome": "*",
+    "@tempodojo/audio-web": "*",
+    "@tempodojo/storage": "*",
+    "@tempodojo/ui-kit": "*"
+  }
+}

@@ -1,0 +1,351 @@
+.page {
+  --gutter: clamp(16px, 5.5vw, 32px);
+  min-height: 100dvh;
+  max-width: 640px;
+  margin: 0 auto;
+  padding: 0 var(--gutter) calc(16px + env(safe-area-inset-bottom));
+  display: grid;
+  grid-template-rows: auto auto 1fr auto;
+  grid-template-areas: 'head' 'heading' 'sticking' 'transport';
+}
+
+/* Running head: like the head line of a method-book page. */
+.running-head {
+  grid-area: head;
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  padding: calc(14px + env(safe-area-inset-top)) 0 10px;
+  border-bottom: 1px solid var(--ink);
+  font: 500 0.8125rem/1 var(--font-label);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  font-variant-numeric: tabular-nums;
+}
+
+.head-button {
+  margin: -10px -8px -10px 0;
+  padding: 10px 8px;
+  border: 0;
+  background: none;
+  color: var(--ink);
+  font: inherit;
+  letter-spacing: inherit;
+  text-transform: inherit;
+  text-decoration: underline;
+  text-decoration-color: var(--rule-soft);
+  text-underline-offset: 5px;
+  cursor: pointer;
+}
+
+.heading {
+  grid-area: heading;
+  padding-top: clamp(16px, 4vh, 40px);
+}
+
+.bpm {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  width: max-content;
+  touch-action: none;
+  cursor: ns-resize;
+  user-select: none;
+}
+
+.bpm-value {
+  font: 700 clamp(7.5rem, 30vw, 11rem) / 0.86 var(--font-book);
+  letter-spacing: -0.015em;
+  font-variant-numeric: lining-nums tabular-nums;
+}
+
+.bpm-unit {
+  font: 800 1.375rem/1 var(--font-label);
+  letter-spacing: 0.1em;
+}
+
+.tempo-line {
+  margin-top: 14px;
+  padding: 6px 0;
+  font: 400 1.5rem/1.2 var(--font-book);
+  color: var(--ink);
+  background: none;
+  border: 0;
+  text-align: left;
+  text-decoration: underline;
+  text-decoration-color: var(--rule-soft);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 6px;
+  cursor: pointer;
+}
+
+.tempo-line .mark {
+  height: 1.05em;
+  width: auto;
+  vertical-align: -0.12em;
+  fill: currentColor;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+.trainer-line {
+  display: block;
+  margin-top: 2px;
+  font-size: 1.125rem;
+  color: var(--ink-soft);
+}
+
+/* The sticking line: notation between two heavy rules. */
+.sticking {
+  grid-area: sticking;
+  align-self: start;
+  container-type: inline-size;
+  padding: clamp(32px, 7vh, 72px) 0 24px;
+}
+
+.line {
+  /* Never taller than the column allows (glyph aspect 60:100), so noteheads always sit on the staff line. */
+  --cols: min(var(--pulses), 8);
+  --note-h: min(clamp(110px, 19vh, 176px), calc(100cqi / var(--cols) * 1.6));
+  list-style: none;
+  margin: 0;
+  padding: 10px 0 4px;
+  border-top: 2px solid var(--ink);
+  border-bottom: 2px solid var(--ink);
+  display: grid;
+  grid-template-columns: repeat(var(--cols), minmax(0, 1fr));
+  row-gap: 18px;
+}
+
+.line li {
+  position: relative;
+  display: grid;
+  justify-items: center;
+  gap: 2px;
+}
+
+/* One percussion staff line through the noteheads, bar lines at each end of a row. */
+.line li::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: calc(var(--note-h) * 0.79 - 1px);
+  height: 2px;
+  background: var(--ink);
+}
+
+.line li:first-child::after,
+.line li:last-child::after {
+  content: '';
+  position: absolute;
+  top: calc(var(--note-h) * 0.79 - 26px);
+  height: 52px;
+  width: 2px;
+  background: var(--ink);
+}
+
+.line li:first-child::after {
+  left: 0;
+}
+
+.line li:last-child::after {
+  right: 0;
+}
+
+.sticking:has(.line[data-wrap='true']) {
+  padding-top: clamp(12px, 3vh, 40px);
+}
+
+/* Phones: bars longer than 4 beats wrap into rows of 4 at full size; bar lines only open and close the whole bar. */
+@container (max-width: 560px) {
+  .line {
+    --cols: min(var(--pulses), 4);
+  }
+
+  /* Two rows must still fit one phone screen with the transport. */
+  .line[data-wrap='true'] {
+    --note-h: min(clamp(88px, 12.5vh, 140px), calc(100cqi / var(--cols) * 1.6));
+    row-gap: 6px;
+  }
+}
+
+.note {
+  position: relative;
+  width: 100%;
+  min-width: 44px;
+  height: var(--note-h);
+  display: grid;
+  place-items: center;
+  background: none;
+  border: 0;
+  padding: 0;
+  color: var(--ink);
+  cursor: pointer;
+}
+
+.glyph {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+.glyph {
+  fill: currentColor;
+}
+
+.glyph[data-level='ghost'] {
+  color: var(--ink-ghost);
+  transform: scale(0.82);
+  transform-origin: 50% 80%;
+}
+
+.glyph[data-level='mute'] {
+  color: var(--ink-ghost);
+}
+
+.count {
+  font: 400 1.375rem/1 var(--font-book);
+  color: var(--ink-soft);
+  font-variant-numeric: lining-nums;
+}
+
+.bar-count {
+  margin: 18px 0 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  font: 700 clamp(2rem, 9vw, 3rem) / 1 var(--font-book);
+  font-variant-numeric: lining-nums tabular-nums;
+}
+
+.sticking[data-muted='true'] .glyph {
+  opacity: 0.35;
+}
+
+/* Signature: the orange pencil ring that jumps to the live note. */
+.pencil-ring {
+  position: absolute;
+  left: 50%;
+  top: 78%;
+  width: calc(var(--note-h) * 0.46);
+  aspect-ratio: 1;
+  transform: translate(-50%, -50%) rotate(-9deg);
+  pointer-events: none;
+  overflow: visible;
+}
+
+.pencil-ring path {
+  fill: none;
+  stroke: var(--pencil);
+  stroke-width: 5;
+  stroke-linecap: round;
+  stroke-dasharray: 280;
+  stroke-dashoffset: 0;
+  animation: pencil-draw 90ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.pencil-ring[data-downbeat='true'] path {
+  stroke-width: 7;
+}
+
+@keyframes pencil-draw {
+  from {
+    stroke-dashoffset: 280;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pencil-ring path {
+    animation: none;
+  }
+}
+
+/* Transport, in the thumb zone. */
+.transport {
+  grid-area: transport;
+  display: grid;
+  gap: 8px;
+  padding-top: 8px;
+}
+
+.nudges {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1.4fr 1fr 1fr;
+  gap: 8px;
+}
+
+.nudges button,
+.play {
+  min-height: 64px;
+  border: 2px solid var(--ink);
+  background: var(--paper);
+  color: var(--ink);
+  font: 800 1.5rem/1 var(--font-label);
+  font-variant-numeric: tabular-nums;
+  cursor: pointer;
+  transition: background-color 80ms ease-out, color 80ms ease-out;
+}
+
+.nudges .tap {
+  font-size: 1.25rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.nudges button:active {
+  background: var(--ink);
+  color: var(--paper);
+}
+
+.play {
+  min-height: 84px;
+  background: var(--ink);
+  color: var(--paper);
+  font-size: 1.75rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.play[aria-pressed='true'] {
+  background: var(--paper);
+  color: var(--ink);
+}
+
+/* iPad landscape: page on the left, transport column on the right. */
+@media (min-width: 900px) and (orientation: landscape) {
+  .page {
+    max-width: 1180px;
+    column-gap: 56px;
+    grid-template-columns: 1.5fr 1fr;
+    grid-template-rows: auto auto 1fr;
+    grid-template-areas: 'head head' 'heading transport' 'sticking transport';
+  }
+
+  .bpm-value {
+    font-size: clamp(11rem, 19vw, 16rem);
+  }
+
+  .transport {
+    align-self: end;
+    padding-bottom: 24px;
+  }
+
+  .nudges {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .nudges .tap {
+    grid-column: span 2;
+    order: -1;
+  }
+}

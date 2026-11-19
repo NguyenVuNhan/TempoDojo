@@ -1,0 +1,17 @@
+{
+  "detector": {
+    "ignoreRules": [],
+    "ignoreFiles": [],
+    "ignoreValues": [
+      {
+        "rule": "cream-palette",
+        "value": "*",
+        "files": [
+          ".impeccable/mocks/decision/challenger-warm.html"
+        ],
+        "createdAt": "2026-11-19T00:27:36.536Z",
+        "reason": "agent decided: decision-round sketch rendering the dealt catalog challenger's own 'warm tinted ground' grammar; not shipping UI"
+      }
+    ]
+  }
+}

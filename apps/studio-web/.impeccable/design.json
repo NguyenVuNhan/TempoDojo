@@ -1,0 +1,162 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-11-19T00:00:00Z",
+  "title": "Design System: TempoDojo Studio",
+  "extensions": {
+    "colorMeta": {
+      "ink": { "role": "primary", "displayName": "Engraving Black", "canonical": "#141414", "tonalRamp": ["#141414", "#2a2a28", "#41413d", "#5a5a55", "#76766f", "#94948d", "#b8b8b1", "#e0e0da"] },
+      "select": { "role": "secondary", "displayName": "Selection Teal", "canonical": "#008fa6", "tonalRamp": ["#00303a", "#004753", "#00606f", "#007a8c", "#008fa6", "#3aaebf", "#86cdd8", "#cfeaee"] },
+      "pencil": { "role": "tertiary", "displayName": "Orange Pencil", "canonical": "#ff4f00", "tonalRamp": ["#4a1700", "#702300", "#9a3000", "#c83f00", "#ff4f00", "#ff7d45", "#ffae8a", "#ffdccc"] },
+      "paper": { "role": "neutral", "displayName": "Cool Paper", "canonical": "#f2f2ee", "tonalRamp": ["#262624", "#43433f", "#63635d", "#85857e", "#a8a8a1", "#cacac4", "#e3e3de", "#f2f2ee"] },
+      "ink-soft": { "role": "neutral", "displayName": "Soft Ink", "canonical": "#55554f", "tonalRamp": ["#1c1c1a", "#2e2e2b", "#41413d", "#55554f", "#6e6e67", "#8b8b84", "#b0b0a9", "#d9d9d3"] },
+      "ink-ghost": { "role": "neutral", "displayName": "Ghost Ink", "canonical": "#74746d", "tonalRamp": ["#22221f", "#363633", "#4d4d48", "#63635d", "#74746d", "#929289", "#b4b4ad", "#dcdcd6"] },
+      "rule-soft": { "role": "neutral", "displayName": "Pencil Rule", "canonical": "#b9b9b2", "tonalRamp": ["#2c2c29", "#45453f", "#62625c", "#80807a", "#9e9e97", "#b9b9b2", "#d3d3cd", "#ebebe6"] },
+      "paper-night": { "role": "neutral", "displayName": "Night Paper", "canonical": "#141413" },
+      "ink-night": { "role": "primary", "displayName": "Night Ink", "canonical": "#ecebe4" },
+      "ink-soft-night": { "role": "neutral", "displayName": "Night Soft Ink", "canonical": "#a9a8a0" },
+      "ink-ghost-night": { "role": "neutral", "displayName": "Night Ghost Ink", "canonical": "#8d8c85" },
+      "rule-soft-night": { "role": "neutral", "displayName": "Night Pencil Rule", "canonical": "#4d4d48" },
+      "pencil-night": { "role": "tertiary", "displayName": "Night Pencil", "canonical": "#ff6a26" },
+      "select-night": { "role": "secondary", "displayName": "Night Teal", "canonical": "#2bb3c8" }
+    },
+    "typographyMeta": {
+      "display": { "displayName": "Display", "purpose": "The BPM numeral only; clamp(11rem, 19vw, 16rem) on iPad landscape." },
+      "headline": { "displayName": "Headline", "purpose": "Bar counter under the staff: Bar N and time." },
+      "title": { "displayName": "Title", "purpose": "Sheet titles and stepper values." },
+      "tempo-line": { "displayName": "Tempo Line", "purpose": "The metronome mark line that opens settings." },
+      "body": { "displayName": "Body", "purpose": "Trainer summary and segmented choice text." },
+      "count": { "displayName": "Count", "purpose": "Beat numbers under the notation, Soft Ink." },
+      "label": { "displayName": "Label", "purpose": "Uppercase running head and field labels." },
+      "control": { "displayName": "Control", "purpose": "Nudge buttons." },
+      "control-caps": { "displayName": "Control Caps", "purpose": "Play/Stop." }
+    },
+    "shadows": [
+      { "name": "sheet-lift", "value": "0 -12px 32px color-mix(in srgb, var(--ink) 18%, transparent)", "purpose": "Overlay sheets only." },
+      { "name": "selected-underline", "value": "inset 0 -5px 0 var(--select)", "purpose": "Checked segmented choice; a printed mark, not elevation." }
+    ],
+    "motion": [
+      { "name": "pencil-draw", "value": "90ms cubic-bezier(0.16, 1, 0.3, 1)", "purpose": "Pencil ring redraw on every beat; off under reduced motion." },
+      { "name": "sheet-rise", "value": "220ms cubic-bezier(0.16, 1, 0.3, 1)", "purpose": "Sheet enters 24px up with fade." },
+      { "name": "sheet-fade", "value": "160ms ease-out", "purpose": "Scrim fade." },
+      { "name": "press-invert", "value": "80ms ease-out", "purpose": "Background/colour inversion on button press." }
+    ],
+    "breakpoints": [
+      { "name": "notation-wrap", "value": "container max-width 560px" },
+      { "name": "spread", "value": "min-width 900px and landscape" }
+    ]
+  },
+  "components": [
+    {
+      "name": "Play / Stop",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "The one solid primary; inverts while playing.",
+      "html": "<button class=\"ds-play\">Play</button> <button class=\"ds-play\" aria-pressed=\"true\">Stop</button>",
+      "css": ".ds-play { width: 100%; min-height: 84px; border: 2px solid var(--ink, #141414); background: var(--ink, #141414); color: var(--paper, #f2f2ee); font: 800 1.75rem/1 'Libre Franklin', system-ui, sans-serif; letter-spacing: 0.16em; text-transform: uppercase; border-radius: 0; cursor: pointer; transition: background-color 80ms ease-out, color 80ms ease-out; } .ds-play[aria-pressed='true'] { background: var(--paper, #f2f2ee); color: var(--ink, #141414); } .ds-play:focus-visible { outline: 3px solid var(--select, #008fa6); outline-offset: 3px; }"
+    },
+    {
+      "name": "Nudge Button",
+      "kind": "button",
+      "refersTo": "button-nudge",
+      "description": "Outlined tempo nudge; inverts on press.",
+      "html": "<div class=\"ds-nudges\"><button class=\"ds-nudge\">−5</button><button class=\"ds-nudge\">−1</button><button class=\"ds-nudge ds-tap\">Tap</button><button class=\"ds-nudge\">+1</button><button class=\"ds-nudge\">+5</button></div>",
+      "css": ".ds-nudges { display: grid; grid-template-columns: 1fr 1fr 1.4fr 1fr 1fr; gap: 8px; } .ds-nudge { min-height: 64px; border: 2px solid var(--ink, #141414); background: var(--paper, #f2f2ee); color: var(--ink, #141414); font: 800 1.5rem/1 'Libre Franklin', system-ui, sans-serif; font-variant-numeric: tabular-nums; border-radius: 0; cursor: pointer; transition: background-color 80ms ease-out, color 80ms ease-out; } .ds-tap { font-size: 1.25rem; letter-spacing: 0.08em; text-transform: uppercase; } .ds-nudge:active { background: var(--ink, #141414); color: var(--paper, #f2f2ee); } .ds-nudge:focus-visible { outline: 3px solid var(--select, #008fa6); outline-offset: 3px; }"
+    },
+    {
+      "name": "Text Button",
+      "kind": "button",
+      "refersTo": "button-text",
+      "description": "Secondary outlined action inside sheets.",
+      "html": "<button class=\"ds-text-btn\">Click on 2 and 4</button> <button class=\"ds-text-btn\" disabled>Save preset</button>",
+      "css": ".ds-text-btn { min-height: 48px; padding: 0 16px; border: 2px solid var(--ink, #141414); background: none; color: var(--ink, #141414); font: 800 1rem/1 'Libre Franklin', system-ui, sans-serif; letter-spacing: 0.06em; border-radius: 0; cursor: pointer; } .ds-text-btn:disabled { border-color: var(--rule-soft, #b9b9b2); color: var(--rule-soft, #b9b9b2); cursor: default; } .ds-text-btn:focus-visible { outline: 3px solid var(--select, #008fa6); outline-offset: 3px; }"
+    },
+    {
+      "name": "Segmented Choice",
+      "kind": "chip",
+      "refersTo": "choice",
+      "description": "Radio choices as square outlined Caslon chips; selected gains teal border, inset underline and bold.",
+      "html": "<div class=\"ds-seg\"><label><input type=\"radio\" name=\"ds-sub\" checked><span>Quarters</span></label><label><input type=\"radio\" name=\"ds-sub\"><span>Eighths</span></label><label><input type=\"radio\" name=\"ds-sub\"><span>Triplets</span></label></div>",
+      "css": ".ds-seg { display: flex; flex-wrap: wrap; gap: 8px; } .ds-seg label { position: relative; cursor: pointer; } .ds-seg input { position: absolute; opacity: 0; width: 1px; height: 1px; } .ds-seg span { display: grid; place-items: center; min-height: 48px; min-width: 56px; padding: 0 14px; border: 2px solid var(--ink, #141414); color: var(--ink, #141414); font: 500 1.125rem/1 'Libre Caslon Text', Georgia, serif; } .ds-seg input:checked + span { border-color: var(--select, #008fa6); box-shadow: inset 0 -5px 0 var(--select, #008fa6); font-weight: 700; } .ds-seg input:focus-visible + span { outline: 3px solid var(--select, #008fa6); outline-offset: 3px; }"
+    },
+    {
+      "name": "Number Field",
+      "kind": "input",
+      "refersTo": "input-number",
+      "description": "Labelled square number input in Caslon figures.",
+      "html": "<label class=\"ds-num\"><span>Target BPM</span><input type=\"number\" value=\"140\"></label>",
+      "css": ".ds-num { display: grid; gap: 6px; font: 500 0.8125rem/1 'Libre Franklin', system-ui, sans-serif; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-soft, #55554f); max-width: 220px; } .ds-num input { min-height: 52px; width: 100%; padding: 0 12px; border: 2px solid var(--ink, #141414); border-radius: 0; background: var(--paper, #f2f2ee); color: var(--ink, #141414); font: 700 1.5rem/1 'Libre Caslon Text', Georgia, serif; font-variant-numeric: lining-nums tabular-nums; } .ds-num input:focus-visible { outline: 3px solid var(--select, #008fa6); outline-offset: 3px; }"
+    },
+    {
+      "name": "Checkbox",
+      "kind": "input",
+      "description": "Square outlined check with an inset paper square when checked.",
+      "html": "<label class=\"ds-check\"><input type=\"checkbox\" checked><span>Gap click</span></label>",
+      "css": ".ds-check { position: relative; display: flex; align-items: center; cursor: pointer; } .ds-check input { position: absolute; opacity: 0; width: 1px; height: 1px; } .ds-check span { display: flex; align-items: center; gap: 12px; min-height: 48px; color: var(--ink, #141414); font: 700 1.375rem/1.2 'Libre Caslon Text', Georgia, serif; } .ds-check span::before { content: ''; flex: none; width: 26px; height: 26px; border: 2px solid var(--ink, #141414); } .ds-check input:checked + span::before { background: linear-gradient(var(--paper, #f2f2ee), var(--paper, #f2f2ee)) center / 10px 10px no-repeat, var(--ink, #141414); } .ds-check input:focus-visible + span { outline: 3px solid var(--select, #008fa6); outline-offset: 3px; }"
+    },
+    {
+      "name": "Row List",
+      "kind": "custom",
+      "refersTo": "row-list-item",
+      "description": "Saved items in a sheet: Caslon title over uppercase Franklin meta, text-button actions right, 1px Pencil Rule separators.",
+      "html": "<ul class=\"ds-rows\"><li><span class=\"ds-row-title\">Slow 8/4 grid</span><span class=\"ds-row-meta\">30 BPM · 8/4</span><button class=\"ds-row-btn\" style=\"grid-area: load\">Load</button><button class=\"ds-row-btn\" style=\"grid-area: delete\">Delete</button></li><li><span class=\"ds-row-title\">Paradiddle warm-up</span><span class=\"ds-row-meta\">96 BPM · 4/4</span><button class=\"ds-row-btn\" style=\"grid-area: load\">Load</button><button class=\"ds-row-btn\" style=\"grid-area: delete\">Delete</button></li></ul>",
+      "css": ".ds-rows { list-style: none; margin: 0; padding: 0; color: var(--ink, #141414); } .ds-rows li { display: grid; grid-template-columns: 1fr auto auto; grid-template-areas: 'title load delete' 'meta load delete'; column-gap: 8px; align-items: center; padding: 12px 0; border-bottom: 1px solid var(--rule-soft, #b9b9b2); } .ds-rows li:last-child { border-bottom: 0; } .ds-row-title { grid-area: title; font: 700 1.25rem/1.2 'Libre Caslon Text', Georgia, serif; } .ds-row-meta { grid-area: meta; font: 500 0.8125rem/1.4 'Libre Franklin', system-ui, sans-serif; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-soft, #55554f); font-variant-numeric: tabular-nums; } .ds-row-btn { min-height: 48px; padding: 0 16px; border: 2px solid var(--ink, #141414); background: none; color: var(--ink, #141414); font: 800 1rem/1 'Libre Franklin', system-ui, sans-serif; letter-spacing: 0.06em; border-radius: 0; cursor: pointer; } .ds-row-btn:focus-visible { outline: 3px solid var(--select, #008fa6); outline-offset: 3px; }"
+    },
+    {
+      "name": "Empty Note",
+      "kind": "custom",
+      "refersTo": "empty-note",
+      "description": "Plain Caslon sentence in Soft Ink shown in place of an empty list.",
+      "html": "<p class=\"ds-empty\">No presets yet. Save the current setup to reuse it.</p>",
+      "css": ".ds-empty { margin: 0; font: 400 1.125rem/1.4 'Libre Caslon Text', Georgia, serif; color: var(--ink-soft, #55554f); }"
+    },
+    {
+      "name": "Running Head",
+      "kind": "nav",
+      "description": "The page's head line: title left, underlined text link right, 1px ink rule under.",
+      "html": "<header class=\"ds-head\"><span>Metronome</span><button class=\"ds-head-link\">Presets</button></header>",
+      "css": ".ds-head { display: flex; justify-content: space-between; align-items: baseline; padding: 14px 0 10px; border-bottom: 1px solid var(--ink, #141414); color: var(--ink, #141414); font: 500 0.8125rem/1 'Libre Franklin', system-ui, sans-serif; letter-spacing: 0.12em; text-transform: uppercase; } .ds-head-link { padding: 10px 8px; margin: -10px -8px -10px 0; border: 0; background: none; color: inherit; font: inherit; letter-spacing: inherit; text-transform: inherit; text-decoration: underline; text-decoration-color: var(--rule-soft, #b9b9b2); text-underline-offset: 5px; cursor: pointer; } .ds-head-link:focus-visible { outline: 3px solid var(--select, #008fa6); outline-offset: 3px; }"
+    },
+    {
+      "name": "Sticking Line",
+      "kind": "custom",
+      "description": "Signature: engraved notes on one staff line between heavy rules, with the orange pencil ring on the live note.",
+      "html": "<ol class=\"ds-line\"><li><span class=\"ds-note\"><svg viewBox=\"0 0 60 100\"><path d=\"M14 7 L48 15.5 L14 24 L14 19.6 L35.5 15.5 L14 11.4 Z\"/><path d=\"M40.2 76 L40.6 29 L42.6 29 L43 76 Z\"/><ellipse cx=\"31\" cy=\"79\" rx=\"11.5\" ry=\"8\" transform=\"rotate(-22 31 79)\"/></svg><svg class=\"ds-ring\" viewBox=\"0 0 100 100\"><path d=\"M50 7 C77 6 95 25 93 51 C91 78 71 94 46 92 C20 90 5 71 8 46 C10 24 27 9 55 9\"/></svg></span><span class=\"ds-count\">1</span></li><li><span class=\"ds-note\"><svg viewBox=\"0 0 60 100\"><path d=\"M40.2 76 L40.6 29 L42.6 29 L43 76 Z\"/><ellipse cx=\"31\" cy=\"79\" rx=\"11.5\" ry=\"8\" transform=\"rotate(-22 31 79)\"/></svg></span><span class=\"ds-count\">2</span></li><li><span class=\"ds-note ds-ghost\"><svg viewBox=\"0 0 60 100\"><path d=\"M40.2 76 L40.6 29 L42.6 29 L43 76 Z\"/><ellipse cx=\"31\" cy=\"79\" rx=\"11.5\" ry=\"8\" transform=\"rotate(-22 31 79)\"/><path d=\"M15 65 C7.5 73 7.5 87 15 95 C11.8 87 11.8 73 15 65 Z\"/><path d=\"M48 65 C55.5 73 55.5 87 48 95 C51.2 87 51.2 73 48 65 Z\"/></svg></span><span class=\"ds-count\">3</span></li><li><span class=\"ds-note\"><svg viewBox=\"0 0 60 100\"><path d=\"M40.2 76 L40.6 29 L42.6 29 L43 76 Z\"/><ellipse cx=\"31\" cy=\"79\" rx=\"11.5\" ry=\"8\" transform=\"rotate(-22 31 79)\"/></svg></span><span class=\"ds-count\">4</span></li></ol>",
+      "css": ".ds-line { --note-h: 110px; list-style: none; margin: 0; padding: 10px 0 4px; border-top: 2px solid var(--ink, #141414); border-bottom: 2px solid var(--ink, #141414); display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); } .ds-line li { position: relative; display: grid; justify-items: center; gap: 2px; } .ds-line li::before { content: ''; position: absolute; left: 0; right: 0; top: calc(var(--note-h) * 0.79 - 1px); height: 2px; background: var(--ink, #141414); } .ds-note { position: relative; width: 100%; height: var(--note-h); color: var(--ink, #141414); cursor: pointer; } .ds-note svg { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; fill: currentColor; } .ds-ghost { color: var(--ink-ghost, #74746d); } .ds-ghost svg { transform: scale(0.82); transform-origin: 50% 80%; } .ds-note svg.ds-ring { left: 50%; top: 78%; width: calc(var(--note-h) * 0.46); height: auto; aspect-ratio: 1; transform: translate(-50%, -50%) rotate(-9deg); } .ds-ring path { fill: none; stroke: var(--pencil, #ff4f00); stroke-width: 7; stroke-linecap: round; } .ds-note:focus-visible { outline: 3px solid var(--select, #008fa6); outline-offset: 3px; } .ds-count { font: 400 1.375rem/1 'Libre Caslon Text', Georgia, serif; color: var(--ink-soft, #55554f); }"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Stick Control Page",
+    "overview": "The interface is a page of an engraved drum method book, set to be read from the drum throne 1.5 to 2 metres away. The tempo is the page heading, set as a huge Caslon numeral; the bar is a line of real engraved notation between two heavy rules; the controls are square, outlined, and set in a heavy grotesque at the foot of the page. Everything is ink on paper. There is no chassis, no glow, no LED, no gradient: the category default of glowing dots around a thin numeral on black is the thing this system refuses.\n\nDensity is low and the type is very large, because the reader is far away and holding sticks. The page has one solid black primary (Play/Stop), one orange pencil mark that circles the live note on every beat, and one teal for selection and focus. A night page prints the same book in reverse for dim practice rooms: the tokens swap, the rules do not.",
+    "keyCharacteristics": [
+      "Cool off-white paper and engraving black; colour is reserved for two jobs only.",
+      "Libre Caslon Text for everything read (numerals, headings, notation counts, choice text); Libre Franklin for labels and control verbs.",
+      "Notation drawn as filled engraved shapes, not icons: wedge accent, tapered stem, rotated notehead, crescent ghost parentheses, quarter rest.",
+      "Square corners everywhere, 2px ink outlines, 2px heavy rules around the notation, 1px rules under heads.",
+      "State never carried by colour alone: accents differ in shape, ghosts in size and parentheses, play state in inversion and label."
+    ],
+    "rules": [
+      { "name": "The One Pencil Rule", "body": "Orange appears only as the ring on the note being played. If orange is on screen while the metronome is stopped, something is wrong.", "section": "colors" },
+      { "name": "The Teal Means Chosen Rule", "body": "Teal marks selection and keyboard focus, and nothing else. A checked choice also gains a bold weight and an inset underline, so it never relies on hue.", "section": "colors" },
+      { "name": "The Read-In-Caslon Rule", "body": "Any number or word the drummer reads for meaning (tempo, bar, time, counts, option names, sheet titles) is Caslon. Franklin is for labels and verbs on controls.", "section": "typography" },
+      { "name": "The Running Head Rule", "body": "Uppercase tracked Franklin belongs to the page's running head and to form-field labels, as a printed book uses it. It does not appear as a decorative line above headings.", "section": "typography" },
+      { "name": "The Printed Depth Rule", "body": "No shadows on page elements. Separation comes from 2px ink rules and outlines; only an overlay sheet casts a shadow.", "section": "elevation" }
+    ],
+    "dos": [
+      "Do set tempo, bar, time and counts in Libre Caslon Text with lining tabular figures, large enough to read from 2 m.",
+      "Do keep orange (`pencil`) for the live-note ring alone, and teal (`select`) for selection and focus alone.",
+      "Do draw controls as square, 2px ink outlines on paper, with one solid ink primary per screen; press and active states invert.",
+      "Do draw notation as filled engraved shapes in the same hand as the existing glyphs.",
+      "Do give every state a non-colour signal: shape, weight, size, inversion, or label.",
+      "Do keep transport targets at 64px minimum (84px for Play/Stop) in the bottom thumb zone.",
+      "Do ship every new surface on both pages by using the tokens; never hard-code a light-page hex."
+    ],
+    "donts": [
+      "Don't use glowing dots, LED readouts, dark chassis styling, or a thin numeral on black; that is the category default this world replaces.",
+      "Don't round corners on controls, fields, or sheets.",
+      "Don't cast shadows on page elements; only an overlay sheet lifts.",
+      "Don't use orange for buttons, accents, links, or text.",
+      "Don't put uppercase tracked lines above headings as decoration; uppercase Franklin is for the running head and field labels.",
+      "Don't substitute icon-font or emoji glyphs for notation or controls."
+    ]
+  }
+}

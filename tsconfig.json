@@ -1,0 +1,23 @@
+{
+  "extends": "./tsconfig.base.json",
+  "compileOnSave": false,
+  "files": [],
+  "references": [
+    {
+      "path": "./apps/studio-web"
+    },
+    {
+      "path": "./libs/core/metronome"
+    },
+    {
+      "path": "./libs/adapters/audio-web"
+    },
+    {
+      "path": "./libs/adapters/storage"
+    },
+    {
+      "path": "./libs/ui/kit"
+    }
+  ],
+  "compilerOptions": {}
+}

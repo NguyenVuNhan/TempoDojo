@@ -1,0 +1,74 @@
+@import '@fontsource/libre-caslon-text/400.css';
+@import '@fontsource/libre-caslon-text/700.css';
+@import '@fontsource/libre-franklin/500.css';
+@import '@fontsource/libre-franklin/800.css';
+
+:root {
+  --paper: #f2f2ee;
+  --ink: #141414;
+  --ink-soft: #55554f;
+  --ink-ghost: #74746d;
+  --rule-soft: #b9b9b2;
+  --pencil: #ff4f00;
+  --select: #008fa6;
+  --font-book: 'Libre Caslon Text', Georgia, serif;
+  --font-label: 'Libre Franklin', system-ui, sans-serif;
+  color-scheme: light;
+}
+
+/* Night page: same book, printed in reverse for dim practice rooms. */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) {
+    --paper: #141413;
+    --ink: #ecebe4;
+    --ink-soft: #a9a8a0;
+    --ink-ghost: #8d8c85;
+    --rule-soft: #4d4d48;
+    --pencil: #ff6a26;
+    --select: #2bb3c8;
+    color-scheme: dark;
+  }
+}
+
+:root[data-theme='dark'] {
+  --paper: #141413;
+  --ink: #ecebe4;
+  --ink-soft: #a9a8a0;
+  --ink-ghost: #8d8c85;
+  --rule-soft: #4d4d48;
+  --pencil: #ff6a26;
+  --select: #2bb3c8;
+  color-scheme: dark;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-label);
+  -webkit-tap-highlight-color: transparent;
+  -webkit-font-smoothing: antialiased;
+}
+
+::selection {
+  background: var(--select);
+  color: var(--paper);
+}
+
+:focus-visible {
+  outline: 3px solid var(--select);
+  outline-offset: 3px;
+}
+
+button {
+  font: inherit;
+  -webkit-user-select: none;
+  user-select: none;
+}
