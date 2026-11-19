@@ -67,7 +67,7 @@
   max-width: 640px;
   margin: 0 auto;
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(4, 1fr);
   padding: 0 var(--gutter, clamp(16px, 5.5vw, 32px));
 }
 

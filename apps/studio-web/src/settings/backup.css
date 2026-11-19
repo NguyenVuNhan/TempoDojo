@@ -48,3 +48,10 @@
 .backup-alert {
   font-weight: 700;
 }
+
+.storage-line {
+  margin: 0;
+  font: 400 1rem/1.4 var(--font-book);
+  color: var(--ink-soft);
+  font-variant-numeric: lining-nums;
+}

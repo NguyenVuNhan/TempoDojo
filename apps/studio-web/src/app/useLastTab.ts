@@ -1,9 +1,9 @@
 import { useCallback, useEffect, useState } from 'react';
 import type { KvRepository } from '@tempodojo/storage';
 
-export type Tab = 'today' | 'ladder' | 'metro';
+export type Tab = 'today' | 'ladder' | 'songs' | 'metro';
 
-const TABS: readonly Tab[] = ['today', 'ladder', 'metro'];
+const TABS: readonly Tab[] = ['today', 'ladder', 'songs', 'metro'];
 const LAST_TAB_KEY = 'lastTab';
 
 function isTab(value: unknown): value is Tab {

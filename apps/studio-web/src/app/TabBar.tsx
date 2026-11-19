@@ -4,6 +4,7 @@ import type { Tab } from './useLastTab';
 const ITEMS: readonly { id: Tab; label: string }[] = [
   { id: 'today', label: 'Today' },
   { id: 'ladder', label: 'Ladder' },
+  { id: 'songs', label: 'Songs' },
   { id: 'metro', label: 'Metro' },
 ];
 
@@ -12,11 +13,12 @@ export interface TabBarProps {
   onChange: (tab: Tab) => void;
 }
 
-/** Bottom navigation bar switching between Today, Ladder, and Metro. */
+/** Bottom navigation bar switching between Today, Ladder, Songs and Metro. */
 export function TabBar({ tab, onChange }: TabBarProps) {
   const refs = useRef<Record<Tab, HTMLButtonElement | null>>({
     today: null,
     ladder: null,
+    songs: null,
     metro: null,
   });
 

@@ -10,6 +10,8 @@ const data: BackupData = {
   progress: [],
   events: [],
   prefs: DEFAULT_PREFS,
+  songs: [],
+  files: [],
 };
 
 const setup = (patch: Partial<BackupSectionProps> = {}) => {
@@ -66,5 +68,10 @@ describe('BackupSection', () => {
     expect(await screen.findByRole('alert')).toHaveProperty('textContent', message);
     expect(p.confirm).not.toHaveBeenCalled();
     expect(p.importBackup).not.toHaveBeenCalled();
+  });
+
+  it('says the backup carries song files', () => {
+    setup();
+    expect(screen.getByText('Progress, practice log, presets, settings and your song files, in one file.')).toBeTruthy();
   });
 });

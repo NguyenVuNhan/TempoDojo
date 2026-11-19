@@ -42,6 +42,7 @@ export function StatsBlock({ sessions, intervals, now }: { sessions: Session[]; 
       { label: 'Coordination', ms: bySource.coordination },
       { label: 'Feet', ms: bySource.feet },
       { label: 'Metronome', ms: bySource.metronome },
+      { label: 'Songs', ms: bySource.song },
     ];
     return entries.filter((e) => e.ms > 0);
   }, [intervals, now]);

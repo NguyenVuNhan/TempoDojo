@@ -3,6 +3,7 @@ import type { PracticeEvent } from '@tempodojo/core-practice';
 import type { KvRepository } from '@tempodojo/storage';
 import { memoryLadderRepos } from '../ladder/test-utils';
 import { FakeEngine, MemoryRepo } from '../metronome/test-utils';
+import { fakeFactories, memorySongRepos, songRow, storedFile } from '../songs/test-utils';
 import { App, type AppDeps } from './app';
 
 class MemoryKv implements KvRepository {
@@ -17,6 +18,11 @@ class MemoryKv implements KvRepository {
 
 const setup = (lastTab?: string) => {
   const kv = new MemoryKv();
+  const songRepos = memorySongRepos(
+    [songRow('a', { title: 'Back in Black', lastOpenedAt: 3 }), songRow('y', { title: 'Rosanna', kind: 'youtube', fileId: null, youtubeId: 'dQw4w9WgXcQ', lastOpenedAt: 2 })],
+    [storedFile('f-a')],
+  );
+  const players = fakeFactories();
   if (lastTab) kv.rows.set('lastTab', lastTab);
   const events: PracticeEvent[] = [];
   const { repos } = memoryLadderRepos();
@@ -32,18 +38,21 @@ const setup = (lastTab?: string) => {
     },
     progress: repos.progress,
     prefs: repos.prefs,
+    songs: songRepos.songs,
+    files: songRepos.files,
+    players: players.factories,
   };
   render(<App deps={deps} />);
-  return { deps, kv, events, engine: deps.engine as FakeEngine };
+  return { deps, kv, events, engine: deps.engine as FakeEngine, players };
 };
 
 const tab = (name: string) => screen.getByRole('tab', { name });
 
 describe('App shell', () => {
-  it('opens on Today with three tabs in order', async () => {
+  it('opens on Today with four tabs in order', async () => {
     setup();
     const tabs = await screen.findAllByRole('tab');
-    expect(tabs.map((t) => t.textContent)).toEqual(['Today', 'Ladder', 'Metro']);
+    expect(tabs.map((t) => t.textContent)).toEqual(['Today', 'Ladder', 'Songs', 'Metro']);
     expect(tab('Today').getAttribute('aria-selected')).toBe('true');
     expect(tab('Metro').getAttribute('aria-selected')).toBe('false');
     expect(screen.getByRole('tablist').getAttribute('aria-label')).toBe('Sections');
@@ -68,7 +77,7 @@ describe('App shell', () => {
   });
 
   it('ignores an unknown stored tab', async () => {
-    setup('songs');
+    setup('drums');
     await new Promise((r) => setTimeout(r, 20));
     expect(tab('Today').getAttribute('aria-selected')).toBe('true');
   });
@@ -122,5 +131,27 @@ describe('App shell', () => {
     fireEvent.click(tab('Today'));
     await waitFor(() => expect(events.map((e) => [e.type, e.source.kind])).toEqual([['play', 'exercise'], ['stop', 'exercise']]));
     expect(await screen.findByRole('heading', { level: 1, name: 'This week' })).toBeTruthy();
+  });
+
+  it('Songs lists the library and opens each song in its player', async () => {
+    const { players } = setup('songs');
+    fireEvent.click(await screen.findByRole('button', { name: /^Back in Black/ }));
+    expect(await screen.findByRole('heading', { level: 1, name: 'Back in Black' })).toBeTruthy();
+    await waitFor(() => expect(players.notation.load).toHaveBeenCalled());
+    fireEvent.click(screen.getByRole('button', { name: 'Back' }));
+    fireEvent.click(await screen.findByRole('button', { name: /^Rosanna/ }));
+    expect(await screen.findByRole('heading', { level: 1, name: 'Rosanna' })).toBeTruthy();
+    expect(players.factories.video).toHaveBeenCalledWith(expect.any(HTMLElement), 'dQw4w9WgXcQ');
+  });
+
+  it('song practice is logged with the song as its source', async () => {
+    const { events } = setup('songs');
+    fireEvent.click(await screen.findByRole('button', { name: /^Back in Black/ }));
+    fireEvent.click(await screen.findByRole('button', { name: 'Play' }));
+    fireEvent.click(tab('Today'));
+    await waitFor(() => expect(events.map((e) => [e.type, e.source])).toEqual([
+      ['play', { kind: 'song', songId: 'a' }],
+      ['stop', { kind: 'song', songId: 'a' }],
+    ]));
   });
 });

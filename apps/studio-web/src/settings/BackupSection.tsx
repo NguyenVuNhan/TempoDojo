@@ -109,7 +109,7 @@ export function BackupSection({
     <div className="backup">
       <h3 className="field-label">Backup</h3>
       <p className="backup-note">
-        Progress, practice log, presets and settings, in one file. Song files are not included.
+        Progress, practice log, presets, settings and your song files, in one file.
       </p>
       <div className="backup-actions">
         <button type="button" className="text-button" onClick={handleExport}>

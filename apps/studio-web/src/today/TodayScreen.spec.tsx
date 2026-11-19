@@ -106,4 +106,11 @@ describe('TodayScreen', () => {
     await waitFor(() => expect(screen.getByText('17.5 min')).toBeTruthy());
     expect(document.body.textContent?.toLowerCase()).not.toContain('streak');
   });
+
+  it('counts song practice in time this week', async () => {
+    const song: PracticeSource = { kind: 'song', songId: 's1' };
+    await setup([ev('play', MON, song), ev('stop', MON + 12 * MIN, song)]);
+    const byTrack = await screen.findByRole('list', { name: 'Time this week' });
+    expect(within(byTrack).getByText('Songs').closest('li')?.textContent).toBe('Songs12 min');
+  });
 });
