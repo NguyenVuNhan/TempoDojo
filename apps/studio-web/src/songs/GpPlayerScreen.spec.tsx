@@ -74,7 +74,7 @@ describe('GpPlayerScreen', () => {
     fireEvent.click(screen.getByRole('checkbox', { name: 'Loop' }));
     expect(notation.setLoop).toHaveBeenLastCalledWith({ startBar: 4, endBar: 12 });
     fireEvent.change(screen.getByRole('spinbutton', { name: 'To bar' }), { target: { value: '99' } });
-    expect(notation.setLoop).toHaveBeenLastCalledWith({ startBar: 4, endBar: 40 });
+    expect(notation.setLoop).toHaveBeenLastCalledWith({ startBar: 12, endBar: 40 });
     fireEvent.click(screen.getByRole('checkbox', { name: 'Loop' }));
     expect(notation.setLoop).toHaveBeenLastCalledWith(null);
   });

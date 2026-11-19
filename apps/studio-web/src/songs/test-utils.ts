@@ -98,14 +98,14 @@ export class FakeNotationPlayer implements NotationPlayer {
   play = vi.fn(() => this.emitPlaying(true));
   pause = vi.fn(() => this.emitPlaying(false));
   stop = vi.fn(() => this.emitPlaying(false));
-  setPercent = vi.fn();
-  setLoop = vi.fn();
-  setCountIn = vi.fn();
-  setMetronome = vi.fn();
-  setTrackMute = vi.fn();
-  setTrackSolo = vi.fn();
-  showTracks = vi.fn();
-  destroy = vi.fn();
+  setPercent = vi.fn((..._args: unknown[]) => undefined);
+  setLoop = vi.fn((..._args: unknown[]) => undefined);
+  setCountIn = vi.fn((..._args: unknown[]) => undefined);
+  setMetronome = vi.fn((..._args: unknown[]) => undefined);
+  setTrackMute = vi.fn((..._args: unknown[]) => undefined);
+  setTrackSolo = vi.fn((..._args: unknown[]) => undefined);
+  showTracks = vi.fn((..._args: unknown[]) => undefined);
+  destroy = vi.fn((..._args: unknown[]) => undefined);
   onBar(cb: (bar: number) => void) {
     this.bar.add(cb);
     return () => this.bar.delete(cb);
@@ -142,19 +142,19 @@ export class FakeVideoPlayer implements VideoPlayer {
   });
   time = () => this.t;
   duration = () => this.length;
-  setRate = vi.fn();
+  setRate = vi.fn((..._args: unknown[]) => undefined);
   rates = () => this.allowed;
   onPlaying(cb: (p: boolean) => void) {
     this.playing.add(cb);
     return () => this.playing.delete(cb);
   }
-  destroy = vi.fn();
+  destroy = vi.fn((..._args: unknown[]) => undefined);
 }
 
 export class FakePdf implements PdfDoc {
   constructor(public pageCount = 3) {}
   renderPage = vi.fn(async (_page: number, _canvas: HTMLCanvasElement, _w: number) => undefined);
-  destroy = vi.fn();
+  destroy = vi.fn((..._args: unknown[]) => undefined);
 }
 
 export function fakeFactories(opts: { score?: ScoreInfo | 'unreadable'; pdfPages?: number } = {}) {
