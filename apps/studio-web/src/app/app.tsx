@@ -20,8 +20,12 @@ import {
 import { ExerciseScreen } from '../ladder/ExerciseScreen';
 import { LadderScreen } from '../ladder/LadderScreen';
 import { useLadder } from '../ladder/useLadder';
+import type { PracticeSource } from '@tempodojo/core-practice';
 import { MetronomeScreen } from '../metronome/MetronomeScreen';
 import type { MetronomeEngineLike } from '../metronome/useMetronome';
+import { AppleSoundTip } from '../platform/AppleSoundTip';
+import { UpdateBar } from '../platform/UpdateBar';
+import { useUpdate, type RegisterSW } from '../platform/useUpdate';
 import { usePracticeLog } from '../practice/usePracticeLog';
 import { BackupSection } from '../settings/BackupSection';
 import { StorageLine } from '../settings/StorageLine';
@@ -55,6 +59,8 @@ export interface AppDeps {
   players?: PlayerFactories;
   backup?: BackupPort;
   usage?: () => Promise<{ usedBytes: number; quotaBytes: number } | null>;
+  /** Service-worker registration; tests inject a fake. */
+  registerSW?: RegisterSW;
 }
 
 const loadDefaultPlayers = () => import('../songs/default-players').then((m) => m.defaultPlayers);
@@ -89,7 +95,17 @@ export function App({ deps }: { deps?: AppDeps }) {
   const [open, setOpen] = useState<Exercise | null>(null);
   // Bumped after a backup import so every screen re-reads storage.
   const [generation, setGeneration] = useState(0);
-  const { record } = usePracticeLog(resolved.events);
+  const { record: logTransport } = usePracticeLog(resolved.events);
+  // Whatever is playing (metronome, exercise or song), from the last transport event; updates wait for Stop.
+  const [playing, setPlaying] = useState(false);
+  const record = useCallback(
+    (type: 'play' | 'stop', source: PracticeSource) => {
+      setPlaying(type === 'play');
+      logTransport(type, source);
+    },
+    [logTransport],
+  );
+  const update = useUpdate(resolved.registerSW);
   const metronomeDeps = useMemo(
     () => ({ engine: resolved.engine, repo: resolved.presets }),
     [resolved.engine, resolved.presets],
@@ -179,7 +195,7 @@ export function App({ deps }: { deps?: AppDeps }) {
       }
     }
   } else if (tab === 'metro') {
-    screen = <MetronomeScreen key={generation} deps={metronomeDeps} onTransport={record} />;
+    screen = <MetronomeScreen key={generation} deps={metronomeDeps} onTransport={record} tip={<AppleSoundTip kv={resolved.kv} />} />;
   } else if (!ladder.loaded) {
     screen = null;
   } else if (open) {
@@ -213,6 +229,7 @@ export function App({ deps }: { deps?: AppDeps }) {
       <div role="tabpanel" id={`panel-${tab}`} aria-labelledby={`tab-${tab}`} className="shell-panel">
         {screen}
       </div>
+      <UpdateBar ready={update.ready} playing={playing} onUpdate={update.update} onLater={update.later} />
       <TabBar tab={tab} onChange={setTab} />
     </div>
   );

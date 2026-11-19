@@ -3,6 +3,7 @@ import { useEffect, useRef } from 'react';
 export interface KeyboardTransportHandlers {
   toggle: () => void;
   nudge: (delta: number) => void;
+  nudgeBig?: (direction: 1 | -1) => void;
 }
 
 function isEditableTarget(target: EventTarget | null): boolean {
@@ -49,10 +50,20 @@ export function useKeyboardTransport(handlers: KeyboardTransportHandlers): void 
           handlersRef.current.toggle();
           break;
         case 'ArrowUp':
-          handlersRef.current.nudge(1);
+          e.preventDefault();
+          if (e.shiftKey && handlersRef.current.nudgeBig) {
+            handlersRef.current.nudgeBig(1);
+          } else {
+            handlersRef.current.nudge(1);
+          }
           break;
         case 'ArrowDown':
-          handlersRef.current.nudge(-1);
+          e.preventDefault();
+          if (e.shiftKey && handlersRef.current.nudgeBig) {
+            handlersRef.current.nudgeBig(-1);
+          } else {
+            handlersRef.current.nudge(-1);
+          }
           break;
       }
     };

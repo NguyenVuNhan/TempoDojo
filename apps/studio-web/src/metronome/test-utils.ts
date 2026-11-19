@@ -10,6 +10,19 @@ export class FakeEngine implements MetronomeEngineLike {
     this.listeners.add(cb);
     return () => this.listeners.delete(cb);
   }
+  private audioListeners = new Set<(s: string) => void>();
+  resumeTo = 'running';
+  resumeAudio = vi.fn(async () => {
+    this.emitAudio(this.resumeTo);
+    return this.resumeTo === 'running';
+  });
+  onAudioState(cb: (s: string) => void): () => void {
+    this.audioListeners.add(cb);
+    return () => this.audioListeners.delete(cb);
+  }
+  emitAudio(s: string): void {
+    this.audioListeners.forEach((cb) => cb(s));
+  }
   emit(e: Partial<ClickEvent>): void {
     const full: ClickEvent = { time: 0, bar: 0, pulse: 0, sub: 0, level: 'normal', bpm: 120, countIn: false, ...e };
     this.listeners.forEach((cb) => cb(full, 0));

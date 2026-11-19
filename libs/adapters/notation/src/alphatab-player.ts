@@ -77,6 +77,8 @@ export function createAlphaTabPlayer(el: HTMLElement, opts: NotationOptions): No
     settings.player.scrollElement = opts.scrollElement;
   }
   settings.player.soundFont = new URL('/soundfont/sonivox.sf2', location.href).href;
+  // alphaTab guesses its font folder from its own chunk (/assets/), but the Vite plugin copies the fonts to /font/.
+  settings.core.fontDirectory = new URL('/font/', location.href).href;
 
   settings.display.layoutMode = alphaTab.LayoutMode.Page;
   // The page already shows the title; keep the score to the notation itself.
@@ -172,6 +174,10 @@ export function createAlphaTabPlayer(el: HTMLElement, opts: NotationOptions): No
     },
 
     play(): void {
+      if (typeof navigator !== 'undefined') {
+        const nav = navigator as unknown as { audioSession?: { type: string } };
+        if (nav.audioSession) nav.audioSession.type = 'playback';
+      }
       api.play();
     },
 

@@ -1,12 +1,16 @@
 import type { ClickEvent, MetronomeSettings } from '@tempodojo/core-metronome';
 import { LookaheadScheduler, type AudioClock, type Ticker } from './scheduler';
 
+export type AudioState = 'running' | 'suspended' | 'interrupted' | 'closed';
+
 export interface AudioContextLike {
   state: string;
   currentTime: number;
   sampleRate: number;
   destination: unknown;
   resume(): Promise<void>;
+  addEventListener?(type: 'statechange', cb: () => void): void;
+  removeEventListener?(type: 'statechange', cb: () => void): void;
   createBuffer(
     channels: number,
     length: number,
@@ -103,6 +107,8 @@ export class WebAudioMetronome {
   private readonly ticker: Ticker;
   private scheduler: LookaheadScheduler | null = null;
   private readonly listeners = new Set<(e: ClickEvent, delayMs: number) => void>();
+  private readonly audioStateListeners = new Set<(s: AudioState) => void>();
+  private attachedContext: AudioContextLike | null = null;
 
   constructor(opts?: { context?: AudioContextLike; ticker?: Ticker }) {
     this.context = opts?.context ?? null;
@@ -110,12 +116,7 @@ export class WebAudioMetronome {
   }
 
   async start(settings: MetronomeSettings): Promise<void> {
-    if (typeof navigator !== 'undefined') {
-      const nav = navigator as unknown as { audioSession?: { type: string } };
-      if (nav.audioSession) {
-        nav.audioSession.type = 'playback';
-      }
-    }
+    this.setPlaybackAudioSession();
 
     const ctx = this.getOrCreateContext();
     if (ctx.state !== 'running') {
@@ -164,8 +165,55 @@ export class WebAudioMetronome {
     };
   }
 
+  onAudioState(cb: (s: AudioState) => void): () => void {
+    this.audioStateListeners.add(cb);
+    if (this.context) {
+      this.attachStateListener(this.context);
+    }
+    return () => {
+      this.audioStateListeners.delete(cb);
+    };
+  }
+
+  async resumeAudio(): Promise<boolean> {
+    const ctx = this.context;
+    if (!ctx) {
+      return false;
+    }
+    this.setPlaybackAudioSession();
+    try {
+      await ctx.resume();
+    } catch {
+      // Fall through to report whether the context actually reached 'running'.
+    }
+    return ctx.state === 'running';
+  }
+
+  private setPlaybackAudioSession(): void {
+    if (typeof navigator !== 'undefined') {
+      const nav = navigator as unknown as { audioSession?: { type: string } };
+      if (nav.audioSession) {
+        nav.audioSession.type = 'playback';
+      }
+    }
+  }
+
+  private attachStateListener(ctx: AudioContextLike): void {
+    if (this.attachedContext === ctx) {
+      return;
+    }
+    this.attachedContext = ctx;
+    ctx.addEventListener?.('statechange', () => {
+      const state = ctx.state as AudioState;
+      for (const listener of this.audioStateListeners) {
+        listener(state);
+      }
+    });
+  }
+
   private getOrCreateContext(): AudioContextLike {
     if (this.context) {
+      this.attachStateListener(this.context);
       return this.context;
     }
     const AudioContextCtor =
@@ -178,6 +226,7 @@ export class WebAudioMetronome {
       throw new Error('Web Audio API is not available in this environment');
     }
     this.context = new AudioContextCtor() as unknown as AudioContextLike;
+    this.attachStateListener(this.context);
     return this.context;
   }
 }

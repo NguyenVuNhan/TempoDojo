@@ -10,6 +10,8 @@ import {
 import { DEFAULT_SETTINGS, MAX_BPM, MIN_BPM, type MetronomeSettings } from '@tempodojo/core-metronome';
 import { Sheet } from '@tempodojo/ui-kit';
 import { useMetronome, type MetronomeDeps, type MetronomeOptions } from '../metronome/useMetronome';
+import { SoundBanner } from '../platform/SoundBanner';
+import { useSoundState } from '../platform/useSoundState';
 import { useWakeLock } from '../platform/useWakeLock';
 import { PatternView } from './PatternView';
 import { RankTestSheet } from './RankTestSheet';
@@ -51,6 +53,7 @@ export function ExerciseScreen({
   });
   const { settings, position, playing } = m;
   useWakeLock(playing);
+  const sound = useSoundState(deps.engine, playing);
 
   const [logOpen, setLogOpen] = useState(false);
   const [cleanInput, setCleanInput] = useState('');
@@ -251,6 +254,7 @@ export function ExerciseScreen({
       </div>
 
       <section className="ex-transport" aria-label="Transport">
+        <SoundBanner blocked={sound.blocked} onResume={() => void sound.resume()} />
         <div className="ex-bpm-row">
           <div className="ex-bpm" data-testid="exercise-bpm">
             <span className="ex-bpm-value">{shownBpm}</span>

@@ -10,6 +10,7 @@ import {
   type Song,
 } from '@tempodojo/core-songlab';
 import { NotationError, type NotationPlayer, type TrackInfo } from '@tempodojo/notation';
+import { useKeyboardTransport } from '../platform/useKeyboardTransport';
 import { useWakeLock } from '../platform/useWakeLock';
 import { SectionsSheet } from './SectionsSheet';
 import { TracksSheet } from './TracksSheet';
@@ -227,7 +228,7 @@ export function GpPlayerScreen({
 
   const togglePlay = () => {
     const p = playerRef.current;
-    if (!p) return;
+    if (!p || !info || loadError) return;
     const source: PracticeSource = { kind: 'song', songId: current.id };
     if (playing) {
       p.stop();
@@ -237,6 +238,12 @@ export function GpPlayerScreen({
       onTransport?.('play', source);
     }
   };
+
+  useKeyboardTransport({
+    toggle: togglePlay,
+    nudge: (d) => nudge(d),
+    nudgeBig: (d) => nudge(d * 5),
+  });
 
   const handleLoopSection = (section: Section) => {
     if (section.range.kind !== 'bars') return;

@@ -33,3 +33,11 @@ Output: `apps/studio-web/dist` (contains `index.html`, `manifest.webmanifest`, `
 
 - Android Chrome: open the URL → menu → Install app.
 - iPad Safari: open the URL → Share → Add to Home Screen.
+
+## Updates
+
+The service worker runs in prompt mode: a new deploy shows "A new version of TempoDojo is ready." above the tab bar, only while nothing is playing. **Update** reloads into the new version; **Later** hides the bar until the next deploy. Nothing reloads by itself mid-practice.
+
+## Offline
+
+Verified 2026-11-19 against `vite preview` of the production build with the server stopped: the app shell, the metronome (plays), a stored Guitar Pro song (score renders and plays) and a stored PDF (renders, page turns) all open with no network. Everything in `dist` that the app loads is precached, including the alphaTab font, soundfont and workers and the pdf.js worker (`.mjs`); YouTube songs need the network.
