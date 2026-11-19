@@ -165,7 +165,7 @@
   padding-top: clamp(12px, 3vh, 40px);
 }
 
-/* Phones: bars longer than 4 beats wrap into rows of 4 at full size, each row with its own bar lines. */
+/* Phones: bars longer than 4 beats wrap into rows of 4 at full size; bar lines only open and close the whole bar. */
 @container (max-width: 560px) {
   .line {
     --cols: min(var(--pulses), 4);
@@ -175,26 +175,6 @@
   .line[data-wrap='true'] {
     --note-h: min(clamp(88px, 12.5vh, 140px), calc(100cqi / var(--cols) * 1.6));
     row-gap: 6px;
-  }
-
-  .line li:nth-child(4n + 1)::after,
-  .line li:nth-child(4n)::after {
-    content: '';
-    position: absolute;
-    top: calc(var(--note-h) * 0.79 - 26px);
-    height: 52px;
-    width: 2px;
-    background: var(--ink);
-  }
-
-  .line li:nth-child(4n + 1)::after {
-    left: 0;
-    right: auto;
-  }
-
-  .line li:nth-child(4n)::after {
-    right: 0;
-    left: auto;
   }
 }
 
