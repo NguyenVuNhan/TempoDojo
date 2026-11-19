@@ -1,0 +1,51 @@
+.rank-test-target-line {
+  margin: 0;
+  font: 700 1.375rem/1.2 var(--font-book);
+  font-variant-numeric: lining-nums tabular-nums;
+  color: var(--ink);
+}
+
+.rank-test-note,
+.rank-test-check-heading {
+  margin: 0;
+  font: 400 1.125rem/1.4 var(--font-book);
+  color: var(--ink-soft);
+}
+
+.rank-test-readout {
+  margin: 0;
+  font: 700 clamp(2.5rem, 12vw, 3.5rem) / 1 var(--font-book);
+  font-variant-numeric: lining-nums tabular-nums;
+  color: var(--ink);
+}
+
+.rank-test-actions {
+  display: grid;
+  gap: 8px;
+}
+
+.rank-test-primary {
+  width: 100%;
+  min-height: 64px;
+  padding: 0 18px;
+  border: 2px solid var(--ink);
+  border-radius: 0;
+  background: var(--ink);
+  color: var(--paper);
+  font: 800 1.25rem/1 var(--font-label);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+.rank-test-primary:active:not(:disabled) {
+  background: var(--paper);
+  color: var(--ink);
+}
+
+.rank-test-primary:disabled {
+  border-color: var(--rule-soft);
+  background: var(--rule-soft);
+  color: var(--paper);
+  cursor: default;
+}
