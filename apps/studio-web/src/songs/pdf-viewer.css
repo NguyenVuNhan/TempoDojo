@@ -267,3 +267,17 @@
 :root[data-theme='dark'] .pdf-canvas {
   filter: invert(0.9) hue-rotate(180deg);
 }
+
+/* Paired-video speed is changed mid-song: same 64px grid as the YouTube player. */
+.pdf-page .segmented {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.pdf-page .segmented span {
+  min-height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

@@ -1,6 +1,6 @@
 {
   "schemaVersion": 2,
-  "generatedAt": "2026-11-19T12:00:00Z",
+  "generatedAt": "2026-11-19T18:00:00Z",
   "title": "Design System: TempoDojo Studio",
   "extensions": {
     "colorMeta": {
@@ -152,7 +152,7 @@
       },
       "headline": {
         "displayName": "Headline",
-        "purpose": "Bar counter under the staff: Bar N and time."
+        "purpose": "Bar counter under the staff; song and video titles; the PDF page counter."
       },
       "title": {
         "displayName": "Title",
@@ -184,7 +184,7 @@
       },
       "tab": {
         "displayName": "Tab",
-        "purpose": "The three tab-bar labels, uppercase."
+        "purpose": "The four tab-bar labels, uppercase; 0.8125rem, 0.06em at 420px wide and below."
       },
       "sticking": {
         "displayName": "Sticking",
@@ -227,6 +227,11 @@
         "name": "press-invert",
         "value": "80ms ease-out",
         "purpose": "Background/colour inversion on button press."
+      },
+      {
+        "name": "tap-tint",
+        "value": "120ms ease-out",
+        "purpose": "6% ink tint on a pressed PDF tap zone; song rows lay an 8% ink tint on press."
       }
     ],
     "breakpoints": [
@@ -245,6 +250,18 @@
       {
         "name": "ladder-row-stack",
         "value": "max-width 419px"
+      },
+      {
+        "name": "tab-tighten",
+        "value": "max-width 420px"
+      },
+      {
+        "name": "songs-add-stack",
+        "value": "max-width 419px"
+      },
+      {
+        "name": "score-scale",
+        "value": "score container under 600px wide: scale 1.25, else 1.8"
       }
     ]
   },
@@ -330,9 +347,9 @@
       "name": "Tab Bar",
       "kind": "nav",
       "refersTo": "tab",
-      "description": "Bottom navigation: three 64px tabs under a 2px ink rule; selected tab in ink with a 4px inset teal underline.",
-      "html": "<nav class=\"ds-tabbar\"><div role=\"tablist\"><button role=\"tab\" aria-selected=\"true\">Today</button><button role=\"tab\" aria-selected=\"false\">Ladder</button><button role=\"tab\" aria-selected=\"false\">Metro</button></div></nav>",
-      "css": ".ds-tabbar { background: var(--paper, #f2f2ee); border-top: 2px solid var(--ink, #141414); } .ds-tabbar [role=tablist] { display: grid; grid-template-columns: repeat(3, 1fr); padding: 0 16px; } .ds-tabbar [role=tab] { height: 64px; border: 0; background: transparent; color: var(--ink-soft, #55554f); font: 800 0.9375rem 'Libre Franklin', system-ui, sans-serif; letter-spacing: 0.14em; text-transform: uppercase; cursor: pointer; transition: background-color 80ms ease-out, color 80ms ease-out; } .ds-tabbar [role=tab][aria-selected=true] { color: var(--ink, #141414); box-shadow: inset 0 -4px 0 var(--select, #008fa6); } .ds-tabbar [role=tab]:active { background: var(--ink, #141414); color: var(--paper, #f2f2ee); } .ds-tabbar [role=tab]:focus-visible { outline: 3px solid var(--select, #008fa6); outline-offset: -6px; }"
+      "description": "Bottom navigation: four 64px tabs (labels tighten to 0.8125rem, 0.06em at 420px and below) under a 2px ink rule; selected tab in ink with a 4px inset teal underline.",
+      "html": "<nav class=\"ds-tabbar\"><div role=\"tablist\"><button role=\"tab\" aria-selected=\"true\">Today</button><button role=\"tab\" aria-selected=\"false\">Ladder</button><button role=\"tab\" aria-selected=\"false\">Songs</button><button role=\"tab\" aria-selected=\"false\">Metro</button></div></nav>",
+      "css": ".ds-tabbar { background: var(--paper, #f2f2ee); border-top: 2px solid var(--ink, #141414); } .ds-tabbar [role=tablist] { display: grid; grid-template-columns: repeat(4, 1fr); padding: 0 16px; } .ds-tabbar [role=tab] { height: 64px; border: 0; background: transparent; color: var(--ink-soft, #55554f); font: 800 0.9375rem 'Libre Franklin', system-ui, sans-serif; letter-spacing: 0.14em; text-transform: uppercase; cursor: pointer; transition: background-color 80ms ease-out, color 80ms ease-out; } .ds-tabbar [role=tab][aria-selected=true] { color: var(--ink, #141414); box-shadow: inset 0 -4px 0 var(--select, #008fa6); } .ds-tabbar [role=tab]:active { background: var(--ink, #141414); color: var(--paper, #f2f2ee); } .ds-tabbar [role=tab]:focus-visible { outline: 3px solid var(--select, #008fa6); outline-offset: -6px; }"
     },
     {
       "name": "Sticking Pattern",
@@ -372,6 +389,30 @@
       "description": "Today stats: Caslon sentence-case heading, ink bar chart with half-width captions, practice calendar in five ink levels, no streaks.",
       "html": "<div class=\"ds-stats\"><h3>Sessions per week</h3><div class=\"ds-bars\"><div><span>2</span><i style=\"height:36px\"></i></div><div><span>3</span><i style=\"height:54px\"></i></div><div><span>0</span><i data-zero style=\"height:3px\"></i></div><div><span>4</span><i style=\"height:72px\"></i></div><small>4 weeks ago</small><small class=\"now\">This week</small></div><h3>Practice days</h3><div class=\"ds-cal\"><b data-l=\"0\"></b><b data-l=\"1\"></b><b data-l=\"2\"></b><b data-l=\"3\"></b><b data-l=\"4\"></b><b data-l=\"2\"></b><b data-l=\"0\"></b></div></div>",
       "css": ".ds-stats { color: var(--ink, #141414); } .ds-stats h3 { margin: 0 0 10px; font: 700 1.375rem/1.2 'Libre Caslon Text', Georgia, serif; } .ds-bars { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 6px; max-width: 220px; align-items: end; margin-bottom: 24px; } .ds-bars div { display: grid; justify-items: center; gap: 4px; } .ds-bars span { font: 400 0.875rem/1 'Libre Caslon Text', Georgia, serif; } .ds-bars i { display: block; width: 100%; background: var(--ink, #141414); } .ds-bars i[data-zero] { background: var(--rule-soft, #b9b9b2); } .ds-bars small { grid-column: 1 / 3; font: 500 0.6875rem/1 'Libre Franklin', system-ui, sans-serif; letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink-soft, #55554f); white-space: nowrap; } .ds-bars small.now { grid-column: 3 / 5; text-align: right; } .ds-cal { display: grid; grid-template-rows: repeat(7, 14px); grid-auto-flow: column; gap: 3px; width: max-content; } .ds-cal b { width: 14px; height: 14px; box-sizing: border-box; } .ds-cal [data-l='0'] { border: 1px solid var(--rule-soft, #b9b9b2); } .ds-cal [data-l='1'] { background: color-mix(in srgb, var(--ink, #141414) 25%, transparent); } .ds-cal [data-l='2'] { background: color-mix(in srgb, var(--ink, #141414) 50%, transparent); } .ds-cal [data-l='3'] { background: color-mix(in srgb, var(--ink, #141414) 75%, transparent); } .ds-cal [data-l='4'] { background: var(--ink, #141414); }"
+    },
+    {
+      "name": "Songs Library",
+      "kind": "custom",
+      "refersTo": "song-row",
+      "description": "Three 64px outlined import controls over a list of song rows: Caslon title and Caslon meta line, Remove text button, Pencil Rule between rows.",
+      "html": "<div class=\"ds-songs\"><div class=\"ds-add\"><button>Add Guitar Pro or MusicXML</button><button>Add PDF</button><button>Add YouTube link</button></div><ul><li><button class=\"ds-song\"><b>Demo Groove</b><span>Guitar Pro · 2 sections · Last 100 %</span></button><button class=\"ds-remove\">Remove</button></li><li><button class=\"ds-song\"><b>demo-chart</b><span>PDF</span></button><button class=\"ds-remove\">Remove</button></li></ul></div>",
+      "css": ".ds-songs { color: var(--ink, #141414); max-width: 420px; } .ds-add { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; } .ds-add button { min-height: 64px; padding: 10px 12px; border: 2px solid var(--ink, #141414); border-radius: 0; background: var(--paper, #f2f2ee); color: var(--ink, #141414); font: 800 0.875rem/1.2 'Libre Franklin', system-ui, sans-serif; letter-spacing: 0.06em; text-transform: uppercase; cursor: pointer; transition: background-color 80ms ease-out, color 80ms ease-out; } .ds-add button:active { background: var(--ink, #141414); color: var(--paper, #f2f2ee); } .ds-songs button:focus-visible { outline: 3px solid var(--select, #008fa6); outline-offset: 3px; } .ds-songs ul { list-style: none; margin: 24px 0 0; padding: 0; } .ds-songs li { display: flex; align-items: center; gap: 12px; border-bottom: 1px solid var(--rule-soft, #b9b9b2); } .ds-songs li:last-child { border-bottom: 0; } .ds-song { flex: 1; min-height: 64px; padding: 14px 0; border: 0; border-radius: 0; background: none; color: inherit; text-align: left; display: grid; gap: 4px; cursor: pointer; } .ds-song:active { background: color-mix(in srgb, var(--ink, #141414) 8%, transparent); } .ds-song b { font: 700 1.25rem/1.2 'Libre Caslon Text', Georgia, serif; } .ds-song span { font: 400 1rem/1.3 'Libre Caslon Text', Georgia, serif; color: var(--ink-soft, #55554f); font-variant-numeric: lining-nums tabular-nums; } .ds-remove { min-height: 48px; padding: 0 16px; border: 2px solid var(--ink, #141414); border-radius: 0; background: none; color: var(--ink, #141414); font: 800 1rem/1 'Libre Franklin', system-ui, sans-serif; cursor: pointer; }"
+    },
+    {
+      "name": "Score Transport",
+      "kind": "custom",
+      "refersTo": "score-frame",
+      "description": "Guitar Pro player: score between 2px ink rules with the 15% teal bar wash and an orange beat cursor only while playing; percent numeral and Bar N of M over four 64px nudges and the 84px Play/Stop.",
+      "html": "<div class=\"ds-gp\"><div class=\"ds-score\"><i class=\"ds-bar\"></i><i class=\"ds-cursor\"></i></div><div class=\"ds-tr\"><div class=\"ds-row\"><b>100 %</b><span>Bar 2 of 8</span></div><div class=\"ds-nudges\"><button>−5</button><button>−1</button><button>+1</button><button>+5</button></div><button class=\"ds-play\" aria-pressed=\"true\">Stop</button></div></div>",
+      "css": ".ds-gp { color: var(--ink, #141414); max-width: 360px; } .ds-score { position: relative; height: 120px; background: var(--paper, #f2f2ee); border-top: 2px solid var(--ink, #141414); border-bottom: 2px solid var(--ink, #141414); } .ds-bar { position: absolute; top: 10px; bottom: 10px; left: 55%; width: 35%; background: color-mix(in srgb, var(--select, #008fa6) 15%, transparent); } .ds-cursor { position: absolute; top: 10px; bottom: 10px; left: 62%; width: 3px; background: var(--pencil, #ff4f00); } .ds-tr { border-top: 2px solid var(--ink, #141414); margin-top: 12px; padding-top: 12px; display: grid; gap: 8px; } .ds-row { display: flex; justify-content: space-between; align-items: baseline; } .ds-row b { font: 700 3rem/0.9 'Libre Caslon Text', Georgia, serif; font-variant-numeric: lining-nums tabular-nums; } .ds-row span { font: 700 1.375rem/1 'Libre Caslon Text', Georgia, serif; font-variant-numeric: lining-nums tabular-nums; } .ds-nudges { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; } .ds-nudges button, .ds-play { min-height: 64px; border: 2px solid var(--ink, #141414); border-radius: 0; background: var(--paper, #f2f2ee); color: var(--ink, #141414); font: 800 1.5rem/1 'Libre Franklin', system-ui, sans-serif; cursor: pointer; transition: background-color 80ms ease-out, color 80ms ease-out; } .ds-nudges button:active { background: var(--ink, #141414); color: var(--paper, #f2f2ee); } .ds-play { width: 100%; min-height: 84px; font-size: 1.75rem; letter-spacing: 0.16em; text-transform: uppercase; } .ds-gp button:focus-visible { outline: 3px solid var(--select, #008fa6); outline-offset: 3px; }"
+    },
+    {
+      "name": "Page Turner",
+      "kind": "custom",
+      "refersTo": "button-turn",
+      "description": "PDF viewer foot: Headline-size page counter over 64px Previous page / Next page in a sticky bar on a 2px ink rule; the end of the document drops the button to Pencil Rule.",
+      "html": "<nav class=\"ds-turn\"><p>Page 1 of 2</p><div><button disabled>Previous page</button><button>Next page</button></div></nav>",
+      "css": ".ds-turn { max-width: 360px; border-top: 2px solid var(--ink, #141414); padding-top: 12px; display: grid; gap: 8px; color: var(--ink, #141414); } .ds-turn p { margin: 0; font: 700 2rem/1 'Libre Caslon Text', Georgia, serif; font-variant-numeric: lining-nums tabular-nums; } .ds-turn div { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; } .ds-turn button { min-height: 64px; padding: 0 12px; border: 2px solid var(--ink, #141414); border-radius: 0; background: var(--paper, #f2f2ee); color: var(--ink, #141414); font: 800 1rem/1 'Libre Franklin', system-ui, sans-serif; letter-spacing: 0.08em; text-transform: uppercase; cursor: pointer; transition: background-color 80ms ease-out, color 80ms ease-out; } .ds-turn button:active:not(:disabled) { background: var(--ink, #141414); color: var(--paper, #f2f2ee); } .ds-turn button:disabled { border-color: var(--rule-soft, #b9b9b2); color: var(--rule-soft, #b9b9b2); cursor: default; } .ds-turn button:focus-visible { outline: 3px solid var(--select, #008fa6); outline-offset: 3px; }"
     }
   ],
   "narrative": {
@@ -383,17 +424,23 @@
       "Notation drawn as filled engraved shapes, not icons: wedge accent, tapered stem, rotated notehead, crescent ghost parentheses, quarter rest.",
       "Square corners everywhere, 2px ink outlines, 2px heavy rules around the notation, 1px rules under heads.",
       "State never carried by colour alone: accents differ in shape, ghosts in size and parentheses, play state in inversion and label.",
-      "The book has three sections (Today, Ladder, Metro) behind a printed tab bar; exercises are written as sticking letters in Caslon, the way a method book prints R and L under the staff."
+      "The book has four sections (Today, Ladder, Songs, Metro) behind a printed tab bar; exercises are written as sticking letters in Caslon, the way a method book prints R and L under the staff.",
+      "Outside material (an engraved Guitar Pro score, a PDF chart, a YouTube video) is pasted into the page between 2px ink rules, never wider than the screen, and takes its colour from the page's tokens."
     ],
     "rules": [
       {
         "name": "The One Pencil Rule",
-        "body": "Orange appears only as the ring on the note being played. If orange is on screen while the metronome is stopped, something is wrong.",
+        "body": "Orange appears only on the note being played: the ring on the metronome and exercise, the beat cursor in a score. If orange is on screen while nothing is playing, something is wrong; a score's beat cursor is hidden until Play.",
         "section": "colors"
       },
       {
         "name": "The Teal Means Chosen Rule",
-        "body": "Teal marks selection and keyboard focus, and nothing else. A checked choice also gains a bold weight and an inset underline, so it never relies on hue.",
+        "body": "Teal marks selection and keyboard focus, and nothing else; a score's current-bar wash is the one positional use, kept to 15%. A checked choice also gains a bold weight and an inset underline, so it never relies on hue.",
+        "section": "colors"
+      },
+      {
+        "name": "The Themed Material Rule",
+        "body": "Outside material is coloured only through the theme tokens. A score is engraved in `ink` (glyphs, staff lines, bar lines, bar numbers) and re-inked when the OS scheme or `data-theme` changes; its cursor and selection use `pencil` and `select`. A PDF page prints in reverse on the night page (`invert(0.9) hue-rotate(180deg)`). No hex is hard-coded into a renderer.",
         "section": "colors"
       },
       {
@@ -412,6 +459,11 @@
         "section": "typography"
       },
       {
+        "name": "The Screen-Wide Rule",
+        "body": "A score, a video, or any outside page is never wider than the screen. The shell panel is one minmax(0, 1fr) column and every player column shrinks to it (min-width 0); wide material scales or scrolls inside its own box, never the page sideways.",
+        "section": "layout"
+      },
+      {
         "name": "The Printed Depth Rule",
         "body": "No shadows on page elements. Separation comes from 2px ink rules and outlines; only an overlay sheet casts a shadow.",
         "section": "elevation"
@@ -424,7 +476,7 @@
     ],
     "dos": [
       "Do set tempo, bar, time and counts in Libre Caslon Text with lining tabular figures, large enough to read from 2 m.",
-      "Do keep orange (pencil) for the live-note ring alone, and teal (select) for selection and focus alone.",
+      "Do keep orange (`pencil`) for the live-note ring alone, and teal (`select`) for selection and focus alone.",
       "Do draw controls as square, 2px ink outlines on paper, with one solid ink primary per screen; press and active states invert.",
       "Do draw notation as filled engraved shapes in the same hand as the existing glyphs.",
       "Do give every state a non-colour signal: shape, weight, size, inversion, or label.",
@@ -433,7 +485,9 @@
       "Do keep every voice of a pattern in one unwrapped bar, shrinking slots before scrolling, so the feet always sit under the hands they go with.",
       "Do show rank as a filling square plus the written rank word; progress is ink quantity, not colour.",
       "Do chart practice in ink alone (solid bars, ink-level days) with plain captions.",
-      "Do size anything pressed mid-practice like transport: 64px for actions, 84px for the one stop or play."
+      "Do size anything pressed mid-practice like transport: 64px for actions, 84px for the one stop or play.",
+      "Do frame outside material (score, video, PDF page) between 2px ink rules inside the column, sized so it ends above the sticky transport.",
+      "Do colour a score or PDF only through the theme tokens, and re-ink it when the theme changes."
     ],
     "donts": [
       "Don't use glowing dots, LED readouts, dark chassis styling, or a thin numeral on black; that is the category default this world replaces.",
@@ -445,7 +499,9 @@
       "Don't wrap a pattern's voices apart or break a bar across lines; voices never wrap apart.",
       "Don't count streaks, flames, or chains of days; the calendar shows practice, it does not punish a missed day.",
       "Don't set stat or section headings as uppercase eyebrows; they are Caslon sentence case.",
-      "Don't let the tab bar overlay content; the panel scrolls above it."
+      "Don't let the tab bar overlay content; the panel scrolls above it.",
+      "Don't let a score, video, or PDF page widen the screen; it scales or scrolls inside its own box.",
+      "Don't show a score's orange beat cursor while stopped."
     ]
   }
 }
