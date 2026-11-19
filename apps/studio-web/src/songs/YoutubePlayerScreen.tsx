@@ -5,6 +5,9 @@ import type { PracticeSource } from '@tempodojo/core-practice';
 import { YOUTUBE_RATES, snapYoutubeRate, type LoopRange, type LoopTrainer, type Section, type Song } from '@tempodojo/core-songlab';
 import type { VideoPlayer } from '@tempodojo/youtube';
 import type { MetronomeEngineLike } from '../metronome/useMetronome';
+import { useKeyboardTransport } from '../platform/useKeyboardTransport';
+import { SoundBanner } from '../platform/SoundBanner';
+import { useSoundState } from '../platform/useSoundState';
 import { useWakeLock } from '../platform/useWakeLock';
 import { SectionsSheet } from './SectionsSheet';
 import { TrainerControls } from './TrainerControls';
@@ -96,6 +99,7 @@ export function YoutubePlayerScreen({
   effectiveRateRef.current = effectiveRate;
 
   useWakeLock(playing);
+  const sound = useSoundState(engine, playing);
 
   const persist = (patch: Partial<Song>) => {
     const next = { ...currentRef.current, ...patch };
@@ -260,6 +264,22 @@ export function YoutubePlayerScreen({
     }
   };
 
+  const nudgeRate = (delta: number) => {
+    if (!allowedRates || allowedRates.length === 0) return;
+    const idx = allowedRates.indexOf(effectiveRate);
+    const currentIdx = idx === -1 ? 0 : idx;
+    const nextIdx = Math.min(allowedRates.length - 1, Math.max(0, currentIdx + (delta > 0 ? 1 : -1)));
+    const nextRate = allowedRates[nextIdx];
+    if (nextRate === effectiveRate) return;
+    persist({ lastPercent: nextRate * 100 });
+    videoRef.current?.setRate(nextRate);
+  };
+
+  useKeyboardTransport({
+    toggle: togglePlay,
+    nudge: nudgeRate,
+  });
+
   const handleLoopSection = (section: Section) => {
     if (section.range.kind !== 'time') return;
     const a = roundTenth(section.range.startSec);
@@ -380,6 +400,7 @@ export function YoutubePlayerScreen({
         </div>
 
         <section className="yt-transport" aria-label="Transport">
+          <SoundBanner blocked={sound.blocked} onResume={() => void sound.resume()} />
           {loopOn && <p className="yt-pass">{`Pass ${trainer.pass + 1}`}</p>}
           <button type="button" className="yt-play" onClick={togglePlay} aria-pressed={playing}>
             {playing ? 'Stop' : 'Play'}
