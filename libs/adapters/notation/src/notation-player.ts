@@ -29,6 +29,8 @@ export interface NotationPlayer {
   onPlaying(cb: (playing: boolean) => void): () => void;
   /** Fires each time looped playback wraps back to the range start. */
   onLoopPass(cb: () => void): () => void;
+  /** Fires when the user selects or clears a playback range directly on the score. */
+  onRangeChange?(cb: (range: { startBar: number; endBar: number } | null) => void): () => void;
   destroy(): void;
 }
 

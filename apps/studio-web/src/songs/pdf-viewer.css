@@ -1,19 +1,20 @@
 .pdf-page {
-  --gutter: clamp(16px, 5.5vw, 32px);
+  --gutter: clamp(12px, 3vw, 24px);
   min-height: 100%;
-  grid-template-columns: minmax(0, 1fr);
-  max-width: 640px;
-  margin: 0 auto;
-  padding: 0 var(--gutter);
+  width: 100%;
+  max-width: none;
+  margin: 0;
+  padding: 0 var(--gutter) 12px;
   display: grid;
-  grid-template-rows: auto auto auto 1fr auto;
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-rows: auto auto auto auto 1fr;
   grid-template-areas:
     'head'
     'title'
     'audio'
-    'page'
-    'turn';
-  gap: 18px;
+    'turn'
+    'page';
+  gap: 6px;
 }
 
 .pdf-page .running-head {
@@ -21,7 +22,7 @@
   display: flex;
   justify-content: space-between;
   align-items: baseline;
-  padding: calc(14px + env(safe-area-inset-top)) 0 10px;
+  padding: calc(8px + env(safe-area-inset-top)) 0 6px;
   border-bottom: 1px solid var(--ink);
   font: 500 0.8125rem/1 var(--font-label);
   letter-spacing: 0.12em;
@@ -30,8 +31,8 @@
 }
 
 .pdf-page .head-button {
-  margin: -10px 0 -10px -8px;
-  padding: 10px 8px;
+  margin: -6px 0 -6px -8px;
+  padding: 6px 8px;
   border: 0;
   border-radius: 0;
   background: none;
@@ -48,22 +49,27 @@
 .pdf-title {
   grid-area: title;
   margin: 0;
-  overflow-wrap: break-word;
-  font: 700 clamp(2rem, 9vw, 3rem) / 1 var(--font-book);
+  min-width: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font: 700 1.125rem/1.15 var(--font-book);
   font-variant-numeric: lining-nums tabular-nums;
 }
 
 .pdf-audio {
   grid-area: audio;
-  display: grid;
-  gap: 12px;
-  align-content: start;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px 10px;
+  padding: 2px 0;
 }
 
 .pdf-video-box {
-  width: 100%;
+  width: 160px;
   aspect-ratio: 16 / 9;
-  max-height: 28dvh;
+  max-height: 90px;
   background: var(--ink);
   border: 2px solid var(--ink);
   border-radius: 0;
@@ -71,14 +77,15 @@
 }
 
 .pdf-video-play {
-  width: 100%;
-  min-height: 64px;
+  width: auto;
+  min-height: 28px;
+  padding: 0 12px;
   border: 2px solid var(--ink);
   border-radius: 0;
   background: var(--ink);
   color: var(--paper);
-  font: 800 1.25rem/1 var(--font-label);
-  letter-spacing: 0.14em;
+  font: 800 0.75rem/1 var(--font-label);
+  letter-spacing: 0.12em;
   text-transform: uppercase;
   cursor: pointer;
   transition: background-color 80ms ease-out, color 80ms ease-out;
@@ -90,20 +97,23 @@
 }
 
 .pdf-speed span {
-  min-height: 44px;
-  min-width: 48px;
-  padding: 0 10px;
-  font-size: 1rem;
+  min-height: 28px;
+  min-width: 36px;
+  padding: 0 6px;
+  font-size: 0.75rem;
 }
 
 .pdf-pair-btn {
-  justify-self: start;
+  min-height: 28px;
+  padding: 0 10px;
+  font-size: 0.75rem;
 }
 
 .pdf-stage {
   grid-area: page;
   min-width: 0;
   align-self: start;
+  padding-top: 4px;
 }
 
 .pdf-canvas-wrap {
@@ -147,37 +157,38 @@
 
 .pdf-turn {
   grid-area: turn;
-  position: sticky;
-  bottom: 0;
-  z-index: 3;
+  position: static;
   background: var(--paper);
-  border-top: 2px solid var(--ink);
-  padding: 12px 0 calc(16px + env(safe-area-inset-bottom));
-  display: grid;
-  gap: 8px;
+  border-top: 1px solid var(--rule-soft);
+  border-bottom: 1px solid var(--rule-soft);
+  padding: 4px 0;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px 12px;
 }
 
 .pdf-counter {
   margin: 0;
-  font: 700 clamp(2rem, 9vw, 3rem)/1 var(--font-book);
+  font: 700 0.9375rem/1 var(--font-book);
   font-variant-numeric: lining-nums tabular-nums;
   color: var(--ink);
 }
 
 .pdf-turn-buttons {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 8px;
+  display: inline-flex;
+  gap: 6px;
 }
 
 .pdf-turn-btn {
-  min-height: 64px;
-  padding: 0 12px;
+  min-height: 28px;
+  padding: 0 10px;
   border: 2px solid var(--ink);
   border-radius: 0;
   background: var(--paper);
   color: var(--ink);
-  font: 800 1rem/1 var(--font-label);
+  font: 800 0.75rem/1 var(--font-label);
   letter-spacing: 0.08em;
   text-transform: uppercase;
   cursor: pointer;
@@ -201,25 +212,25 @@
 }
 
 .pdf-link-field input {
-  min-height: 52px;
+  min-height: 38px;
   width: 100%;
-  padding: 0 12px;
+  padding: 0 10px;
   border: 2px solid var(--ink);
   border-radius: 0;
   background: var(--paper);
   color: var(--ink);
-  font: 400 1.125rem/1.2 var(--font-book);
+  font: 400 1rem/1.2 var(--font-book);
 }
 
 .pdf-sheet-primary {
   width: 100%;
-  min-height: 64px;
-  padding: 0 20px;
+  min-height: 40px;
+  padding: 0 16px;
   border: 2px solid var(--ink);
   border-radius: 0;
   background: var(--ink);
   color: var(--paper);
-  font: 800 1.25rem/1 var(--font-label);
+  font: 800 1rem/1 var(--font-label);
   letter-spacing: 0.14em;
   text-transform: uppercase;
   cursor: pointer;
@@ -231,30 +242,10 @@
   color: var(--ink);
 }
 
-/* iPad landscape: PDF page up to 900px on the left, 320px controls column on the right. */
-@media (min-width: 900px) and (orientation: landscape) {
-  .pdf-page {
-    max-width: 1276px;
-    column-gap: 56px;
-    grid-template-columns: minmax(0, 900px) 320px;
-    grid-template-rows: auto auto 1fr auto;
-    grid-template-areas:
-      'head head'
-      'title audio'
-      'page audio'
-      'page turn';
-  }
-
-  .pdf-turn {
-    align-self: end;
-  }
-}
-
 /* Grid children shrink to the column: a wide score, video or page scrolls inside instead of widening the screen. */
 .pdf-audio,
 .pdf-stage {
   min-width: 0;
-  grid-template-columns: minmax(0, 1fr);
 }
 
 /* Night page: a white sheet glares in a dim room, so print it in reverse like the rest of the book. */
@@ -268,15 +259,18 @@
   filter: invert(0.9) hue-rotate(180deg);
 }
 
-/* Paired-video speed is changed mid-song: same 64px grid as the YouTube player. */
+/* Paired-video speed is changed mid-song: compact inline 4-column grid. */
 .pdf-page .segmented {
-  display: grid;
+  display: inline-grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 8px;
+  gap: 4px;
 }
 
 .pdf-page .segmented span {
-  min-height: 64px;
+  min-height: 28px;
+  min-width: 36px;
+  padding: 0 6px;
+  font-size: 0.75rem;
   display: flex;
   align-items: center;
   justify-content: center;

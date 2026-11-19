@@ -112,7 +112,7 @@ export function SongsScreen({ library, onOpen, confirm = window.confirm }: Songs
           {library.songs.map((song) => (
             <li key={song.id}>
               <button type="button" className="song-row" onClick={() => onOpen(song)}>
-                <span className="song-title">{song.title}</span>
+                <span className="song-title" title={song.title}>{song.title}</span>
                 <span className="song-meta">{formatMeta(song)}</span>
               </button>
               <button

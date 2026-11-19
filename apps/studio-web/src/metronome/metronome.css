@@ -1,10 +1,13 @@
 .page {
   --gutter: clamp(16px, 5.5vw, 32px);
-  min-height: 100dvh;
+  width: 100%;
+  min-height: 100%;
+  height: 100%;
   max-width: 640px;
   margin: 0 auto;
-  padding: 0 var(--gutter) calc(16px + env(safe-area-inset-bottom));
+  padding: 0 var(--gutter) calc(14px + env(safe-area-inset-bottom));
   display: grid;
+  grid-template-columns: minmax(0, 1fr);
   grid-template-rows: auto auto auto 1fr auto;
   grid-template-areas: 'head' 'notice' 'heading' 'sticking' 'transport';
 }
@@ -12,10 +15,11 @@
 /* Running head: like the head line of a method-book page. */
 .running-head {
   grid-area: head;
+  width: 100%;
   display: flex;
   justify-content: space-between;
   align-items: baseline;
-  padding: calc(14px + env(safe-area-inset-top)) 0 10px;
+  padding: calc(12px + env(safe-area-inset-top)) 0 8px;
   border-bottom: 1px solid var(--ink);
   font: 500 0.8125rem/1 var(--font-label);
   letter-spacing: 0.12em;
@@ -40,7 +44,9 @@
 
 .heading {
   grid-area: heading;
-  padding-top: clamp(16px, 4vh, 40px);
+  width: 100%;
+  display: block;
+  padding-top: 14px;
 }
 
 .bpm {
@@ -54,20 +60,22 @@
 }
 
 .bpm-value {
-  font: 700 clamp(7.5rem, 30vw, 11rem) / 0.86 var(--font-book);
+  font: 700 clamp(5.5rem, 24vw, 8.5rem) / 0.86 var(--font-book);
   letter-spacing: -0.015em;
   font-variant-numeric: lining-nums tabular-nums;
 }
 
 .bpm-unit {
-  font: 800 1.375rem/1 var(--font-label);
+  font: 800 1.25rem/1 var(--font-label);
   letter-spacing: 0.1em;
 }
 
 .tempo-line {
-  margin-top: 14px;
-  padding: 6px 0;
-  font: 400 1.5rem/1.2 var(--font-book);
+  display: block;
+  width: auto;
+  margin-top: 10px;
+  padding: 4px 0;
+  font: 400 1.25rem/1.2 var(--font-book);
   color: var(--ink);
   background: none;
   border: 0;
@@ -97,30 +105,48 @@
 
 .trainer-line {
   display: block;
+  width: auto;
   margin-top: 2px;
-  font-size: 1.125rem;
+  padding: 4px 0;
+  font-size: 1.0625rem;
   color: var(--ink-soft);
+  border: 0;
+  text-align: left;
+  text-decoration: underline;
+  text-decoration-color: var(--rule-soft);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 6px;
 }
 
-/* The sticking line: notation between two heavy rules. */
+/* The sticking line: notation between two heavy rules, stretched to meet the transport. */
 .sticking {
   grid-area: sticking;
-  align-self: start;
+  align-self: stretch;
+  height: 100%;
+  min-height: 0;
+  width: 100%;
   container-type: inline-size;
-  padding: clamp(32px, 7vh, 72px) 0 24px;
+  padding: 12px 0;
+  display: grid;
+  grid-template-rows: minmax(0, 1fr) auto;
+  gap: 10px;
 }
 
 .line {
   /* Never taller than the column allows (glyph aspect 60:100), so noteheads always sit on the staff line. */
   --cols: min(var(--pulses), 8);
-  --note-h: min(clamp(110px, 19vh, 176px), calc(100cqi / var(--cols) * 1.6));
+  --note-h: min(clamp(114.4px, 20.9vh, 193.6px), calc(100cqi / var(--cols) * 1.6));
   list-style: none;
+  height: 100%;
+  min-height: 0;
   margin: 0;
-  padding: 10px 0 4px;
+  padding: 12px 0;
   border-top: 2px solid var(--ink);
   border-bottom: 2px solid var(--ink);
   display: grid;
   grid-template-columns: repeat(var(--cols), minmax(0, 1fr));
+  align-content: center;
+  justify-content: center;
   row-gap: 18px;
 }
 
@@ -160,10 +186,6 @@
   right: 0;
 }
 
-.sticking:has(.line[data-wrap='true']) {
-  padding-top: clamp(12px, 3vh, 40px);
-}
-
 /* Phones: bars longer than 4 beats wrap into rows of 4 at full size; bar lines only open and close the whole bar. */
 @container (max-width: 560px) {
   .line {
@@ -172,8 +194,8 @@
 
   /* Two rows must still fit one phone screen with the transport. */
   .line[data-wrap='true'] {
-    --note-h: min(clamp(88px, 12.5vh, 140px), calc(100cqi / var(--cols) * 1.6));
-    row-gap: 6px;
+    --note-h: min(clamp(83.6px, 13.2vh, 140.8px), calc(100cqi / var(--cols) * 1.6));
+    row-gap: 8px;
   }
 }
 
@@ -220,11 +242,12 @@
 }
 
 .bar-count {
-  margin: 18px 0 0;
+  margin: 0;
+  padding-bottom: 2px;
   display: flex;
   justify-content: space-between;
   align-items: baseline;
-  font: 700 clamp(2rem, 9vw, 3rem) / 1 var(--font-book);
+  font: 700 clamp(1.375rem, 6vw, 2.125rem) / 1 var(--font-book);
   font-variant-numeric: lining-nums tabular-nums;
 }
 
@@ -273,9 +296,17 @@
 /* Transport, in the thumb zone. */
 .transport {
   grid-area: transport;
+  width: 100%;
   display: grid;
+  grid-template-columns: 1fr;
+  align-items: start;
   gap: 8px;
   padding-top: 8px;
+  padding-bottom: 4px;
+}
+
+.transport:has(.sound-banner) .sound-banner {
+  grid-column: 1 / -1;
 }
 
 .nudges {
@@ -286,18 +317,21 @@
 
 .nudges button,
 .play {
-  min-height: 64px;
+  min-height: 40px;
   border: 2px solid var(--ink);
   background: var(--paper);
   color: var(--ink);
-  font: 800 1.5rem/1 var(--font-label);
+  font: 800 1.125rem/1 var(--font-label);
   font-variant-numeric: tabular-nums;
   cursor: pointer;
   transition: background-color 80ms ease-out, color 80ms ease-out;
 }
 
 .nudges .tap {
-  font-size: 1.25rem;
+  grid-column: auto;
+  order: 0;
+  min-height: 40px;
+  font-size: 1rem;
   letter-spacing: 0.08em;
   text-transform: uppercase;
 }
@@ -308,10 +342,12 @@
 }
 
 .play {
-  min-height: 84px;
+  width: 100%;
+  min-height: 48px;
+  height: auto;
   background: var(--ink);
   color: var(--paper);
-  font-size: 1.75rem;
+  font-size: 1.25rem;
   letter-spacing: 0.16em;
   text-transform: uppercase;
 }
@@ -324,20 +360,21 @@
 /* iPad landscape: page on the left, transport column on the right. */
 @media (min-width: 900px) and (orientation: landscape) {
   .page {
-    max-width: 1180px;
-    column-gap: 56px;
-    grid-template-columns: 1.5fr 1fr;
+    max-width: none;
+    column-gap: clamp(32px, 4vw, 64px);
+    grid-template-columns: 1.45fr 1fr;
     grid-template-rows: auto auto auto 1fr;
     grid-template-areas: 'head head' 'notice notice' 'heading transport' 'sticking transport';
   }
 
   .bpm-value {
-    font-size: clamp(11rem, 19vw, 16rem);
+    font-size: clamp(9rem, 15vw, 14rem);
   }
 
   .transport {
     align-self: end;
     padding-bottom: 24px;
+    grid-template-columns: 1fr;
   }
 
   .nudges {
@@ -347,5 +384,11 @@
   .nudges .tap {
     grid-column: span 2;
     order: -1;
+  }
+
+  .play {
+    min-height: 44px;
+    height: auto;
+    font-size: 1.1875rem;
   }
 }

@@ -15,9 +15,15 @@
   overscroll-behavior: contain;
 }
 
+.shell-panel > * {
+  width: 100%;
+  max-width: none;
+  margin: 0;
+}
+
 .shell .page {
-  min-height: 0;
-  padding-bottom: 0;
+  min-height: 100%;
+  padding-bottom: calc(10px + env(safe-area-inset-bottom));
 }
 
 /* Play stays on screen: notices above it scroll, the metronome transport sticks to the thumb zone. */
@@ -26,7 +32,7 @@
   bottom: 0;
   z-index: 3;
   background: var(--paper);
-  padding-bottom: 16px;
+  padding-bottom: 10px;
 }
 
 /* With the sound banner up the page overflows; rule the transport off like the exercise and song players. */
@@ -38,24 +44,8 @@
   padding-top: 8px;
 }
 
-/* The tab bar takes 66px of the page; give it back from the space above the staff. */
 .shell .sticking {
-  padding-top: clamp(20px, 4.5vh, 56px);
-}
-
-/* Short phones (e.g. 360×740): tighten the vertical rhythm so Play stays on screen. */
-@media (max-height: 780px) {
-  .shell .heading {
-    padding-top: 8px;
-  }
-
-  .shell .sticking {
-    padding: 12px 0 12px;
-  }
-
-  .shell .page {
-    padding-bottom: 10px;
-  }
+  padding-top: 10px;
 }
 
 .placeholder {
@@ -92,12 +82,12 @@
 }
 
 .tabbar [role='tab'] {
-  height: 64px;
+  height: 40px;
   border: 0;
   background: transparent;
   color: var(--ink-soft);
-  font: 800 0.9375rem var(--font-label);
-  letter-spacing: 0.14em;
+  font: 800 0.8125rem var(--font-label);
+  letter-spacing: 0.1em;
   text-transform: uppercase;
   cursor: pointer;
   transition: background-color 80ms ease-out, color 80ms ease-out;

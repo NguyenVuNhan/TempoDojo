@@ -1,13 +1,21 @@
 .gp-page {
-  --gutter: clamp(16px, 5.5vw, 32px);
-  min-height: 100%;
-  grid-template-columns: minmax(0, 1fr);
-  max-width: 640px;
-  margin: 0 auto;
+  --gutter: clamp(12px, 3vw, 24px);
+  width: 100%;
+  max-width: none;
+  margin: 0;
+  height: 100%;
+  min-height: 0;
+  overflow: hidden;
   padding: 0 var(--gutter);
   display: grid;
-  grid-template-rows: auto auto 1fr auto;
-  grid-template-areas: 'head' 'content' 'controls' 'transport';
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-rows: auto auto auto minmax(0, 1fr) auto;
+  grid-template-areas:
+    'head'
+    'headblock'
+    'controls'
+    'content'
+    'transport';
 }
 
 .gp-page .running-head {
@@ -15,7 +23,7 @@
   display: flex;
   justify-content: space-between;
   align-items: baseline;
-  padding: calc(14px + env(safe-area-inset-top)) 0 10px;
+  padding: calc(8px + env(safe-area-inset-top)) 0 6px;
   border-bottom: 1px solid var(--ink);
   font: 500 0.8125rem/1 var(--font-label);
   letter-spacing: 0.12em;
@@ -24,8 +32,8 @@
 }
 
 .gp-page .head-button {
-  margin: -10px 0 -10px -8px;
-  padding: 10px 8px;
+  margin: -6px 0 -6px -8px;
+  padding: 6px 8px;
   border: 0;
   border-radius: 0;
   background: none;
@@ -39,31 +47,42 @@
   cursor: pointer;
 }
 
-.gp-content {
-  grid-area: content;
-  align-content: start;
-  display: grid;
-  gap: 14px;
-  padding: clamp(16px, 4vh, 28px) 0 12px;
-}
-
 .gp-head-block {
-  display: grid;
-  gap: 6px;
+  grid-area: headblock;
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 6px 0 4px;
+  min-width: 0;
 }
 
 .gp-title {
   margin: 0;
-  overflow-wrap: break-word;
-  font: 700 clamp(2rem, 9vw, 3rem) / 1 var(--font-book);
+  min-width: 0;
+  flex: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font: 700 1.125rem/1.15 var(--font-book);
   font-variant-numeric: lining-nums tabular-nums;
 }
 
 .gp-file-tempo {
   margin: 0;
-  font: 400 1.125rem/1.3 var(--font-book);
+  white-space: nowrap;
+  font: 400 0.8125rem/1.1 var(--font-book);
   font-variant-numeric: lining-nums tabular-nums;
   color: var(--ink-soft);
+}
+
+.gp-content {
+  grid-area: content;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  min-height: 0;
+  padding: 4px 0 0;
 }
 
 .gp-error {
@@ -76,10 +95,11 @@
 }
 
 .gp-score {
-  /* alphaTab draws with absolutely positioned layers: anchor them here so they scroll and clip inside. */
+  /* alphaTab draws with absolutely positioned layers inside .gp-score-surface while .gp-score scrolls. */
+  flex: 1;
   position: relative;
   width: 100%;
-  max-height: 55dvh;
+  min-height: 0;
   overflow-x: hidden;
   overflow-y: auto;
   overscroll-behavior: contain;
@@ -88,15 +108,19 @@
   border-bottom: 2px solid var(--ink);
 }
 
+.gp-score-surface {
+  position: relative;
+  width: 100%;
+  padding-bottom: 35%;
+}
+
 .gp-position {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  gap: 2px;
-  text-align: right;
-  /* Headline size: read from the throne, like the metronome's bar counter. */
+  display: inline-flex;
+  flex-direction: row;
+  align-items: baseline;
+  gap: 8px;
   white-space: nowrap;
-  font: 700 clamp(1.375rem, 6vw, 2.25rem)/1 var(--font-book);
+  font: 700 0.9375rem/1 var(--font-book);
   font-variant-numeric: lining-nums tabular-nums;
 }
 
@@ -106,34 +130,96 @@
 
 .gp-controls {
   grid-area: controls;
-  align-content: start;
-  display: grid;
-  gap: 14px;
-  padding: 6px 0 20px;
-}
-
-.gp-loop-row {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr)) auto;
-  align-items: end;
-  gap: 12px;
-}
-
-.gp-loop-check {
-  min-height: 52px;
   display: flex;
-  align-items: center;
+  flex-direction: column;
+  gap: 6px;
+  padding: 6px 0;
+  border-bottom: 1px solid var(--rule-soft);
+  min-width: 0;
 }
 
 .gp-toggles-row {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: 8px 16px;
+  gap: 6px 12px;
+}
+
+.gp-drawer-actions {
+  margin-left: auto;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
 }
 
 .gp-toggles-row .text-button {
-  min-height: 48px;
+  min-height: 28px;
+  padding: 0 10px;
+  font-size: 0.75rem;
+}
+
+.gp-page .check,
+.gp-page .check span {
+  min-height: 28px;
+  gap: 6px;
+  font-size: 0.875rem;
+  padding-right: 0;
+}
+
+.gp-loop-disclosure {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px 12px;
+  padding-top: 4px;
+  border-top: 1px dashed var(--rule-soft);
+}
+
+.gp-loop-disclosure[data-loop='false'] {
+  display: none;
+}
+
+.gp-loop-range {
+  padding: 2px 6px;
+  border: 1px solid var(--select);
+  color: var(--ink);
+  font: 700 0.75rem/1.2 var(--font-label);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.gp-controls .trainer-controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px 10px;
+}
+
+.gp-controls .num-row {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px 8px;
+}
+
+.gp-controls .num {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.75rem;
+}
+
+.gp-controls .num input {
+  width: 50px;
+  min-height: 26px;
+  padding: 0 4px;
+  font-size: 0.8125rem;
+}
+
+.gp-controls .trainer-summary {
+  margin: 0;
+  font-size: 0.8125rem;
+  color: var(--ink-soft);
 }
 
 /* Sticky transport at the bottom of the scrolling page. */
@@ -143,13 +229,17 @@
   bottom: 0;
   z-index: 3;
   background: var(--paper);
-  border-top: 2px solid var(--ink);
-  padding: 12px 0 calc(16px + env(safe-area-inset-bottom));
+  border-top: 0;
+  margin-top: 0;
+  padding: 6px 0 calc(8px + env(safe-area-inset-bottom));
   display: grid;
-  gap: 8px;
+  grid-template-columns: 1fr;
+  gap: 6px;
+  align-items: start;
 }
 
 .gp-percent-row {
+  grid-column: 1 / -1;
   display: flex;
   align-items: baseline;
   justify-content: space-between;
@@ -158,12 +248,13 @@
 
 .gp-percent-value {
   white-space: nowrap;
-  font: 700 clamp(3rem, 14vw, 5rem) / 0.9 var(--font-book);
+  font: 700 clamp(1.5rem, 6vw, 2rem) / 0.95 var(--font-book);
   letter-spacing: -0.015em;
   font-variant-numeric: lining-nums tabular-nums;
 }
 
 .gp-nudges {
+  grid-column: 1 / -1;
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 8px;
@@ -171,12 +262,12 @@
 
 .gp-nudges button,
 .gp-play {
-  min-height: 64px;
+  min-height: 40px;
   border: 2px solid var(--ink);
   border-radius: 0;
   background: var(--paper);
   color: var(--ink);
-  font: 800 1.5rem/1 var(--font-label);
+  font: 800 1.125rem/1 var(--font-label);
   font-variant-numeric: tabular-nums;
   cursor: pointer;
   transition: background-color 80ms ease-out, color 80ms ease-out;
@@ -188,11 +279,12 @@
 }
 
 .gp-play {
+  grid-column: 1 / -1;
   width: 100%;
-  min-height: 84px;
+  min-height: 48px;
   background: var(--ink);
   color: var(--paper);
-  font-size: 1.75rem;
+  font-size: 1.25rem;
   letter-spacing: 0.16em;
   text-transform: uppercase;
 }
@@ -257,94 +349,4 @@
   content: none;
 }
 
-@media (max-width: 420px) {
-  .gp-loop-row {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
 
-  .gp-loop-check {
-    grid-column: 1 / -1;
-  }
-}
-
-/* iPad landscape: score on the left, controls and transport on the right. */
-@media (min-width: 900px) and (orientation: landscape) {
-  .gp-page {
-    max-width: 1180px;
-    column-gap: 56px;
-    grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr);
-    grid-template-rows: auto 1fr auto;
-    grid-template-areas:
-      'head head'
-      'content controls'
-      'content transport';
-  }
-
-  .gp-score {
-    max-height: 70dvh;
-  }
-
-  .gp-controls {
-    padding-top: clamp(16px, 4vh, 28px);
-    align-self: start;
-  }
-
-  .gp-percent-value {
-    font-size: clamp(5.5rem, 9vw, 8rem);
-  }
-
-  .gp-transport {
-    position: static;
-    align-self: end;
-    border-top: 0;
-    padding-top: 16px;
-    padding-bottom: 24px;
-  }
-}
-
-/* Grid children shrink to the column: a wide score, video or page scrolls inside instead of widening the screen. */
-.gp-content,
-.gp-controls,
-.gp-head-block {
-  min-width: 0;
-  grid-template-columns: minmax(0, 1fr);
-}
-
-/* Finish review: the score stops above the sticky transport, and loop toggles are full 64px targets. */
-@media (max-width: 899px), (orientation: portrait) {
-  .gp-score {
-    max-height: calc(100dvh - 520px);
-    min-height: 220px;
-  }
-}
-
-.gp-page .check {
-  min-height: 64px;
-  display: flex;
-  align-items: center;
-  padding-right: 12px;
-}
-
-@media (min-width: 900px) and (orientation: landscape) {
-  .gp-score {
-    max-height: calc(100dvh - 350px);
-  }
-
-  .gp-loop-row {
-    grid-template-columns: 1fr 1fr;
-  }
-
-  .gp-loop-check {
-    grid-column: 1 / -1;
-  }
-
-  .gp-toggles-row {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 8px;
-  }
-
-  .gp-toggles-row .text-button {
-    min-height: 64px;
-  }
-}
