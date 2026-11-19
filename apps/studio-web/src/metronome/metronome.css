@@ -5,8 +5,8 @@
   margin: 0 auto;
   padding: 0 var(--gutter) calc(16px + env(safe-area-inset-bottom));
   display: grid;
-  grid-template-rows: auto auto 1fr auto;
-  grid-template-areas: 'head' 'heading' 'sticking' 'transport';
+  grid-template-rows: auto auto auto 1fr auto;
+  grid-template-areas: 'head' 'notice' 'heading' 'sticking' 'transport';
 }
 
 /* Running head: like the head line of a method-book page. */
@@ -327,8 +327,8 @@
     max-width: 1180px;
     column-gap: 56px;
     grid-template-columns: 1.5fr 1fr;
-    grid-template-rows: auto auto 1fr;
-    grid-template-areas: 'head head' 'heading transport' 'sticking transport';
+    grid-template-rows: auto auto auto 1fr;
+    grid-template-areas: 'head head' 'notice notice' 'heading transport' 'sticking transport';
   }
 
   .bpm-value {

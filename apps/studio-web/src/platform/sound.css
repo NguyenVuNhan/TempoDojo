@@ -16,9 +16,19 @@
   font-size: 1.25rem;
   line-height: 1.2;
   cursor: pointer;
+  transition: background-color 80ms ease-out, color 80ms ease-out;
+}
+
+/* Pressed with sticks in hand: the inversion shows the tap landed. */
+.sound-banner button:active {
+  background: var(--paper);
+  color: var(--ink);
+  box-shadow: inset 0 0 0 2px var(--ink);
 }
 
 .sound-tip {
+  grid-area: notice;
+  margin-top: 12px;
   display: flex;
   flex-wrap: wrap;
   align-items: center;

@@ -102,6 +102,9 @@ export function MetronomeScreen({ deps, onTransport, tip }: MetronomeScreenProps
         </button>
       </header>
 
+      {/* The banner is the action when sound is blocked; the tip would only repeat it. */}
+      {!sound.blocked && tip}
+
       <section className="heading" aria-label="Tempo">
         <div
           className="bpm"
@@ -166,7 +169,6 @@ export function MetronomeScreen({ deps, onTransport, tip }: MetronomeScreenProps
 
       <section className="transport" aria-label="Transport">
         <SoundBanner blocked={sound.blocked} onResume={() => void sound.resume()} />
-        {tip}
         <div className="nudges">
           <button type="button" onClick={() => m.nudge(-5)} aria-label="Decrease tempo by 5">
             −5

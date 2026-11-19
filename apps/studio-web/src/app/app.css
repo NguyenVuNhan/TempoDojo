@@ -17,7 +17,25 @@
 
 .shell .page {
   min-height: 0;
+  padding-bottom: 0;
+}
+
+/* Play stays on screen: notices above it scroll, the metronome transport sticks to the thumb zone. */
+.shell .transport {
+  position: sticky;
+  bottom: 0;
+  z-index: 3;
+  background: var(--paper);
   padding-bottom: 16px;
+}
+
+/* With the sound banner up the page overflows; rule the transport off like the exercise and song players. */
+.shell .transport:has(.sound-banner) {
+  border-top: 2px solid var(--ink);
+}
+
+.shell .page:has(.sound-banner) .sticking {
+  padding-top: 8px;
 }
 
 /* The tab bar takes 66px of the page; give it back from the space above the staff. */
@@ -103,6 +121,10 @@
 @media (min-width: 900px) and (orientation: landscape) {
   .tabbar [role='tablist'] {
     max-width: 1180px;
+  }
+
+  .shell .transport {
+    position: static;
   }
 }
 

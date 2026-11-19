@@ -37,22 +37,20 @@
   cursor: pointer;
 }
 
-.update-bar button:first-child {
-  background: var(--ink);
-  color: var(--paper);
-}
-
-.update-bar button:first-child:active {
-  background: var(--paper);
-  color: var(--ink);
-}
-
-.update-bar button:last-child {
+/* Both outlined: Play is the one solid ink control while the bar shows. */
+.update-bar button {
   background: transparent;
   color: var(--ink);
 }
 
-.update-bar button:last-child:active {
+.update-bar button:active {
   background: var(--ink);
   color: var(--paper);
+}
+
+/* iPad landscape: line up with the 1180px page and tab bar. */
+@media (min-width: 900px) and (orientation: landscape) {
+  .update-bar {
+    padding-inline: max(clamp(16px, 5.5vw, 32px), calc((100% - 1180px) / 2));
+  }
 }
