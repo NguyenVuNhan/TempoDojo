@@ -27,12 +27,13 @@ export async function openPdf(bytes: Uint8Array): Promise<PdfDoc> {
 
   return {
     pageCount: doc.numPages,
-    async renderPage(page: number, canvas: HTMLCanvasElement, cssWidth: number): Promise<void> {
+    async renderPage(page: number, canvas: HTMLCanvasElement, cssWidth: number, maxCssHeight?: number): Promise<void> {
       activeRenders.get(canvas)?.cancel();
 
       const pdfPage = await doc.getPage(page);
       const baseViewport = pdfPage.getViewport({ scale: 1 });
-      const scale = cssWidth / baseViewport.width;
+      const fitWidth = cssWidth / baseViewport.width;
+      const scale = maxCssHeight ? Math.min(fitWidth, maxCssHeight / baseViewport.height) : fitWidth;
       const viewport = pdfPage.getViewport({ scale });
       const dpr = window.devicePixelRatio || 1;
 

@@ -108,15 +108,16 @@
 
 .pdf-canvas-wrap {
   position: relative;
-  width: 100%;
+  width: fit-content;
+  max-width: 100%;
+  margin: 0 auto;
   border: 1px solid var(--rule-soft);
   background: var(--paper);
 }
 
 .pdf-canvas {
   display: block;
-  width: 100%;
-  height: auto;
+  max-width: 100%;
 }
 
 .pdf-tap {
@@ -158,7 +159,7 @@
 
 .pdf-counter {
   margin: 0;
-  font: 700 1.25rem/1.2 var(--font-book);
+  font: 700 clamp(2rem, 9vw, 3rem)/1 var(--font-book);
   font-variant-numeric: lining-nums tabular-nums;
   color: var(--ink);
 }
@@ -254,4 +255,15 @@
 .pdf-stage {
   min-width: 0;
   grid-template-columns: minmax(0, 1fr);
+}
+
+/* Night page: a white sheet glares in a dim room, so print it in reverse like the rest of the book. */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) .pdf-canvas {
+    filter: invert(0.9) hue-rotate(180deg);
+  }
+}
+
+:root[data-theme='dark'] .pdf-canvas {
+  filter: invert(0.9) hue-rotate(180deg);
 }

@@ -105,3 +105,15 @@
     max-width: 1180px;
   }
 }
+
+/* Four tabs on a 360px phone: tighter tracking and gutter so every label fits. */
+@media (max-width: 420px) {
+  .tabbar [role='tablist'] {
+    padding: 0 8px;
+  }
+
+  .tabbar [role='tab'] {
+    font-size: 0.8125rem;
+    letter-spacing: 0.06em;
+  }
+}

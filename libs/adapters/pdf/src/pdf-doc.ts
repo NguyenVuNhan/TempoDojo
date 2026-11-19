@@ -1,8 +1,8 @@
 /** An opened PDF. Pages are 1-based. */
 export interface PdfDoc {
   pageCount: number;
-  /** Draws the page to fit cssWidth, at the device pixel ratio. */
-  renderPage(page: number, canvas: HTMLCanvasElement, cssWidth: number): Promise<void>;
+  /** Draws the page to fit within cssWidth (and maxCssHeight when given), at the device pixel ratio. */
+  renderPage(page: number, canvas: HTMLCanvasElement, cssWidth: number, maxCssHeight?: number): Promise<void>;
   destroy(): void;
 }
 

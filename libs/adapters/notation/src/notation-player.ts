@@ -40,7 +40,9 @@ export class NotationError extends Error {
 }
 
 export interface NotationOptions {
-  /** 2 on phones, 4 on wider screens. */
+  /** Bars per row of the score. */
   barsPerRow: number;
+  /** Engraving scale; larger so the score reads from the drum throne (default 1). */
+  scale?: number;
   scrollElement?: HTMLElement;
 }

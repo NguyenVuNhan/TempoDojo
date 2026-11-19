@@ -18,7 +18,10 @@ function ensureStyles(): void {
   style.id = STYLE_ELEMENT_ID;
   style.textContent = [
     '.at-cursor-bar { background: color-mix(in srgb, var(--select) 15%, transparent); }',
-    '.at-cursor-beat { background: var(--pencil); width: 3px; }',
+    // One Pencil Rule: the orange beat cursor shows only while playing.
+    // alphaTab styles the cursor inline, hence !important.
+    '.at-cursor-beat { background: var(--pencil); width: 3px; visibility: hidden !important; }',
+    '[data-at-playing] .at-cursor-beat { visibility: visible !important; }',
     '.at-selection div { background: color-mix(in srgb, var(--select) 20%, transparent); }',
     '.at-highlight * { fill: var(--pencil); stroke: var(--pencil); }',
   ].join('\n');
@@ -92,10 +95,24 @@ export function createAlphaTabPlayer(el: HTMLElement, opts: NotationOptions): No
     settings.notation.elements.set(el, false);
   }
   settings.display.barsPerRow = opts.barsPerRow;
-  settings.display.scale = 1;
+  settings.display.scale = opts.scale ?? 1;
   applyThemeColors(settings);
 
   const api = new alphaTab.AlphaTabApi(el, settings);
+  const offPlayingAttr = api.playerStateChanged.on((e) => {
+    el.toggleAttribute('data-at-playing', e.state === alphaTab.synth.PlayerState.Playing);
+  });
+
+  // Night page: re-ink the score when the OS scheme or the page theme changes while it is open.
+  const rethemeScore = () => {
+    applyThemeColors(api.settings);
+    api.updateSettings();
+    if (api.score) api.render();
+  };
+  const darkQuery = window.matchMedia?.('(prefers-color-scheme: dark)');
+  darkQuery?.addEventListener('change', rethemeScore);
+  const themeObserver = new MutationObserver(rethemeScore);
+  themeObserver.observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
 
   let activeRange: { startTick: number; endTick: number; startBarDuration: number } | null = null;
 
@@ -271,6 +288,9 @@ export function createAlphaTabPlayer(el: HTMLElement, opts: NotationOptions): No
     },
 
     destroy(): void {
+      offPlayingAttr();
+      darkQuery?.removeEventListener('change', rethemeScore);
+      themeObserver.disconnect();
       api.destroy();
     },
   };

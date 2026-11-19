@@ -226,3 +226,24 @@
   min-width: 0;
   grid-template-columns: minmax(0, 1fr);
 }
+
+/* Speed is this screen's tempo control: two even rows of four, 64px like the GP nudges. */
+.yt-page .segmented {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.yt-page .segmented span {
+  min-height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.yt-page .check {
+  min-height: 64px;
+  display: flex;
+  align-items: center;
+  padding-right: 12px;
+}

@@ -90,11 +90,13 @@
 
 .gp-position {
   display: flex;
-  flex-wrap: wrap;
-  align-items: baseline;
-  justify-content: space-between;
-  gap: 12px;
-  font: 700 1.5rem/1.2 var(--font-book);
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 2px;
+  text-align: right;
+  /* Headline size: read from the throne, like the metronome's bar counter. */
+  white-space: nowrap;
+  font: 700 clamp(1.375rem, 6vw, 2.25rem)/1 var(--font-book);
   font-variant-numeric: lining-nums tabular-nums;
 }
 
@@ -155,7 +157,8 @@
 }
 
 .gp-percent-value {
-  font: 700 clamp(3.5rem, 16vw, 5rem) / 0.9 var(--font-book);
+  white-space: nowrap;
+  font: 700 clamp(3rem, 14vw, 5rem) / 0.9 var(--font-book);
   letter-spacing: -0.015em;
   font-variant-numeric: lining-nums tabular-nums;
 }
@@ -305,4 +308,43 @@
 .gp-head-block {
   min-width: 0;
   grid-template-columns: minmax(0, 1fr);
+}
+
+/* Finish review: the score stops above the sticky transport, and loop toggles are full 64px targets. */
+@media (max-width: 899px), (orientation: portrait) {
+  .gp-score {
+    max-height: calc(100dvh - 520px);
+    min-height: 220px;
+  }
+}
+
+.gp-page .check {
+  min-height: 64px;
+  display: flex;
+  align-items: center;
+  padding-right: 12px;
+}
+
+@media (min-width: 900px) and (orientation: landscape) {
+  .gp-score {
+    max-height: calc(100dvh - 350px);
+  }
+
+  .gp-loop-row {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .gp-loop-check {
+    grid-column: 1 / -1;
+  }
+
+  .gp-toggles-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+  }
+
+  .gp-toggles-row .text-button {
+    min-height: 64px;
+  }
 }

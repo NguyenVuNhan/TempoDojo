@@ -119,7 +119,9 @@ export function GpPlayerScreen({
       if (!el) return;
 
       player = playersRef.current.notation(el, {
-        barsPerRow: el.clientWidth < 600 ? 2 : 4,
+        // Two bars a row, engraved large enough to read from the throne (finish review).
+        barsPerRow: 2,
+        scale: el.clientWidth < 600 ? 1.25 : 1.8,
         scrollElement: el,
       });
       playerRef.current = player;
@@ -283,12 +285,6 @@ export function GpPlayerScreen({
 
         <div className="gp-score" ref={scoreRef} hidden={loadError} />
 
-        {info && !loadError && (
-          <div className="gp-position">
-            <span>{`Bar ${bar} of ${info.barCount}`}</span>
-            {current.trainer && <span className="gp-pass">{`Pass ${trainer.pass + 1}`}</span>}
-          </div>
-        )}
       </div>
 
       <section className="gp-controls" aria-label="Loop and tracks">
@@ -369,6 +365,12 @@ export function GpPlayerScreen({
           <span className="gp-percent-value" data-testid="song-percent">
             {`${effective} %`}
           </span>
+          {info && !loadError && (
+            <span className="gp-position">
+              <span>{`Bar ${bar} of ${info.barCount}`}</span>
+              {current.trainer && <span className="gp-pass">{`Pass ${trainer.pass + 1}`}</span>}
+            </span>
+          )}
         </div>
 
         <div className="gp-nudges">

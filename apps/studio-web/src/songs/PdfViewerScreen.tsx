@@ -145,7 +145,9 @@ export function PdfViewerScreen({
   useEffect(() => {
     if (!doc || !canvasRef.current || !containerRef.current) return;
     const width = containerRef.current.clientWidth || 600;
-    void doc.renderPage(page, canvasRef.current, width);
+    // The whole page stays on screen above the turn bar, so nothing needs scrolling mid-song.
+    const maxHeight = Math.max(320, window.innerHeight - 190);
+    void doc.renderPage(page, canvasRef.current, width, maxHeight);
   }, [doc, page, containerWidth]);
 
   const turn = useCallback((delta: number) => {
