@@ -1,4 +1,5 @@
 import type { CSSProperties } from 'react';
+import { PencilRing } from '../metronome/PencilRing';
 import { parseSteps, type Exercise, type Step } from '@tempodojo/core-ladder';
 import { pulsesPerBar } from '@tempodojo/core-metronome';
 import { VOICE_LABEL } from './labels';
@@ -28,7 +29,13 @@ function describeStep(step: Step): string {
   return parts.join(' ');
 }
 
-export function PatternView({ exercise }: { exercise: Exercise }) {
+export interface PatternLive {
+  bar: number;
+  pulse: number;
+}
+
+/** `live` marks the beat being played with the pencil ring (first line only). */
+export function PatternView({ exercise, live = null }: { exercise: Exercise; live?: PatternLive | null }) {
   const beatCount = pulsesPerBar(exercise.meter);
   const sub = exercise.subdivision;
 
@@ -57,10 +64,15 @@ export function PatternView({ exercise }: { exercise: Exercise }) {
               return (
                 <span className="beat" key={beatIdx}>
                   {beatSteps.map((step, slotIdx) => {
+                    const ring =
+                      live !== null && lineIdx === 0 && beatIdx === live.pulse && slotIdx === 0 ? (
+                        <PencilRing key={`${live.bar}-${live.pulse}`} downbeat={live.pulse === 0} />
+                      ) : null;
                     if (step.rest) {
                       return (
                         <span className="slot" key={slotIdx} data-accent={false} data-rest={true}>
                           ·
+                          {ring}
                         </span>
                       );
                     }
@@ -82,6 +94,7 @@ export function PatternView({ exercise }: { exercise: Exercise }) {
                           </svg>
                         )}
                         <span className="glyph-row">
+                          {ring}
                           {grace && <span className="grace">{grace}</span>}
                           {step.ghost && <span className="paren">(</span>}
                           <span className="stroke">{step.hand}</span>

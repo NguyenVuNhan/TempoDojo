@@ -66,9 +66,22 @@
 }
 
 .ex-actions {
-  display: flex;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
   gap: 8px;
+}
+
+/* Touched mid-practice: thumb-zone size. */
+.ex-actions button {
+  min-height: 64px;
+  width: 100%;
+  padding-inline: 8px;
+  font-size: 1rem;
+}
+
+.ex-transport .check {
+  min-height: 64px;
+  align-items: center;
 }
 
 .targets {
@@ -238,6 +251,10 @@
     grid-template-columns: 1.5fr 1fr;
     grid-template-rows: auto 1fr;
     grid-template-areas: 'head head' 'content transport';
+  }
+
+  .ex-bpm-value {
+    font-size: clamp(7.5rem, 11vw, 10rem);
   }
 
   .ex-transport {

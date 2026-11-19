@@ -79,10 +79,10 @@ export function StatsBlock({ sessions, intervals, now }: { sessions: Session[]; 
 
   return (
     <div className="stats-block">
-      <div className="stat-group">
-        <h3 className="stat-label">Average session</h3>
-        <p className="stat-value">{avgMinutes} min</p>
-      </div>
+      <p className="stat-row">
+        <span>Average session</span>
+        <span className="stat-row-value">{avgMinutes} min</span>
+      </p>
 
       <div className="stat-group">
         <h3 className="stat-label">Sessions per week</h3>

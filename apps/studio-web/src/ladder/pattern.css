@@ -3,10 +3,11 @@
      column (container query) and the bar scrolls sideways only when even 18px slots do not fit. */
   container-type: inline-size;
   --beat-gap: 11px;
-  --slot: clamp(18px, calc((100cqi - (var(--beats) - 1) * var(--beat-gap)) / var(--slots)), 40px);
+  --slot: clamp(18px, calc((100cqi - 20px - (var(--beats) - 1) * var(--beat-gap)) / var(--slots)), 64px);
   display: grid;
   gap: 12px;
-  padding: 16px 0 18px;
+  /* 10px side room so the pencil ring on the first or last note is not clipped by the scroller. */
+  padding: 16px 10px 18px;
   border-top: 2px solid var(--ink);
   border-bottom: 2px solid var(--ink);
   overflow-x: auto;
@@ -46,7 +47,8 @@
   width: var(--slot);
   flex: none;
   display: inline-grid;
-  grid-template-rows: 12px auto;
+  grid-template-rows: calc(var(--slot) * 0.3) auto;
+  position: relative;
   justify-items: center;
   align-items: end;
   text-align: center;
@@ -54,8 +56,8 @@
 
 .accent {
   grid-row: 1;
-  width: 14px;
-  height: 8px;
+  width: calc(var(--slot) * 0.4);
+  height: calc(var(--slot) * 0.23);
   align-self: center;
   fill: currentColor;
   color: var(--ink);
@@ -70,7 +72,7 @@
 }
 
 .stroke {
-  font: 700 min(1.75rem, calc(var(--slot) * 0.95))/1 var(--font-book);
+  font: 700 min(3rem, calc(var(--slot) * 0.95))/1 var(--font-book);
   font-variant-numeric: lining-nums;
   color: var(--ink);
 }
@@ -81,23 +83,35 @@
 }
 
 .grace {
-  font: 400 0.8rem/1 var(--font-book);
+  font: 700 calc(var(--slot) * 0.5)/1 var(--font-book);
   vertical-align: super;
+  margin-right: 1px;
   color: var(--ink);
 }
 
 .paren {
-  font: 400 1.4rem/1 var(--font-book);
+  font: 400 calc(var(--slot) * 0.8)/1 var(--font-book);
   color: var(--ink-ghost);
 }
 
 .slot[data-rest='true'] {
   grid-template-rows: auto;
-  font: 400 min(1.75rem, calc(var(--slot) * 0.95))/1 var(--font-book);
+  font: 400 min(3rem, calc(var(--slot) * 0.95))/1 var(--font-book);
   color: var(--ink-ghost);
 }
 
 .buzz {
-  font: italic 400 0.8rem/1 var(--font-book);
+  font: italic 700 calc(var(--slot) * 0.5)/1 var(--font-book);
   color: var(--ink);
+}
+
+/* The live beat: the metronome's pencil ring, sized from the slot instead of the note height. */
+.glyph-row,
+.slot[data-rest='true'] {
+  position: relative;
+}
+
+.pattern .pencil-ring {
+  top: 50%;
+  width: calc(var(--slot) * 1.35);
 }

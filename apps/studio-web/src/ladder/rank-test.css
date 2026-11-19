@@ -49,3 +49,36 @@
   color: var(--paper);
   cursor: default;
 }
+
+/* Stop is pressed mid-test, sticks in hand: the transport size, inverted like Play while playing. */
+.rank-test-stop {
+  width: 100%;
+  min-height: 84px;
+  border: 2px solid var(--ink);
+  border-radius: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font: 800 1.75rem/1 var(--font-label);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+.rank-test-stop:active {
+  background: var(--ink);
+  color: var(--paper);
+}
+
+/* Click vs silent bar: told by inversion and the word, never by colour. */
+.rank-test-click {
+  justify-self: start;
+  margin: 8px 0 0;
+  padding: 4px 12px;
+  border: 2px solid var(--ink);
+  font: 700 2rem/1.1 var(--font-book);
+}
+
+.rank-test-click[data-muted='true'] {
+  background: var(--ink);
+  color: var(--paper);
+}

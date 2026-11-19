@@ -150,10 +150,15 @@ export function RankTestSheet({
           <section className="field">
             <p className="rank-test-target-line">{targetLine}</p>
             <p className="rank-test-readout">{readout}</p>
+            {position && !position.countIn && (
+              <p className="rank-test-click" data-muted={position.muted}>
+                {position.muted ? 'Silent' : 'Click'}
+              </p>
+            )}
           </section>
           <section className="field">
             <div className="rank-test-actions">
-              <button type="button" className="text-button" onClick={handleStop}>
+              <button type="button" className="rank-test-stop" onClick={handleStop}>
                 Stop test
               </button>
             </div>

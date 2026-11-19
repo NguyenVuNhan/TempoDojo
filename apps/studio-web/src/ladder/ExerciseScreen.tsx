@@ -203,12 +203,7 @@ export function ExerciseScreen({
 
       <div className="ex-content">
         <h1 className="ex-title">{exercise.name}</h1>
-        <p className="ex-focus">{exercise.focus}</p>
-        {exercise.track === 'coordination' && (
-          <p className="ex-coord-note">Feet first: play the feet line alone for a minute.</p>
-        )}
-
-        <PatternView exercise={exercise} />
+        <PatternView exercise={exercise} live={playing && position && !position.countIn ? position : null} />
 
         <div className="ex-actions">
           <button type="button" className="text-button" onClick={openLogSheet}>
@@ -235,6 +230,11 @@ export function ExerciseScreen({
             );
           })}
         </ol>
+
+        <p className="ex-focus">{exercise.focus}</p>
+        {exercise.track === 'coordination' && (
+          <p className="ex-coord-note">Feet first: play the feet line alone for a minute.</p>
+        )}
 
         {progress.bestCleanBpm != null && (
           <p className="ex-best">
