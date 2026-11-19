@@ -7,6 +7,7 @@ import {
   type MetronomeSettings,
   type PresetRepository,
 } from '@tempodojo/core-metronome';
+import type { PracticeSource } from '@tempodojo/core-practice';
 
 export interface MetronomeEngineLike {
   start(settings: MetronomeSettings): Promise<void>;
@@ -29,10 +30,26 @@ export interface LivePosition {
 }
 
 const SAVE_DEBOUNCE_MS = 500;
+const METRONOME_SOURCE: PracticeSource = { kind: 'metronome' };
+
+export interface MetronomeOptions {
+  /** Settings to start from instead of the defaults. */
+  initial?: MetronomeSettings;
+  /** Load and save the plain metronome's last settings (default true). Exercises pass false. */
+  persist?: boolean;
+  /** What is being practiced, reported with every play/stop. */
+  source?: PracticeSource;
+  onTransport?: (type: 'play' | 'stop', source: PracticeSource) => void;
+}
 
 /** Owns metronome settings, transport, tap tempo, live position, and persistence. */
-export function useMetronome({ engine, repo }: MetronomeDeps) {
-  const [settings, setSettingsState] = useState<MetronomeSettings>(DEFAULT_SETTINGS);
+export function useMetronome({ engine, repo }: MetronomeDeps, opts: MetronomeOptions = {}) {
+  const persist = opts.persist ?? true;
+  const [settings, setSettingsState] = useState<MetronomeSettings>(() =>
+    opts.initial ? normalizeSettings(opts.initial) : DEFAULT_SETTINGS,
+  );
+  const transportRef = useRef({ source: opts.source ?? METRONOME_SOURCE, onTransport: opts.onTransport });
+  transportRef.current = { source: opts.source ?? METRONOME_SOURCE, onTransport: opts.onTransport };
   const [playing, setPlaying] = useState(false);
   const [position, setPosition] = useState<LivePosition | null>(null);
   const settingsRef = useRef(settings);
@@ -41,6 +58,7 @@ export function useMetronome({ engine, repo }: MetronomeDeps) {
   const tapper = useMemo(() => new TapTempo(), []);
 
   useEffect(() => {
+    if (!persist) return;
     let cancelled = false;
     repo.loadLast().then((last) => {
       if (cancelled) return;
@@ -53,13 +71,13 @@ export function useMetronome({ engine, repo }: MetronomeDeps) {
     return () => {
       cancelled = true;
     };
-  }, [repo]);
+  }, [repo, persist]);
 
   useEffect(() => {
-    if (!restored.current) return;
+    if (!persist || !restored.current) return;
     const id = setTimeout(() => void repo.saveLast(settings), SAVE_DEBOUNCE_MS);
     return () => clearTimeout(id);
-  }, [settings, repo]);
+  }, [settings, repo, persist]);
 
   useEffect(() => {
     const timers = new Set<ReturnType<typeof setTimeout>>();
@@ -97,6 +115,7 @@ export function useMetronome({ engine, repo }: MetronomeDeps) {
     if (playingRef.current) return;
     playingRef.current = true;
     setPlaying(true);
+    transportRef.current.onTransport?.('play', transportRef.current.source);
     await engine.start(settingsRef.current);
   }, [engine]);
 
@@ -104,6 +123,7 @@ export function useMetronome({ engine, repo }: MetronomeDeps) {
     if (!playingRef.current) return;
     playingRef.current = false;
     setPlaying(false);
+    transportRef.current.onTransport?.('stop', transportRef.current.source);
     setPosition(null);
     engine.stop();
   }, [engine]);

@@ -22,6 +22,8 @@
   },
   "dependencies": {
     "@tempodojo/core-metronome": "*",
-    "dexie": "^4.4.7"
+    "dexie": "^4.4.7",
+    "@tempodojo/core-ladder": "*",
+    "@tempodojo/core-practice": "*"
   }
 }

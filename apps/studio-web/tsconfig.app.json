@@ -4,11 +4,7 @@
     "outDir": "dist",
     "tsBuildInfoFile": "dist/tsconfig.app.tsbuildinfo",
     "jsx": "react-jsx",
-    "lib": [
-      "es2022",
-      "dom",
-      "dom.iterable"
-    ],
+    "lib": ["es2022", "dom", "dom.iterable"],
     "types": [
       "node",
       "@nx/react/typings/cssmodule.d.ts",
@@ -39,13 +35,14 @@
     "eslint.config.mjs",
     "src/**/test-utils.ts"
   ],
-  "include": [
-    "src/**/*.js",
-    "src/**/*.jsx",
-    "src/**/*.ts",
-    "src/**/*.tsx"
-  ],
+  "include": ["src/**/*.js", "src/**/*.jsx", "src/**/*.ts", "src/**/*.tsx"],
   "references": [
+    {
+      "path": "../../libs/core/practice/tsconfig.lib.json"
+    },
+    {
+      "path": "../../libs/core/ladder/tsconfig.lib.json"
+    },
     {
       "path": "../../libs/ui/kit/tsconfig.lib.json"
     },

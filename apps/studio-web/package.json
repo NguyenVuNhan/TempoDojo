@@ -13,6 +13,8 @@
     "@tempodojo/core-metronome": "*",
     "@tempodojo/audio-web": "*",
     "@tempodojo/storage": "*",
-    "@tempodojo/ui-kit": "*"
+    "@tempodojo/ui-kit": "*",
+    "@tempodojo/core-ladder": "*",
+    "@tempodojo/core-practice": "*"
   }
 }

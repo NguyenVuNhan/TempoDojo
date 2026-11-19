@@ -12,6 +12,12 @@
   "include": ["src/**/*.ts"],
   "references": [
     {
+      "path": "../../core/practice/tsconfig.lib.json"
+    },
+    {
+      "path": "../../core/ladder/tsconfig.lib.json"
+    },
+    {
       "path": "../../core/metronome/tsconfig.lib.json"
     }
   ],
