@@ -25,4 +25,9 @@ SIGNATURE: The orange pencil circle: a hand-drawn ring, slightly rotated, that j
 
 FINISH: unreviewed and undocumented is unfinished; this build ends with the finish review, the verdict, DESIGN.md, and every shipping raster carrying its provenance
 
+Adaptations (cited, product truth):
+- Tab bar Metro · Dojo · Song Lab is omitted until Dojo (Plan 2) and Song Lab (Plan 3) exist; dead tabs would lie about capability. It returns with Plan 2. The phone's spare height is set on purpose by a Caslon bar counter ("Bar N" left, time played/left right) under the staff, readable from the throne.
+- Sticking glyphs: a plain metronome beat carries an accent level, not a hand, so beats are engraved quarter notes on one percussion staff line (accent wedge, ghost in crescent parentheses, rest for mute). Caslon R/L stickings arrive with Dojo exercises, which do carry hands.
+- iPad landscape: the page/transport regroup into a two-column spread; the numeral scales to the wider page.
+
 Unresolved: dark "night page" variant for dim rooms (chosen card's named risk) — tokens prepared, design pass deferred.

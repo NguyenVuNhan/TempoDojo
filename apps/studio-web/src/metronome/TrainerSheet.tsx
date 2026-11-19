@@ -87,7 +87,6 @@ export function TrainerSheet({
   return (
     <Sheet open={open} title="Trainer" onClose={onClose}>
       <section className="field">
-        <h3 className="field-label">Speed-up</h3>
         <label className="check">
           <input
             type="checkbox"
@@ -125,7 +124,6 @@ export function TrainerSheet({
       </section>
 
       <section className="field">
-        <h3 className="field-label">Gap click</h3>
         <label className="check">
           <input
             type="checkbox"

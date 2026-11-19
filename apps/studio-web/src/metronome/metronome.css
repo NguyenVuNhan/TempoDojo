@@ -24,7 +24,7 @@
 }
 
 .head-button {
-  margin: -10px 0 -10px -8px;
+  margin: -10px -8px -10px 0;
   padding: 10px 8px;
   border: 0;
   background: none;
@@ -56,7 +56,7 @@
 
 .bpm-value {
   font: 700 clamp(7.5rem, 30vw, 11rem) / 0.86 var(--font-book);
-  letter-spacing: -0.035em;
+  letter-spacing: -0.015em;
   font-variant-numeric: lining-nums tabular-nums;
 }
 
@@ -80,6 +80,22 @@
   cursor: pointer;
 }
 
+.tempo-line .mark {
+  height: 1.05em;
+  width: auto;
+  vertical-align: -0.12em;
+  fill: currentColor;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
 .trainer-line {
   display: block;
   margin-top: 2px;
@@ -95,6 +111,7 @@
 }
 
 .line {
+  --note-h: clamp(110px, 19vh, 176px);
   list-style: none;
   margin: 0;
   padding: 10px 0 4px;
@@ -106,16 +123,46 @@
 }
 
 .line li {
+  position: relative;
   display: grid;
   justify-items: center;
   gap: 2px;
+}
+
+/* One percussion staff line through the noteheads, bar lines at each end of a row. */
+.line li::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: calc(var(--note-h) * 0.79 - 1px);
+  height: 2px;
+  background: var(--ink);
+}
+
+.line li:first-child::after,
+.line li:last-child::after {
+  content: '';
+  position: absolute;
+  top: calc(var(--note-h) * 0.79 - 26px);
+  height: 52px;
+  width: 2px;
+  background: var(--ink);
+}
+
+.line li:first-child::after {
+  left: 0;
+}
+
+.line li:last-child::after {
+  right: 0;
 }
 
 .note {
   position: relative;
   width: 100%;
   min-width: 44px;
-  height: clamp(110px, 19vh, 176px);
+  height: var(--note-h);
   display: grid;
   place-items: center;
   background: none;
@@ -133,20 +180,8 @@
   overflow: visible;
 }
 
-.glyph .ink {
+.glyph {
   fill: currentColor;
-}
-
-.glyph .stroke {
-  fill: none;
-  stroke: currentColor;
-  stroke-width: 4.5;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-}
-
-.glyph .stem {
-  stroke-width: 3.5;
 }
 
 .glyph[data-level='ghost'] {
@@ -163,6 +198,15 @@
   font: 400 1.375rem/1 var(--font-book);
   color: var(--ink-soft);
   font-variant-numeric: lining-nums;
+}
+
+.bar-count {
+  margin: 18px 0 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  font: 700 clamp(2rem, 9vw, 3rem) / 1 var(--font-book);
+  font-variant-numeric: lining-nums tabular-nums;
 }
 
 .sticking[data-muted='true'] .glyph {
@@ -266,6 +310,10 @@
     grid-template-columns: 1.5fr 1fr;
     grid-template-rows: auto auto 1fr;
     grid-template-areas: 'head head' 'heading transport' 'sticking transport';
+  }
+
+  .bpm-value {
+    font-size: clamp(11rem, 19vw, 16rem);
   }
 
   .transport {

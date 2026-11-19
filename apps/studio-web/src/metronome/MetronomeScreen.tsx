@@ -20,13 +20,6 @@ const SUBDIVISION_NAMES: Record<number, string> = {
   6: 'sextuplets',
 };
 
-const NOTE_FOR_UNIT: Record<MetronomeSettings['meter']['beatUnit'], string> = {
-  half: '𝅗𝅥',
-  quarter: '♩',
-  eighth: '♪',
-  'dotted-quarter': '♩.',
-};
-
 const DRAG_PX_PER_BPM = 8;
 
 let defaultDeps: MetronomeDeps | null = null;
@@ -89,17 +82,16 @@ export function MetronomeScreen({ deps }: MetronomeScreenProps) {
     m.setSettings((s) => ({ accents: s.accents.map((a, i) => (i === index ? nextAccent(a) : a)) }));
 
   const where = !playing || !position ? 'Ready' : position.countIn ? 'Count-in' : `Bar ${position.bar + 1}`;
+  const timeLabel = timer.remainingSec !== null ? 'Time left' : 'Time played';
   const time = timer.remainingSec !== null ? `${clock(timer.remainingSec)} left` : clock(timer.elapsedSec);
 
   return (
     <main className="page" data-playing={playing}>
       <header className="running-head">
-        <button type="button" className="head-button" onClick={() => setSheet('presets')} aria-label="Presets">
-          {presetName ?? 'Metronome'}
+        <span className="head-title">{presetName ?? 'Metronome'}</span>
+        <button type="button" className="head-button" onClick={() => setSheet('presets')}>
+          Presets
         </button>
-        <span aria-live="off">
-          {where} · {time}
-        </span>
       </header>
 
       <section className="heading" aria-label="Tempo">
@@ -121,11 +113,12 @@ export function MetronomeScreen({ deps }: MetronomeScreenProps) {
           <span className="bpm-value">{shownBpm}</span>
           <span className="bpm-unit">BPM</span>
         </div>
-        <button type="button" className="tempo-line" onClick={() => setSheet('settings')} aria-label="Meter and subdivision settings">
-          {NOTE_FOR_UNIT[settings.meter.beatUnit]} = {shownBpm} · {settings.meter.beatsPerBar}/{settings.meter.denominator} ·{' '}
-          {SUBDIVISION_NAMES[settings.subdivision]}
+        <button type="button" className="tempo-line" onClick={() => setSheet('settings')}>
+          <span className="visually-hidden">Edit meter: </span>
+          <MetronomeMark unit={settings.meter.beatUnit} /> = {shownBpm} · {settings.meter.beatsPerBar}/
+          {settings.meter.denominator} · {SUBDIVISION_NAMES[settings.subdivision]}
         </button>
-        <button type="button" className="tempo-line trainer-line" onClick={() => setSheet('trainer')} aria-label="Trainer settings">
+        <button type="button" className="tempo-line trainer-line" onClick={() => setSheet('trainer')}>
           Trainer: {trainerSummary(settings)}
         </button>
       </section>
@@ -154,6 +147,13 @@ export function MetronomeScreen({ deps }: MetronomeScreenProps) {
             );
           })}
         </ol>
+        <p className="bar-count" aria-live="off">
+          <span>{where}</span>
+          <span>
+            <span className="visually-hidden">{timeLabel} </span>
+            {time}
+          </span>
+        </p>
       </section>
 
       <section className="transport" aria-label="Transport">
@@ -206,25 +206,50 @@ export function MetronomeScreen({ deps }: MetronomeScreenProps) {
   );
 }
 
-/** Engraved drum notation: accent ">" over a notehead, ghost in parentheses, mute as a quarter rest. */
+/**
+ * Engraved drum notation, filled shapes only (no round-capped strokes):
+ * accent as a hairline wedge, tapered stem, notehead, ghost as filled crescent parentheses, mute as a quarter rest.
+ */
 function NoteGlyph({ level }: { level: AccentLevel }) {
   return (
     <svg className="glyph" data-level={level} viewBox="0 0 60 100" aria-hidden focusable="false">
       {level === 'mute' ? (
-        <path className="ink" d="M26 22 L36 36 C31 41 30 46 36 54 C30 52 26 56 30 66 C22 60 22 52 29 50 L22 39 C27 35 28 30 26 22 Z" />
+        <path d="M26 22 L36 36 C31 41 30 46 36 54 C30 52 26 56 30 66 C22 60 22 52 29 50 L22 39 C27 35 28 30 26 22 Z" />
       ) : (
         <>
-          {level === 'accent' && <path className="stroke" d="M20 10 L42 15.5 L20 21" />}
-          <path className="stroke stem" d="M41 78 L41 30" />
-          <ellipse className="ink" cx="31" cy="79" rx="11.5" ry="8" transform="rotate(-22 31 79)" />
+          {level === 'accent' && <path d="M15 8.5 L47 15.5 L15 22.5 L15 20.6 L39.5 15.5 L15 10.4 Z" />}
+          <path d="M40.2 76 L40.6 29 L42.6 29 L43 76 Z" />
+          <ellipse cx="31" cy="79" rx="11.5" ry="8" transform="rotate(-22 31 79)" />
           {level === 'ghost' && (
             <>
-              <path className="stroke paren" d="M14 66 C8 74 8 86 14 94" />
-              <path className="stroke paren" d="M49 66 C55 74 55 86 49 94" />
+              <path d="M15 65 C7.5 73 7.5 87 15 95 C11.8 87 11.8 73 15 65 Z" />
+              <path d="M48 65 C55.5 73 55.5 87 48 95 C51.2 87 51.2 73 48 65 Z" />
             </>
           )}
         </>
       )}
+    </svg>
+  );
+}
+
+/** The metronome mark's note, drawn in the same hand as the notation line, sized to the text. */
+function MetronomeMark({ unit }: { unit: MetronomeSettings['meter']['beatUnit'] }) {
+  const hollow = unit === 'half';
+  return (
+    <svg className="mark" viewBox="0 0 34 60" aria-hidden focusable="false">
+      <path d="M23.4 47 L23.6 6 L25.6 6 L25.8 47 Z" />
+      <ellipse
+        cx="16"
+        cy="49"
+        rx="9.5"
+        ry="6.6"
+        transform="rotate(-22 16 49)"
+        fill={hollow ? 'none' : undefined}
+        stroke={hollow ? 'currentColor' : undefined}
+        strokeWidth={hollow ? 2.6 : undefined}
+      />
+      {unit === 'eighth' && <path d="M25.6 6 C27 16 36 18 33 32 C32 22 28 20 25.6 18 Z" />}
+      {unit === 'dotted-quarter' && <circle cx="31" cy="48" r="2.8" />}
     </svg>
   );
 }

@@ -64,7 +64,6 @@ export function PresetsSheet({
   return (
     <Sheet open={open} title="Presets" onClose={onClose}>
       <section className="field">
-        <h3 className="field-label">Save current setup</h3>
         <label className="num">
           <span>Preset name</span>
           <input
