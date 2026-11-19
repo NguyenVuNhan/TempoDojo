@@ -51,7 +51,6 @@
   touch-action: none;
   cursor: ns-resize;
   user-select: none;
-  border-radius: 4px;
 }
 
 .bpm-value {

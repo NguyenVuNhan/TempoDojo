@@ -85,15 +85,15 @@ export function PresetsSheet({
       <section className="field">
         <h3 className="field-label">Saved</h3>
         {presets.length === 0 ? (
-          <p>No presets yet. Save the current setup to reuse it.</p>
+          <p className="empty-note">No presets yet. Save the current setup to reuse it.</p>
         ) : (
-          <ul>
+          <ul className="row-list">
             {presets.map((preset) => {
               const { bpm, meter } = preset.settings;
               return (
                 <li key={preset.id}>
-                  <span>{preset.name}</span>{' '}
-                  <span>{`${Math.round(bpm)} BPM · ${meter.beatsPerBar}/${meter.denominator}`}</span>{' '}
+                  <span className="row-title">{preset.name}</span>
+                  <span className="row-meta">{`${Math.round(bpm)} BPM · ${meter.beatsPerBar}/${meter.denominator}`}</span>
                   <button
                     type="button"
                     className="text-button"
@@ -101,7 +101,7 @@ export function PresetsSheet({
                     onClick={() => onLoad(preset)}
                   >
                     Load
-                  </button>{' '}
+                  </button>
                   <button
                     type="button"
                     className="text-button"
