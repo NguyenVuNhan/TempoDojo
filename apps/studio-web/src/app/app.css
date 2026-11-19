@@ -1,0 +1,119 @@
+/* Fixed to the viewport: the bar never covers the screen; a screen taller than the space scrolls above it. */
+.shell {
+  height: 100dvh;
+  display: grid;
+  grid-template-rows: minmax(0, 1fr) auto;
+}
+
+/* The panel is a grid so the screen inside stretches to the space above the tab bar. */
+.shell-panel {
+  min-width: 0;
+  display: grid;
+  /* One column as wide as the screen: wide content (a rendered score) scrolls inside, never widens the page. */
+  grid-template-columns: minmax(0, 1fr);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+
+.shell .page {
+  min-height: 0;
+  padding-bottom: 16px;
+}
+
+/* The tab bar takes 66px of the page; give it back from the space above the staff. */
+.shell .sticking {
+  padding-top: clamp(20px, 4.5vh, 56px);
+}
+
+/* Short phones (e.g. 360×740): tighten the vertical rhythm so Play stays on screen. */
+@media (max-height: 780px) {
+  .shell .heading {
+    padding-top: 8px;
+  }
+
+  .shell .sticking {
+    padding: 12px 0 12px;
+  }
+
+  .shell .page {
+    padding-bottom: 10px;
+  }
+}
+
+.placeholder {
+  --gutter: clamp(16px, 5.5vw, 32px);
+  max-width: 640px;
+  margin: 0 auto;
+  padding: 0 var(--gutter) 16px;
+}
+
+.placeholder-title {
+  margin: clamp(20px, 5vh, 48px) 0 12px;
+  font: 700 clamp(2rem, 9vw, 3rem) / 1 var(--font-book);
+  color: var(--ink);
+}
+
+.placeholder-note {
+  margin: 0;
+  font: 400 1.125rem/1.4 var(--font-book);
+  color: var(--ink-soft);
+}
+
+.tabbar {
+  background: var(--paper);
+  border-top: 2px solid var(--ink);
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+.tabbar [role='tablist'] {
+  max-width: 640px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  padding: 0 var(--gutter, clamp(16px, 5.5vw, 32px));
+}
+
+.tabbar [role='tab'] {
+  height: 64px;
+  border: 0;
+  background: transparent;
+  color: var(--ink-soft);
+  font: 800 0.9375rem var(--font-label);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background-color 80ms ease-out, color 80ms ease-out;
+}
+
+.tabbar [role='tab'][aria-selected='true'] {
+  color: var(--ink);
+  box-shadow: inset 0 -4px 0 var(--select);
+}
+
+.tabbar [role='tab']:active {
+  background: var(--ink);
+  color: var(--paper);
+  transition: 80ms ease-out;
+}
+
+.tabbar [role='tab']:focus-visible {
+  outline-offset: -6px;
+}
+
+@media (min-width: 900px) and (orientation: landscape) {
+  .tabbar [role='tablist'] {
+    max-width: 1180px;
+  }
+}
+
+/* Four tabs on a 360px phone: tighter tracking and gutter so every label fits. */
+@media (max-width: 420px) {
+  .tabbar [role='tablist'] {
+    padding: 0 8px;
+  }
+
+  .tabbar [role='tab'] {
+    font-size: 0.8125rem;
+    letter-spacing: 0.06em;
+  }
+}

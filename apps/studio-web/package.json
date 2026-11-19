@@ -10,9 +10,19 @@
     ]
   },
   "dependencies": {
-    "@tempodojo/core-metronome": "*",
     "@tempodojo/audio-web": "*",
+    "@tempodojo/core-ladder": "*",
+    "@tempodojo/core-metronome": "*",
+    "@tempodojo/core-practice": "*",
+    "@tempodojo/notation": "*",
     "@tempodojo/storage": "*",
-    "@tempodojo/ui-kit": "*"
+    "@tempodojo/ui-kit": "*",
+    "@tempodojo/core-songlab": "*",
+    "@tempodojo/youtube": "*",
+    "@tempodojo/pdf": "*"
+  },
+  "devDependencies": {
+    "@coderline/alphatab": "1.9.0",
+    "@coderline/alphatab-vite": "^1.9.0"
   }
 }

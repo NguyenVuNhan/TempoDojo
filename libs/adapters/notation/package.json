@@ -1,0 +1,27 @@
+{
+  "name": "@tempodojo/notation",
+  "version": "0.0.1",
+  "private": true,
+  "type": "module",
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
+  "exports": {
+    ".": {
+      "types": "./src/index.ts",
+      "import": "./src/index.ts",
+      "default": "./src/index.ts"
+    },
+    "./package.json": "./package.json"
+  },
+  "nx": {
+    "name": "notation",
+    "tags": [
+      "scope:adapter",
+      "type:lib"
+    ]
+  },
+  "dependencies": {
+    "@coderline/alphatab": "^1.9.0",
+    "@tempodojo/core-songlab": "*"
+  }
+}

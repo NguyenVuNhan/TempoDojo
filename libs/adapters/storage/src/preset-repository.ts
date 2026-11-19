@@ -8,9 +8,7 @@ import { TempoDojoDb } from './db';
 
 const LAST_SETTINGS_KEY = 'lastSettings';
 
-export function createDexiePresetRepository(dbName = 'tempodojo'): PresetRepository {
-  const db = new TempoDojoDb(dbName);
-
+export function createPresetRepositoryFromDb(db: TempoDojoDb): PresetRepository {
   return {
     async list(): Promise<Preset[]> {
       return db.presets.orderBy('updatedAt').reverse().toArray();
@@ -36,6 +34,10 @@ export function createDexiePresetRepository(dbName = 'tempodojo'): PresetReposit
       await db.kv.put({ key: LAST_SETTINGS_KEY, value: settings });
     },
   };
+}
+
+export function createDexiePresetRepository(dbName = 'tempodojo'): PresetRepository {
+  return createPresetRepositoryFromDb(new TempoDojoDb(dbName));
 }
 
 export async function requestPersistentStorage(): Promise<boolean> {

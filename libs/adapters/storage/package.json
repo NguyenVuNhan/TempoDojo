@@ -21,7 +21,11 @@
     ]
   },
   "dependencies": {
+    "@tempodojo/core-ladder": "*",
     "@tempodojo/core-metronome": "*",
-    "dexie": "^4.4.7"
+    "@tempodojo/core-practice": "*",
+    "@tempodojo/core-songlab": "*",
+    "dexie": "^4.4.7",
+    "fflate": "^0.8.2"
   }
 }

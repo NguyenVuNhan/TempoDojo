@@ -4,10 +4,11 @@ import { nextAccent, pulsesPerBar, type AccentLevel, type MetronomeSettings } fr
 import { createDexiePresetRepository } from '@tempodojo/storage';
 import { useKeyboardTransport } from '../platform/useKeyboardTransport';
 import { useWakeLock } from '../platform/useWakeLock';
+import { PencilRing } from './PencilRing';
 import { PresetsSheet } from './PresetsSheet';
 import { SettingsSheet } from './SettingsSheet';
 import { TrainerSheet } from './TrainerSheet';
-import { useMetronome, type MetronomeDeps } from './useMetronome';
+import { useMetronome, type MetronomeDeps, type MetronomeOptions } from './useMetronome';
 import { usePracticeTimer } from './usePracticeTimer';
 import './metronome.css';
 
@@ -30,6 +31,8 @@ function getDefaultDeps(): MetronomeDeps {
 
 export interface MetronomeScreenProps {
   deps?: MetronomeDeps;
+  /** Receives every play/stop for the practice log. */
+  onTransport?: MetronomeOptions['onTransport'];
 }
 
 type SheetName = 'settings' | 'trainer' | 'presets';
@@ -49,9 +52,9 @@ function trainerSummary(s: MetronomeSettings): string {
   return parts.length ? parts.join(' · ') : 'off';
 }
 
-export function MetronomeScreen({ deps }: MetronomeScreenProps) {
+export function MetronomeScreen({ deps, onTransport }: MetronomeScreenProps) {
   const resolved = useMemo(() => deps ?? getDefaultDeps(), [deps]);
-  const m = useMetronome(resolved);
+  const m = useMetronome(resolved, { onTransport });
   const { settings, position, playing } = m;
   const [sheet, setSheet] = useState<SheetName | null>(null);
   const [presetName, setPresetName] = useState<string | null>(null);
@@ -254,10 +257,3 @@ function MetronomeMark({ unit }: { unit: MetronomeSettings['meter']['beatUnit'] 
   );
 }
 
-function PencilRing({ downbeat }: { downbeat: boolean }) {
-  return (
-    <svg className="pencil-ring" data-downbeat={downbeat} viewBox="0 0 100 100" aria-hidden focusable="false">
-      <path d="M50 7 C77 6 95 25 93 51 C91 78 71 94 46 92 C20 90 5 71 8 46 C10 24 27 9 55 9" />
-    </svg>
-  );
-}

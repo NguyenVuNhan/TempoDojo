@@ -1,0 +1,160 @@
+.songs {
+  --gutter: clamp(16px, 5.5vw, 32px);
+  max-width: 640px;
+  margin: 0 auto;
+  padding: 0 var(--gutter) calc(32px + env(safe-area-inset-bottom));
+}
+
+.songs .running-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  padding: calc(14px + env(safe-area-inset-top)) 0 10px;
+  border-bottom: 1px solid var(--ink);
+  font: 500 0.8125rem/1 var(--font-label);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  font-variant-numeric: tabular-nums;
+}
+
+.songs h1 {
+  margin: clamp(16px, 4vh, 32px) 0 18px;
+  font: 700 clamp(2rem, 9vw, 3rem) / 1 var(--font-book);
+  font-variant-numeric: lining-nums tabular-nums;
+}
+
+.songs-add {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+}
+
+@media (max-width: 419px) {
+  .songs-add {
+    grid-template-columns: 1fr;
+  }
+}
+
+.songs-add-btn {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  min-height: 64px;
+  padding: 10px 12px;
+  border: 2px solid var(--ink);
+  border-radius: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font: 800 0.875rem/1.2 var(--font-label);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background-color 80ms ease-out, color 80ms ease-out;
+}
+
+.songs-add-btn:active {
+  background: var(--ink);
+  color: var(--paper);
+}
+
+.songs-add-btn:focus-within {
+  outline: 3px solid var(--select);
+  outline-offset: 3px;
+}
+
+.songs-add-btn input[type='file'] {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+  opacity: 0;
+}
+
+.songs-error {
+  margin: 12px 0 0;
+  font: 700 1rem/1.4 var(--font-book);
+  color: var(--ink);
+}
+
+.songs .empty-note {
+  margin-top: 24px;
+}
+
+.song-list {
+  list-style: none;
+  margin: 24px 0 0;
+  padding: 0;
+}
+
+.song-list li {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  border-bottom: 1px solid var(--rule-soft);
+}
+
+.song-list li:last-child {
+  border-bottom: 0;
+}
+
+.song-row {
+  flex: 1;
+  min-width: 0;
+  min-height: 64px;
+  padding: 14px 0;
+  border: 0;
+  border-radius: 0;
+  background: none;
+  color: var(--ink);
+  text-align: left;
+  cursor: pointer;
+  display: grid;
+  gap: 4px;
+}
+
+.song-row:active {
+  background: color-mix(in srgb, var(--ink) 8%, transparent);
+}
+
+.song-title {
+  font: 700 1.25rem/1.2 var(--font-book);
+  overflow-wrap: break-word;
+}
+
+.song-meta {
+  font: 400 1rem/1.3 var(--font-book);
+  color: var(--ink-soft);
+  font-variant-numeric: lining-nums tabular-nums;
+}
+
+.songs-remove {
+  flex: none;
+}
+
+.songs-hint {
+  margin: 0;
+  font: 400 1rem/1.4 var(--font-book);
+  color: var(--ink-soft);
+}
+
+.songs-sheet-primary {
+  width: 100%;
+  min-height: 64px;
+  margin-top: 18px;
+  padding: 0 20px;
+  border: 2px solid var(--ink);
+  border-radius: 0;
+  background: var(--ink);
+  color: var(--paper);
+  font: 800 1.25rem/1 var(--font-label);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  cursor: pointer;
+}

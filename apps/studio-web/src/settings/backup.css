@@ -1,0 +1,57 @@
+.backup {
+  display: grid;
+  gap: 12px;
+}
+
+.backup-note {
+  margin: 0;
+  font: 400 1rem/1.4 var(--font-book);
+  color: var(--ink-soft);
+}
+
+.backup-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.backup-import {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+}
+
+.backup-import:focus-within {
+  outline: 3px solid var(--select);
+  outline-offset: 3px;
+}
+
+.visually-hidden-input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+
+.backup-message {
+  margin: 0;
+  font: 400 1rem/1.4 var(--font-book);
+  color: var(--ink);
+}
+
+.backup-alert {
+  font-weight: 700;
+}
+
+.storage-line {
+  margin: 0;
+  font: 400 1rem/1.4 var(--font-book);
+  color: var(--ink-soft);
+  font-variant-numeric: lining-nums;
+}

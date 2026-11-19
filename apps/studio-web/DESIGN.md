@@ -69,6 +69,24 @@ typography:
     fontWeight: 800
     lineHeight: 1
     letterSpacing: "0.16em"
+  tab:
+    fontFamily: "Libre Franklin, system-ui, sans-serif"
+    fontSize: "0.9375rem"
+    fontWeight: 800
+    lineHeight: 1
+    letterSpacing: "0.14em"
+  sticking:
+    fontFamily: "Libre Caslon Text, Georgia, serif"
+    fontSize: "min(3rem, calc(var(--slot) * 0.95))"
+    fontWeight: 700
+    lineHeight: 1
+    fontFeature: "lnum"
+  caption:
+    fontFamily: "Libre Franklin, system-ui, sans-serif"
+    fontSize: "0.6875rem"
+    fontWeight: 500
+    lineHeight: 1
+    letterSpacing: "0.06em"
 rounded:
   none: "0px"
 spacing:
@@ -76,6 +94,7 @@ spacing:
   sm: "12px"
   md: "18px"
   lg: "24px"
+  xl: "32px"
   gutter: "clamp(16px, 5.5vw, 32px)"
 components:
   button-primary:
@@ -134,6 +153,86 @@ components:
     textColor: "{colors.ink}"
     rounded: "{rounded.none}"
     width: "min(640px, 100%)"
+  tab:
+    backgroundColor: "{colors.paper}"
+    textColor: "{colors.ink-soft}"
+    typography: "{typography.tab}"
+    rounded: "{rounded.none}"
+    height: "64px"
+  tab-selected:
+    textColor: "{colors.ink}"
+  button-stop-test:
+    backgroundColor: "{colors.paper}"
+    textColor: "{colors.ink}"
+    typography: "{typography.control-caps}"
+    rounded: "{rounded.none}"
+    height: "84px"
+  click-label:
+    backgroundColor: "{colors.paper}"
+    textColor: "{colors.ink}"
+    rounded: "{rounded.none}"
+    padding: "4px 12px"
+  click-label-silent:
+    backgroundColor: "{colors.ink}"
+    textColor: "{colors.paper}"
+  ladder-row:
+    textColor: "{colors.ink}"
+    rounded: "{rounded.none}"
+    height: "64px"
+    padding: "14px 0"
+  ladder-row-locked:
+    textColor: "{colors.ink-soft}"
+  rank-mark:
+    textColor: "{colors.ink}"
+    rounded: "{rounded.none}"
+    size: "14px"
+  target-cell:
+    textColor: "{colors.ink}"
+    rounded: "{rounded.none}"
+    padding: "10px 8px"
+  target-cell-future:
+    textColor: "{colors.ink-soft}"
+  stat-row:
+    textColor: "{colors.ink}"
+    typography: "{typography.body}"
+    padding: "0 0 10px"
+  calendar-day:
+    backgroundColor: "{colors.ink}"
+    rounded: "{rounded.none}"
+    size: "14px"
+  button-import:
+    backgroundColor: "{colors.paper}"
+    textColor: "{colors.ink}"
+    rounded: "{rounded.none}"
+    height: "64px"
+    padding: "10px 12px"
+  button-import-pressed:
+    backgroundColor: "{colors.ink}"
+    textColor: "{colors.paper}"
+  song-row:
+    textColor: "{colors.ink}"
+    rounded: "{rounded.none}"
+    height: "64px"
+    padding: "14px 0"
+  button-turn:
+    backgroundColor: "{colors.paper}"
+    textColor: "{colors.ink}"
+    rounded: "{rounded.none}"
+    height: "64px"
+    padding: "0 12px"
+  button-turn-disabled:
+    textColor: "{colors.rule-soft}"
+  score-frame:
+    backgroundColor: "{colors.paper}"
+    rounded: "{rounded.none}"
+    width: "100%"
+  video-frame:
+    backgroundColor: "{colors.paper}"
+    rounded: "{rounded.none}"
+    width: "100%"
+  storage-line:
+    textColor: "{colors.ink-soft}"
+    typography: "{typography.body}"
 ---
 
 # Design System: TempoDojo Studio
@@ -152,6 +251,8 @@ Density is low and the type is very large, because the reader is far away and ho
 - Notation drawn as filled engraved shapes, not icons: wedge accent, tapered stem, rotated notehead, crescent ghost parentheses, quarter rest.
 - Square corners everywhere, 2px ink outlines, 2px heavy rules around the notation, 1px rules under heads.
 - State never carried by colour alone: accents differ in shape, ghosts in size and parentheses, play state in inversion and label.
+- The book has four sections (Today, Ladder, Songs, Metro) behind a printed tab bar; exercises are written as sticking letters in Caslon, the way a method book prints R and L under the staff.
+- Outside material (an engraved Guitar Pro score, a PDF chart, a YouTube video) is pasted into the page between 2px ink rules, never wider than the screen, and takes its colour from the page's tokens.
 
 ## Colors
 
@@ -161,10 +262,10 @@ A two-tone engraving palette with one pencil and one selection colour, each rest
 - **Engraving Black** (`ink`): all text, notation, outlines, heavy rules, and the solid primary button fill.
 
 ### Secondary
-- **Selection Teal** (`select`): focus outline (3px, 3px offset), the checked choice's border and inset 5px underline, text selection. Nothing decorative.
+- **Selection Teal** (`select`): focus outline (3px, 3px offset), the checked choice's border and inset 5px underline, text selection; in a score, a 15% wash over the bar being played and a 20% wash over a selected range. Nothing decorative.
 
 ### Tertiary
-- **Orange Pencil** (`pencil`): only the hand-drawn ring around the live note (and the app icon's ring). It marks "now"; it is never a button, a label, or an accent glyph.
+- **Orange Pencil** (`pencil`): only the hand-drawn ring around the live note (and the app icon's ring), and in a score the 3px beat cursor and the notes being played. It marks "now"; it is never a button, a label, or an accent glyph.
 
 ### Neutral
 - **Cool Paper** (`paper`): page and sheet background; text colour on the black primary.
@@ -174,9 +275,13 @@ A two-tone engraving palette with one pencil and one selection colour, each rest
 - **Night page** (`*-night` tokens): the same roles reversed, applied by `prefers-color-scheme: dark` or `data-theme="dark"`; pencil and teal lift slightly to hold contrast on near-black.
 
 ### Named Rules
-**The One Pencil Rule.** Orange appears only as the ring on the note being played. If orange is on screen while the metronome is stopped, something is wrong.
+**The One Pencil Rule.** Orange appears only on the note being played: the ring on the metronome and exercise, the beat cursor in a score. If orange is on screen while nothing is playing, something is wrong; a score's beat cursor is hidden until Play.
 
-**The Teal Means Chosen Rule.** Teal marks selection and keyboard focus, and nothing else. A checked choice also gains a bold weight and an inset underline, so it never relies on hue.
+**The Teal Means Chosen Rule.** Teal marks selection and keyboard focus, and nothing else; a score's current-bar wash is the one positional use, kept to 15%. A checked choice also gains a bold weight and an inset underline, so it never relies on hue.
+
+**The Themed Material Rule.** Outside material is coloured only through the theme tokens. A score is engraved in `ink` (glyphs, staff lines, bar lines, bar numbers) and re-inked when the OS scheme or `data-theme` changes; its cursor and selection use `pencil` and `select`. A PDF page prints in reverse on the night page (`invert(0.9) hue-rotate(180deg)`). No hex is hard-coded into a renderer.
+
+**The Ink Quantity Rule.** Progress is shown by how much ink is laid down (a rank mark filling, a bar rising, a day darkening), never by a new hue. Rank has no bronze, silver, or gold colour.
 
 ## Typography
 
@@ -194,11 +299,18 @@ A two-tone engraving palette with one pencil and one selection colour, each rest
 - **Count** (400, 1.375rem, 1): beat numbers under each note, Soft Ink.
 - **Label** (Franklin 500, 0.8125rem, 0.12em, uppercase): the running head and field labels.
 - **Control** (Franklin 800, 1.5rem, tabular): nudge buttons; Play/Stop at 1.75rem with 0.16em tracking, uppercase; Done at 1rem, 0.1em, uppercase.
+- **Sticking** (Caslon 700, up to 3rem, scaled from the slot): the R / L / K / H letters of an exercise pattern. Graces are the other hand in lower case, Caslon 700 at half the slot, raised; buzz is an italic 700 "z".
+- **Tab** (Franklin 800, 0.9375rem, 0.14em, uppercase): the four tab-bar labels; at 420px wide and below they tighten to 0.8125rem, 0.06em so all four fit a 360px phone.
+- **Song readouts** (Caslon 700, tabular): the song player's speed percent ("100 %") at clamp(3rem, 14vw, 5rem), line height 0.9 (clamp(5.5rem, 9vw, 8rem) on iPad landscape), with "Bar N of M" beside it at clamp(1.375rem, 6vw, 2.25rem) and "Pass N" under it in Soft Ink; the PDF page counter ("Page 1 of 2") at Headline size. Song and video titles take the Headline size.
+- **Song row** (Caslon): title 700 1.25rem, meta line 400 1rem Soft Ink, tabular ("Guitar Pro · 2 sections · Last 100 %"); section rows repeat it (name, then "Bars 1–8 · Best 92 % · From the file"). Read for meaning, so Caslon, not a Franklin caption.
+- **Import control** (Franklin 800, 0.875rem, 1.2, 0.06em, uppercase): the three Songs import verbs.
+- **Caption** (Franklin 500, 0.6875rem, uppercase, 0.06–0.08em): chart axis captions and the calendar legend only. Voice labels above pattern lines use Franklin 500 0.75rem, 0.1em, uppercase, Soft Ink.
+- **Section headings** (Caslon 700, sentence case): tier headings and Today's "Next up" / "Your practice" at the Title size; stat headings ("Sessions per week", "Practice days") at 1.375rem. Stat values Caslon 700 1.5–2rem, tabular.
 
 ### Named Rules
 **The Read-In-Caslon Rule.** Any number or word the drummer reads for meaning (tempo, bar, time, counts, option names, sheet titles) is Caslon. Franklin is for labels and verbs on controls.
 
-**The Running Head Rule.** Uppercase tracked Franklin belongs to the page's running head and to form-field labels, as a printed book uses it. It does not appear as a decorative line above headings.
+**The Running Head Rule.** Uppercase tracked Franklin belongs to the page's running head and to form-field labels, as a printed book uses it. It does not appear as a decorative line above headings. The same register names a staff (a voice label above its pattern line, as a score names its instrument), the tab-bar sections, and a chart's axis; headings themselves, including stat headings, are Caslon sentence case.
 
 ## Layout
 
@@ -207,7 +319,19 @@ A single centred page column, max 640px, side gutter clamp(16px, 5.5vw, 32px), f
 - **Notation grid:** one column per pulse, capped at 8 columns; note height is min(clamp(110px, 19vh, 176px), column width × 1.6) so noteheads always land on the staff line. On narrow containers (≤560px) bars longer than 4 beats wrap into rows of 4 at a reduced height; bar lines open and close the whole bar only, never each row.
 - **Transport:** a five-cell nudge row (1fr 1fr 1.4fr 1fr 1fr, Tap in the wider centre cell), 8px gaps, above a full-width Play/Stop.
 - **iPad landscape (≥900px, landscape):** the page regroups into a two-column spread (1.5fr page, 1fr transport, 56px gap, max 1180px); nudges become a 2-column grid with Tap spanning the top; sheets become a 460px right-side panel.
-- **Rhythm:** 8px between controls, 12px inside fields, 18px field padding, 24px section padding; vertical breathing room above the heading and notation uses viewport-relative clamps.
+- **Rhythm:** 8px between controls, 12px inside fields, 18px field padding, 24px section padding, 32px between tiers and between Today's sections and stat groups; vertical breathing room above the heading and notation uses viewport-relative clamps.
+- **App shell:** fixed to the dynamic viewport (100dvh) as two rows: the panel (minmax(0, 1fr), scrolls on its own with contained overscroll) and the tab bar (auto). The bar never covers content; a screen taller than the space scrolls above it. Inside the shell the metronome page drops its bottom padding to 16px and takes the tab bar's height back from the space above the staff (clamp(20px, 4.5vh, 56px)).
+- **Short screens (max-height 780px):** the shell tightens the vertical rhythm (8px above the heading, 12px around the staff, 10px under the page) so Play stays on screen on a 360×740 phone.
+- **Sticking pattern:** one bar on one line per voice, never wrapped. Slot width comes from a container query: clamp(18px, (100cqi − 20px − (beats − 1) × 11px) ÷ slots, 64px); only when 18px slots cannot fit does the bar scroll sideways. 10px side padding keeps the pencil ring on the first and last note unclipped.
+- **Exercise screen:** running head, then content (title, pattern, actions, targets, focus, best, tip) in 18px gaps, then a transport sticky to the bottom of the scrolling page above a 2px ink rule: BPM numeral (Caslon 700, clamp(3.5rem, 16vw, 5rem)) with its note value, a climb check, four nudges (−5 −1 +1 +5), Play. The pattern comes first, directly under the title. On iPad landscape it takes the same two-column spread as the metronome (1.5fr / 1fr, 56px gap, max 1180px), transport bottom-aligned on the right without its top rule, numeral clamp(7.5rem, 11vw, 10rem).
+- **Ladder and Today:** single 640px column, page bottom padding 32px plus safe area. Ladder rows below 420px wide stack the "Next" line under the status instead of on the right.
+- **Songs:** the same 640px column: running head ("Songs" left, song count right), Headline title, the three import controls in a 3-column grid with 8px gaps (one column below 420px), then the song list 24px below.
+- **Song players (Guitar Pro, YouTube, PDF):** the exercise screen's grammar. Running head (an underlined Back on the left, the kind on the right), a Headline title, the material between 2px ink rules, then controls, then a transport sticky to the bottom over a 2px ink rule. On iPad landscape they take the 1.5fr / 1fr spread (56px gap, max 1180px; the PDF uses a page column up to 900px beside a 320px controls column, max 1276px) and the transport drops its top rule.
+- **Score box:** sized so it ends above the sticky transport: max-height calc(100dvh − 520px), never under 220px, on phones; calc(100dvh − 350px) on iPad landscape. It scrolls vertically inside; the score is engraved 2 bars a row at scale 1.25 under 600px wide, 1.8 above.
+- **Video:** 16:9, full column width, between 2px ink rules top and bottom.
+- **PDF page:** fitted to the column width and to the screen height (window height − 190px, never under 320px), centred, in a 1px Pencil Rule frame.
+
+**The Screen-Wide Rule.** A score, a video, or any outside page is never wider than the screen. The shell panel is one minmax(0, 1fr) column and every player column shrinks to it (min-width 0); wide material scales or scrolls inside its own box, never the page sideways.
 
 ## Elevation & Depth
 
@@ -215,7 +339,7 @@ Flat. Depth is printed, not lit: rules and outlines separate regions. The one ex
 
 ### Shadow Vocabulary
 - **Sheet lift** (`box-shadow: 0 -12px 32px color-mix(in srgb, var(--ink) 18%, transparent)`): bottom sheets only.
-- **Selected underline** (`box-shadow: inset 0 -5px 0 var(--select)`): a printed mark, not elevation; the checked choice.
+- **Selected underline** (`box-shadow: inset 0 -5px 0 var(--select)`): a printed mark, not elevation; the checked choice. The selected tab and the current-rank target cell carry the same mark at 4px (`inset 0 -4px 0 var(--select)`).
 
 ### Named Rules
 **The Printed Depth Rule.** No shadows on page elements. Separation comes from 2px ink rules and outlines; only an overlay sheet casts a shadow.
@@ -237,6 +361,10 @@ Square-cornered throughout (0 radius): buttons, choices, inputs, steppers, check
 - **Style:** 48px tall, 56px minimum, 2px ink outline, Caslon 500 1.125rem, wrapping row with 8px gaps.
 - **Selected:** teal border, inset 5px teal underline, Caslon 700. Native radios underneath.
 
+- **Stop test (rank test, running):** 84px full width, paper fill, 2px ink outline, Franklin 800 1.75rem uppercase 0.16em: the transport size, because it is pressed mid-test with sticks in hand. Press inverts to ink.
+- **Sheet primary (Start test, Claim, Save, Save target):** solid ink, full width, 64px, Franklin 800 1.25rem uppercase 0.14em; disabled fills Pencil Rule with paper text.
+- **Exercise actions (Log clean tempo, Rank test):** text buttons in a two-column grid, 8px gap, 64px tall, 1rem, because they are touched mid-practice.
+
 ### Inputs / Fields
 - **Number input:** 52px, 2px ink outline, square, Caslon 700 1.5rem tabular; label above in uppercase Franklin, Soft Ink.
 - **Stepper:** 2px outlined bar, 56px − / + cells either side of a Caslon value; disabled ends go Pencil Rule.
@@ -251,6 +379,74 @@ Square-cornered throughout (0 radius): buttons, choices, inputs, steppers, check
 
 ### Empty Note
 - **Style:** the message shown in place of an empty list. Caslon 400 1.125rem, 1.4 line height, Soft Ink, no margin; one plain sentence saying what to do next.
+
+### Navigation (Tab bar)
+- **Style:** a paper bar under a 2px ink rule at the foot of the shell, four equal tabs (Today · Ladder · Songs · Metro) in the page column (640px; 1180px on iPad landscape), safe-area padding below. Tabs are 64px tall, borderless, Tab type in Soft Ink. At 420px wide and below the bar's gutter narrows to 8px and the labels tighten (see Typography).
+- **Selected:** Engraving Black text and a 4px inset teal underline. Press inverts to ink fill with paper text (80ms ease-out). Focus ring sits inside (−6px offset). Arrow keys, Home and End move between tabs.
+
+### Ladder Row
+- **Style:** a full-width text row, 64px minimum, 14px vertical padding, 1px Pencil Rule between rows (none after the last). Grid: a 14px rank mark, then the exercise name (Caslon 700 1.25rem) over a status line (Caslon 400 1rem, Soft Ink; the earned rank word goes Caslon 700 ink), and a "Next: Silver 80" / "Mastered" line on the right in Franklin 800 0.8125rem uppercase 0.08em, tabular.
+- **Locked:** the row drops to Soft Ink, is not pressable, and loses the Next line. A tier that is locked says why in one Caslon sentence under its heading ("Locked — reach Bronze on every tier 1 exercise").
+- **Tier heading:** "Tier N" in Caslon 700 1.75rem, 32px above each tier. Today's "Next up" list reuses these rows unchanged.
+
+### Rank Mark
+- **Style:** a 14px square with a 2px ink outline that fills from the bottom as rank rises: Unranked is a Pencil Rule outline, Bronze an empty ink outline, Silver a 4px ink band at the foot, Gold half filled, Master solid ink. Rank is also always written out in the row; the mark is the glanceable echo.
+
+### Targets Row
+- **Style:** an ordered row of four equal cells (Bronze, Silver, Gold, Master), 8px gaps, each a 1px Pencil Rule box, 10px 8px padding: rank word in Caslon 0.9375rem over the BPM in Caslon 1.375rem, tabular. Ranks above the next one are Soft Ink.
+- **Current:** the next rank to earn goes Caslon 700, ink outline, and a 4px inset teal underline (`aria-current`).
+
+### Rank Test Sheet
+- **Style:** a sheet in steps. Setup: target choices, a Caslon 700 1.375rem target line, a Soft Ink note, a 64px sheet primary. Running: the target line, a large Caslon readout (clamp(2.5rem, 12vw, 3.5rem)), the Click/Silent label, and the 84px Stop test. Check: one plain Soft Ink instruction, checkboxes, Save and a text button.
+- **Click / Silent label:** Caslon 700 2rem in a 2px ink box, 4px 12px padding. A click bar is ink on paper; a silent bar inverts to paper on ink. Told by inversion and the word, never by colour.
+
+### Today
+- **Weekly line:** "This week" at Headline size, then the week's progress as a Caslon 400 1.5rem line; when met, "Target met" in Caslon italic 700 1.25rem. The target is changed from a Soft Ink underlined text link.
+- **Stat row:** label left in Caslon 400 1.125rem, value right in Caslon 700 1.5rem tabular, 10px under, 1px Pencil Rule. The time list repeats this as a bare list with the last rule dropped.
+- **Week chart:** eight solid-ink bars on a 72px track, 6px gaps, max 420px wide, the count above each bar in Caslon 0.875rem; an empty week is a Pencil Rule sliver. Two Caption labels ("8 weeks ago", "This week") each span half the chart, so a caption never widens a bar column.
+- **Practice calendar:** 12 weeks of 14px square days in columns of seven, 3px gaps. Five ink levels: level 0 a 1px Pencil Rule outline, then ink at 25%, 50%, 75%, and solid; future days are a 6% ink tint. A Caption legend shows the five levels. No streak count anywhere.
+
+### Backup (Settings sheet)
+- **Style:** a sheet field with its field label, one Soft Ink Caslon 1rem note, then Export and Import as text buttons in a wrapping row (8px gaps; the file input is visually hidden inside the Import label, which takes the teal focus ring). Results print as one Caslon 1rem sentence in ink; errors set it bold.
+
+- **Storage line:** under the backup buttons, one Caslon 400 1rem Soft Ink sentence ("Using 48 MB of 2.1 GB on this device."); shown only when the browser reports usage.
+
+### Songs Library
+- **Import controls:** three 64px outlined controls (Add Guitar Pro or MusicXML, Add PDF, Add YouTube link), 2px ink, paper fill, Import control type, centred; press inverts to ink. The file inputs are visually hidden inside their labels, which take the teal focus ring.
+- **Song row:** the whole title and meta block is one 64px-minimum button (14px vertical padding, 4px between lines; a press lays an 8% ink tint), with a Remove text button on the right, 12px apart. Rows are separated by 1px Pencil Rule; the last has none. Removing asks first.
+- **Empty note:** the shared Empty Note, 24px below the controls.
+- **Import errors:** one bold Caslon 1rem ink sentence under the controls, `role="alert"`. The same bold ink sentence reports errors in the song sheets and the PDF viewer (1.125rem there).
+
+### Add YouTube Sheet
+- **Style:** a standard sheet ("Add a YouTube video"): Link, Title, and Song BPM (optional) as number-field-style inputs, a Soft Ink Caslon 1rem hint under the BPM ("Only needed for a count-in before each loop."), the alert sentence when the link is refused, and a full-width 64px sheet primary ("Add video").
+
+### Guitar Pro Player
+- **Score:** alphaTab in page layout, engraved in `ink`, title block, tuning and chord diagrams hidden (the page already prints the title), inside the score box between 2px ink rules on paper. While playing, the current bar carries a 15% teal wash and a 3px orange beat cursor runs through it; at rest the cursor is hidden.
+- **Transport:** the speed percent and "Bar N of M" share one baseline row over four 64px nudges (−5 −1 +1 +5, Franklin 800 1.5rem) and the 84px Play/Stop. Play is disabled (Pencil Rule fill, paper text) until the score loads; a load error prints as a 2px ink-boxed Caslon sentence.
+- **Controls:** From bar / To bar number fields with a Loop check, then Count-in and Click checks and Tracks / Sections text buttons; every check and button here is a 64px target on iPad, checks 64px everywhere. The loop trainer follows.
+- **Tracks sheet:** a bare row list, track name as a Caslon row title, Mute and Solo checks on the right.
+
+### YouTube Player
+- **Video:** 16:9 between 2px ink rules. Under it, Set A and Set B as two 64px outlined buttons (Franklin 800 1.125rem, 0.08em, uppercase), a Caslon 1.25rem A/B readout, and a Loop A to B check (disabled until both are set).
+- **Speed:** the segmented choice laid as a 4-column grid of 64px cells, two even rows; it is this screen's tempo control.
+- **Count-in:** a check beside a 140px Song BPM field; with no BPM the check is disabled (Pencil Rule) and a Soft Ink line says "Add the song's BPM to count in."
+- **Transport:** "Pass N" in Caslon 700 1.25rem when the trainer runs, over the 84px Play/Stop.
+
+### PDF Viewer
+- **Page:** the fitted page canvas with two invisible tap zones over its left and right thirds (Previous, Next; a press lays a 6% ink tint, 120ms). Arrow, Page and Space keys turn pages too.
+- **Page turner:** a sticky bar over a 2px ink rule: the page counter at Headline size, then Previous page / Next page as two 64px outlined buttons (Franklin 800 1rem, 0.08em, uppercase); at the first or last page the button drops to Pencil Rule.
+- **Paired video (optional):** a 16:9 box no taller than 28dvh, ink-filled behind the video, with a 64px solid Play/Stop and speed choices; "Pair a YouTube video" / "Change video" is a text button opening a one-field link sheet.
+- **Night page:** the sheet itself prints in reverse (see The Themed Material Rule).
+
+### Sections Sheet and Loop Trainer
+- **Save this loop:** a Section name field and a full-width 64px sheet primary.
+- **Section row:** Caslon 700 1.25rem name over the Caslon meta line, then an underlined Caslon exercise link (48px) when one is linked, a Linked exercise select (52px, 2px ink, Caslon 1.125rem), and the actions: Loop and Clean at N % as 64px text buttons, Rename and Delete as 48px text buttons, 8px apart in a wrapping row. Rows have 16px vertical padding and 1px Pencil Rule between.
+- **Loop trainer:** a Loop trainer check that opens Start %, Target %, Step % and Every N passes number fields, and a Soft Ink Caslon 1.125rem summary line.
+
+### Sticking Pattern (signature)
+An exercise written as sticking letters, one line per voice (Hands, Kick, Hi-hat foot), each named by its voice label above, all held between 2px ink rules (16px above, 18px below, 12px between lines). Every voice keeps the whole bar on one line so beats stack exactly under each other. Each slot is a Caslon 700 letter (R, L, K, H) aligned by its bottom edge; an accent adds a filled engraved wedge above the letter (0.4 × 0.23 slot) without shifting it; a ghost is Caslon 400 in Ghost Ink between Ghost Ink parentheses; a flam or drag sets the other hand's lower-case letter(s) raised before the stroke in Caslon 700; a rest is a Ghost Ink centred dot. Beats are divided by a 1px Pencil Rule with 5px either side. While playing, the pencil ring (1.35 × slot wide) circles the first slot of the live beat on the first line.
+
+**The One Bar Rule.** A pattern is one bar per line and its voices never wrap apart: slots shrink to 18px, and only then does the bar scroll sideways as a whole.
 
 ### Sticking Line (signature)
 A real percussion staff: one 2px staff line through the noteheads, 2px heavy rules above and below the line, 52px bar lines at the bar's opening and close. Each beat is a tappable engraved note (min 44px wide) that cycles accent → normal → ghost → rest. Accent adds a wedge above; ghost is 82% scale in Ghost Ink inside crescent parentheses; mute is a quarter rest in Ghost Ink. When the bar is a gap (muted) bar, glyphs drop to 35% opacity. Counts sit under each note in Caslon.
@@ -268,6 +464,12 @@ An open, hand-drawn orange loop rotated −9°, 46% of the note height, centred 
 - **Do** give every state a non-colour signal: shape, weight, size, inversion, or label.
 - **Do** keep transport targets at 64px minimum (84px for Play/Stop) in the bottom thumb zone.
 - **Do** ship every new surface on both pages by using the tokens; never hard-code a light-page hex.
+- **Do** keep every voice of a pattern in one unwrapped bar, shrinking slots before scrolling, so the feet always sit under the hands they go with.
+- **Do** show rank as a filling square plus the written rank word; progress is ink quantity, not colour.
+- **Do** chart practice in ink alone (solid bars, ink-level days) with plain captions.
+- **Do** size anything pressed mid-practice like transport: 64px for actions, 84px for the one stop or play.
+- **Do** frame outside material (score, video, PDF page) between 2px ink rules inside the column, sized so it ends above the sticky transport.
+- **Do** colour a score or PDF only through the theme tokens, and re-ink it when the theme changes.
 
 ### Don't:
 - **Don't** use glowing dots, LED readouts, dark chassis styling, or a thin numeral on black; that is the category default this world replaces.
@@ -276,3 +478,9 @@ An open, hand-drawn orange loop rotated −9°, 46% of the note height, centred 
 - **Don't** use orange for buttons, accents, links, or text.
 - **Don't** put uppercase tracked lines above headings as decoration; uppercase Franklin is for the running head and field labels.
 - **Don't** substitute icon-font or emoji glyphs for notation or controls.
+- **Don't** wrap a pattern's voices apart or break a bar across lines; voices never wrap apart.
+- **Don't** count streaks, flames, or chains of days; the calendar shows practice, it does not punish a missed day.
+- **Don't** set stat or section headings as uppercase eyebrows; they are Caslon sentence case.
+- **Don't** let the tab bar overlay content; the panel scrolls above it.
+- **Don't** let a score, video, or PDF page widen the screen; it scales or scrolls inside its own box.
+- **Don't** show a score's orange beat cursor while stopped.
