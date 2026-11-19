@@ -1,8 +1,14 @@
-import { useMemo, useRef } from 'react';
+import { useMemo, useRef, useState } from 'react';
 import { WebAudioMetronome } from '@tempodojo/audio-web';
 import { nextAccent, pulsesPerBar, type AccentLevel, type MetronomeSettings } from '@tempodojo/core-metronome';
 import { createDexiePresetRepository } from '@tempodojo/storage';
+import { useKeyboardTransport } from '../platform/useKeyboardTransport';
+import { useWakeLock } from '../platform/useWakeLock';
+import { PresetsSheet } from './PresetsSheet';
+import { SettingsSheet } from './SettingsSheet';
+import { TrainerSheet } from './TrainerSheet';
 import { useMetronome, type MetronomeDeps } from './useMetronome';
+import { usePracticeTimer } from './usePracticeTimer';
 import './metronome.css';
 
 const SUBDIVISION_NAMES: Record<number, string> = {
@@ -31,14 +37,35 @@ function getDefaultDeps(): MetronomeDeps {
 
 export interface MetronomeScreenProps {
   deps?: MetronomeDeps;
-  presetName?: string;
-  onOpenSettings?: () => void;
 }
 
-export function MetronomeScreen({ deps, presetName, onOpenSettings }: MetronomeScreenProps) {
+type SheetName = 'settings' | 'trainer' | 'presets';
+
+const clock = (totalSec: number) => {
+  const mm = Math.floor(totalSec / 60);
+  const ss = totalSec % 60;
+  return `${String(mm).padStart(2, '0')}:${String(ss).padStart(2, '0')}`;
+};
+
+function trainerSummary(s: MetronomeSettings): string {
+  const parts: string[] = [];
+  const up = s.automator.speedUp;
+  if (up) parts.push(`speed-up ${up.startBpm} → ${up.targetBpm}`);
+  const gap = s.automator.gap;
+  if (gap) parts.push(`gap ${gap.barsOn} on / ${gap.barsOff} off`);
+  return parts.length ? parts.join(' · ') : 'off';
+}
+
+export function MetronomeScreen({ deps }: MetronomeScreenProps) {
   const resolved = useMemo(() => deps ?? getDefaultDeps(), [deps]);
   const m = useMetronome(resolved);
   const { settings, position, playing } = m;
+  const [sheet, setSheet] = useState<SheetName | null>(null);
+  const [presetName, setPresetName] = useState<string | null>(null);
+  const [countdownSec, setCountdownSec] = useState<number | null>(null);
+  const timer = usePracticeTimer({ playing, countdownSec, onCountdownEnd: m.stop });
+  useWakeLock(playing);
+  useKeyboardTransport({ toggle: m.toggle, nudge: m.nudge });
   const pulses = pulsesPerBar(settings.meter);
   const shownBpm = Math.round(playing && position && !position.countIn ? position.bpm : settings.bpm);
 
@@ -61,13 +88,18 @@ export function MetronomeScreen({ deps, presetName, onOpenSettings }: MetronomeS
   const cycleAccent = (index: number) =>
     m.setSettings((s) => ({ accents: s.accents.map((a, i) => (i === index ? nextAccent(a) : a)) }));
 
-  const status = !playing || !position ? 'Ready' : position.countIn ? 'Count-in' : `Bar ${position.bar + 1}`;
+  const where = !playing || !position ? 'Ready' : position.countIn ? 'Count-in' : `Bar ${position.bar + 1}`;
+  const time = timer.remainingSec !== null ? `${clock(timer.remainingSec)} left` : clock(timer.elapsedSec);
 
   return (
     <main className="page" data-playing={playing}>
       <header className="running-head">
-        <span>{presetName ?? 'Metronome'}</span>
-        <span aria-live="off">{status}</span>
+        <button type="button" className="head-button" onClick={() => setSheet('presets')} aria-label="Presets">
+          {presetName ?? 'Metronome'}
+        </button>
+        <span aria-live="off">
+          {where} · {time}
+        </span>
       </header>
 
       <section className="heading" aria-label="Tempo">
@@ -85,17 +117,16 @@ export function MetronomeScreen({ deps, presetName, onOpenSettings }: MetronomeS
           onPointerUp={endDrag}
           onPointerCancel={endDrag}
           onWheel={onWheel}
-          onKeyDown={(e) => {
-            if (e.key === 'ArrowUp') m.nudge(1);
-            if (e.key === 'ArrowDown') m.nudge(-1);
-          }}
         >
           <span className="bpm-value">{shownBpm}</span>
           <span className="bpm-unit">BPM</span>
         </div>
-        <button type="button" className="tempo-line" onClick={onOpenSettings} aria-label="Meter and subdivision settings">
+        <button type="button" className="tempo-line" onClick={() => setSheet('settings')} aria-label="Meter and subdivision settings">
           {NOTE_FOR_UNIT[settings.meter.beatUnit]} = {shownBpm} · {settings.meter.beatsPerBar}/{settings.meter.denominator} ·{' '}
           {SUBDIVISION_NAMES[settings.subdivision]}
+        </button>
+        <button type="button" className="tempo-line trainer-line" onClick={() => setSheet('trainer')} aria-label="Trainer settings">
+          Trainer: {trainerSummary(settings)}
         </button>
       </section>
 
@@ -147,6 +178,30 @@ export function MetronomeScreen({ deps, presetName, onOpenSettings }: MetronomeS
           {playing ? 'Stop' : 'Play'}
         </button>
       </section>
+
+      <SettingsSheet open={sheet === 'settings'} settings={settings} onChange={m.setSettings} onClose={() => setSheet(null)} />
+      <TrainerSheet
+        open={sheet === 'trainer'}
+        settings={settings}
+        onChange={m.setSettings}
+        countdownSec={countdownSec}
+        onCountdownChange={(sec) => {
+          setCountdownSec(sec);
+          timer.reset();
+        }}
+        onClose={() => setSheet(null)}
+      />
+      <PresetsSheet
+        open={sheet === 'presets'}
+        repo={resolved.repo}
+        current={settings}
+        onLoad={(preset) => {
+          m.setSettings(preset.settings);
+          setPresetName(preset.name);
+          setSheet(null);
+        }}
+        onClose={() => setSheet(null)}
+      />
     </main>
   );
 }

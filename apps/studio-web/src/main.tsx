@@ -2,6 +2,7 @@ import './styles.css';
 import { StrictMode } from 'react';
 import * as ReactDOM from 'react-dom/client';
 import App from './app/app';
+import { requestPersistentStorage } from '@tempodojo/storage';
 
 const theme = new URLSearchParams(window.location.search).get('theme');
 if (theme === 'light' || theme === 'dark') document.documentElement.dataset.theme = theme;
@@ -15,3 +16,5 @@ root.render(
     <App />
   </StrictMode>,
 );
+
+void requestPersistentStorage();

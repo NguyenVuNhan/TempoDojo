@@ -68,7 +68,7 @@ describe('TrainerSheet', () => {
   });
 
   it('sets a countdown', () => {
-    const { onCountdownChange } = setup();
+    const { onCountdownChange } = setup({}, 300);
     fireEvent.click(screen.getByRole('radio', { name: '10 min' }));
     expect(onCountdownChange).toHaveBeenCalledWith(600);
     fireEvent.click(screen.getByRole('radio', { name: 'Off' }));

@@ -36,7 +36,8 @@
     "vitest.config.mts",
     "eslint.config.js",
     "eslint.config.cjs",
-    "eslint.config.mjs"
+    "eslint.config.mjs",
+    "src/**/test-utils.ts"
   ],
   "include": [
     "src/**/*.js",

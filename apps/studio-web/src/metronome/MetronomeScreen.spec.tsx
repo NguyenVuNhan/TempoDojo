@@ -105,4 +105,33 @@ describe('MetronomeScreen', () => {
       timeout: 1500,
     });
   });
+  it('opens meter settings from the tempo line and applies a new meter', async () => {
+    await renderScreen();
+    fireEvent.click(screen.getByRole('button', { name: 'Meter and subdivision settings' }));
+    fireEvent.click(screen.getByRole('radio', { name: '8' }));
+    for (let i = 0; i < 3; i++) fireEvent.click(screen.getByRole('button', { name: 'More beats' }));
+    fireEvent.click(screen.getByRole('button', { name: 'Done' }));
+    expect(screen.queryByRole('dialog')).toBeNull();
+    expect(screen.getAllByRole('button', { name: /^Beat \d+:/ })).toHaveLength(7);
+    expect(screen.getByRole('button', { name: 'Beat 1: accent' })).toBeTruthy();
+  });
+
+  it('loads a preset and shows its name in the running head', async () => {
+    const engine = new FakeEngine();
+    const repo = new MemoryRepo();
+    repo.presets = [{ id: 'x', name: 'Swing 140', updatedAt: 1, settings: { ...DEFAULT_SETTINGS, bpm: 140 } }];
+    render(<MetronomeScreen deps={{ engine, repo }} />);
+    fireEvent.click(await screen.findByRole('button', { name: 'Presets' }));
+    fireEvent.click(await screen.findByRole('button', { name: 'Load Swing 140' }));
+    expect(bpm()).toBe('140');
+    expect(screen.getByRole('button', { name: 'Presets' }).textContent).toBe('Swing 140');
+  });
+
+  it('summarizes the trainer on the screen', async () => {
+    await renderScreen();
+    fireEvent.click(screen.getByRole('button', { name: 'Trainer settings' }));
+    fireEvent.click(screen.getByRole('checkbox', { name: 'Gap click' }));
+    fireEvent.click(screen.getByRole('button', { name: 'Done' }));
+    expect(screen.getByRole('button', { name: 'Trainer settings' }).textContent).toBe('Trainer: gap 3 on / 1 off');
+  });
 });
