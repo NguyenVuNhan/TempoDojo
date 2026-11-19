@@ -61,7 +61,7 @@ describe('SettingsSheet', () => {
     expect(onChange).toHaveBeenLastCalledWith({ subdivision: 3 });
     fireEvent.click(screen.getByRole('radio', { name: 'Mute' }));
     expect(onChange).toHaveBeenLastCalledWith({ subdivisionLevel: 'mute' });
-    fireEvent.click(screen.getByRole('radio', { name: 'Rim' }));
+    fireEvent.click(screen.getByRole('radio', { name: 'Rimshot' }));
     expect(onChange).toHaveBeenLastCalledWith({ soundId: 'rim' });
     fireEvent.click(screen.getByRole('radio', { name: '2 bars' }));
     expect(onChange).toHaveBeenLastCalledWith({ countInBars: 2 });
