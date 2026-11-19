@@ -229,16 +229,17 @@
   color: var(--ink-soft);
 }
 
+/* Sheet primary: one size everywhere (64px, full width), matching Save target and the rank test. */
 .ex-save {
-  justify-self: start;
-  min-height: 48px;
+  width: 100%;
+  min-height: 64px;
   padding: 0 20px;
   border: 2px solid var(--ink);
   border-radius: 0;
   background: var(--ink);
   color: var(--paper);
-  font: 800 1rem/1 var(--font-label);
-  letter-spacing: 0.1em;
+  font: 800 1.25rem/1 var(--font-label);
+  letter-spacing: 0.14em;
   text-transform: uppercase;
   cursor: pointer;
 }

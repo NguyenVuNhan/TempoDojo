@@ -228,7 +228,7 @@
 
 .today-primary {
   width: 100%;
-  min-height: 56px;
+  min-height: 64px;
   border: 2px solid var(--ink);
   border-radius: 0;
   background: var(--ink);

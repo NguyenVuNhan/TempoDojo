@@ -1,48 +1,251 @@
 {
   "schemaVersion": 2,
-  "generatedAt": "2026-11-19T00:00:00Z",
+  "generatedAt": "2026-11-19T12:00:00Z",
   "title": "Design System: TempoDojo Studio",
   "extensions": {
     "colorMeta": {
-      "ink": { "role": "primary", "displayName": "Engraving Black", "canonical": "#141414", "tonalRamp": ["#141414", "#2a2a28", "#41413d", "#5a5a55", "#76766f", "#94948d", "#b8b8b1", "#e0e0da"] },
-      "select": { "role": "secondary", "displayName": "Selection Teal", "canonical": "#008fa6", "tonalRamp": ["#00303a", "#004753", "#00606f", "#007a8c", "#008fa6", "#3aaebf", "#86cdd8", "#cfeaee"] },
-      "pencil": { "role": "tertiary", "displayName": "Orange Pencil", "canonical": "#ff4f00", "tonalRamp": ["#4a1700", "#702300", "#9a3000", "#c83f00", "#ff4f00", "#ff7d45", "#ffae8a", "#ffdccc"] },
-      "paper": { "role": "neutral", "displayName": "Cool Paper", "canonical": "#f2f2ee", "tonalRamp": ["#262624", "#43433f", "#63635d", "#85857e", "#a8a8a1", "#cacac4", "#e3e3de", "#f2f2ee"] },
-      "ink-soft": { "role": "neutral", "displayName": "Soft Ink", "canonical": "#55554f", "tonalRamp": ["#1c1c1a", "#2e2e2b", "#41413d", "#55554f", "#6e6e67", "#8b8b84", "#b0b0a9", "#d9d9d3"] },
-      "ink-ghost": { "role": "neutral", "displayName": "Ghost Ink", "canonical": "#74746d", "tonalRamp": ["#22221f", "#363633", "#4d4d48", "#63635d", "#74746d", "#929289", "#b4b4ad", "#dcdcd6"] },
-      "rule-soft": { "role": "neutral", "displayName": "Pencil Rule", "canonical": "#b9b9b2", "tonalRamp": ["#2c2c29", "#45453f", "#62625c", "#80807a", "#9e9e97", "#b9b9b2", "#d3d3cd", "#ebebe6"] },
-      "paper-night": { "role": "neutral", "displayName": "Night Paper", "canonical": "#141413" },
-      "ink-night": { "role": "primary", "displayName": "Night Ink", "canonical": "#ecebe4" },
-      "ink-soft-night": { "role": "neutral", "displayName": "Night Soft Ink", "canonical": "#a9a8a0" },
-      "ink-ghost-night": { "role": "neutral", "displayName": "Night Ghost Ink", "canonical": "#8d8c85" },
-      "rule-soft-night": { "role": "neutral", "displayName": "Night Pencil Rule", "canonical": "#4d4d48" },
-      "pencil-night": { "role": "tertiary", "displayName": "Night Pencil", "canonical": "#ff6a26" },
-      "select-night": { "role": "secondary", "displayName": "Night Teal", "canonical": "#2bb3c8" }
+      "ink": {
+        "role": "primary",
+        "displayName": "Engraving Black",
+        "canonical": "#141414",
+        "tonalRamp": [
+          "#141414",
+          "#2a2a28",
+          "#41413d",
+          "#5a5a55",
+          "#76766f",
+          "#94948d",
+          "#b8b8b1",
+          "#e0e0da"
+        ]
+      },
+      "select": {
+        "role": "secondary",
+        "displayName": "Selection Teal",
+        "canonical": "#008fa6",
+        "tonalRamp": [
+          "#00303a",
+          "#004753",
+          "#00606f",
+          "#007a8c",
+          "#008fa6",
+          "#3aaebf",
+          "#86cdd8",
+          "#cfeaee"
+        ]
+      },
+      "pencil": {
+        "role": "tertiary",
+        "displayName": "Orange Pencil",
+        "canonical": "#ff4f00",
+        "tonalRamp": [
+          "#4a1700",
+          "#702300",
+          "#9a3000",
+          "#c83f00",
+          "#ff4f00",
+          "#ff7d45",
+          "#ffae8a",
+          "#ffdccc"
+        ]
+      },
+      "paper": {
+        "role": "neutral",
+        "displayName": "Cool Paper",
+        "canonical": "#f2f2ee",
+        "tonalRamp": [
+          "#262624",
+          "#43433f",
+          "#63635d",
+          "#85857e",
+          "#a8a8a1",
+          "#cacac4",
+          "#e3e3de",
+          "#f2f2ee"
+        ]
+      },
+      "ink-soft": {
+        "role": "neutral",
+        "displayName": "Soft Ink",
+        "canonical": "#55554f",
+        "tonalRamp": [
+          "#1c1c1a",
+          "#2e2e2b",
+          "#41413d",
+          "#55554f",
+          "#6e6e67",
+          "#8b8b84",
+          "#b0b0a9",
+          "#d9d9d3"
+        ]
+      },
+      "ink-ghost": {
+        "role": "neutral",
+        "displayName": "Ghost Ink",
+        "canonical": "#74746d",
+        "tonalRamp": [
+          "#22221f",
+          "#363633",
+          "#4d4d48",
+          "#63635d",
+          "#74746d",
+          "#929289",
+          "#b4b4ad",
+          "#dcdcd6"
+        ]
+      },
+      "rule-soft": {
+        "role": "neutral",
+        "displayName": "Pencil Rule",
+        "canonical": "#b9b9b2",
+        "tonalRamp": [
+          "#2c2c29",
+          "#45453f",
+          "#62625c",
+          "#80807a",
+          "#9e9e97",
+          "#b9b9b2",
+          "#d3d3cd",
+          "#ebebe6"
+        ]
+      },
+      "paper-night": {
+        "role": "neutral",
+        "displayName": "Night Paper",
+        "canonical": "#141413"
+      },
+      "ink-night": {
+        "role": "primary",
+        "displayName": "Night Ink",
+        "canonical": "#ecebe4"
+      },
+      "ink-soft-night": {
+        "role": "neutral",
+        "displayName": "Night Soft Ink",
+        "canonical": "#a9a8a0"
+      },
+      "ink-ghost-night": {
+        "role": "neutral",
+        "displayName": "Night Ghost Ink",
+        "canonical": "#8d8c85"
+      },
+      "rule-soft-night": {
+        "role": "neutral",
+        "displayName": "Night Pencil Rule",
+        "canonical": "#4d4d48"
+      },
+      "pencil-night": {
+        "role": "tertiary",
+        "displayName": "Night Pencil",
+        "canonical": "#ff6a26"
+      },
+      "select-night": {
+        "role": "secondary",
+        "displayName": "Night Teal",
+        "canonical": "#2bb3c8"
+      }
     },
     "typographyMeta": {
-      "display": { "displayName": "Display", "purpose": "The BPM numeral only; clamp(11rem, 19vw, 16rem) on iPad landscape." },
-      "headline": { "displayName": "Headline", "purpose": "Bar counter under the staff: Bar N and time." },
-      "title": { "displayName": "Title", "purpose": "Sheet titles and stepper values." },
-      "tempo-line": { "displayName": "Tempo Line", "purpose": "The metronome mark line that opens settings." },
-      "body": { "displayName": "Body", "purpose": "Trainer summary and segmented choice text." },
-      "count": { "displayName": "Count", "purpose": "Beat numbers under the notation, Soft Ink." },
-      "label": { "displayName": "Label", "purpose": "Uppercase running head and field labels." },
-      "control": { "displayName": "Control", "purpose": "Nudge buttons." },
-      "control-caps": { "displayName": "Control Caps", "purpose": "Play/Stop." }
+      "display": {
+        "displayName": "Display",
+        "purpose": "The BPM numeral only; clamp(11rem, 19vw, 16rem) on iPad landscape."
+      },
+      "headline": {
+        "displayName": "Headline",
+        "purpose": "Bar counter under the staff: Bar N and time."
+      },
+      "title": {
+        "displayName": "Title",
+        "purpose": "Sheet titles and stepper values."
+      },
+      "tempo-line": {
+        "displayName": "Tempo Line",
+        "purpose": "The metronome mark line that opens settings."
+      },
+      "body": {
+        "displayName": "Body",
+        "purpose": "Trainer summary and segmented choice text."
+      },
+      "count": {
+        "displayName": "Count",
+        "purpose": "Beat numbers under the notation, Soft Ink."
+      },
+      "label": {
+        "displayName": "Label",
+        "purpose": "Uppercase running head and field labels."
+      },
+      "control": {
+        "displayName": "Control",
+        "purpose": "Nudge buttons."
+      },
+      "control-caps": {
+        "displayName": "Control Caps",
+        "purpose": "Play/Stop."
+      },
+      "tab": {
+        "displayName": "Tab",
+        "purpose": "The three tab-bar labels, uppercase."
+      },
+      "sticking": {
+        "displayName": "Sticking",
+        "purpose": "R / L / K / H letters of an exercise pattern, scaled from the slot width."
+      },
+      "caption": {
+        "displayName": "Caption",
+        "purpose": "Chart axis captions and the calendar legend, uppercase, Soft Ink."
+      }
     },
     "shadows": [
-      { "name": "sheet-lift", "value": "0 -12px 32px color-mix(in srgb, var(--ink) 18%, transparent)", "purpose": "Overlay sheets only." },
-      { "name": "selected-underline", "value": "inset 0 -5px 0 var(--select)", "purpose": "Checked segmented choice; a printed mark, not elevation." }
+      {
+        "name": "sheet-lift",
+        "value": "0 -12px 32px color-mix(in srgb, var(--ink) 18%, transparent)",
+        "purpose": "Overlay sheets only."
+      },
+      {
+        "name": "selected-underline",
+        "value": "inset 0 -5px 0 var(--select)",
+        "purpose": "Checked segmented choice; a printed mark, not elevation."
+      }
     ],
     "motion": [
-      { "name": "pencil-draw", "value": "90ms cubic-bezier(0.16, 1, 0.3, 1)", "purpose": "Pencil ring redraw on every beat; off under reduced motion." },
-      { "name": "sheet-rise", "value": "220ms cubic-bezier(0.16, 1, 0.3, 1)", "purpose": "Sheet enters 24px up with fade." },
-      { "name": "sheet-fade", "value": "160ms ease-out", "purpose": "Scrim fade." },
-      { "name": "press-invert", "value": "80ms ease-out", "purpose": "Background/colour inversion on button press." }
+      {
+        "name": "pencil-draw",
+        "value": "90ms cubic-bezier(0.16, 1, 0.3, 1)",
+        "purpose": "Pencil ring redraw on every beat; off under reduced motion."
+      },
+      {
+        "name": "sheet-rise",
+        "value": "220ms cubic-bezier(0.16, 1, 0.3, 1)",
+        "purpose": "Sheet enters 24px up with fade."
+      },
+      {
+        "name": "sheet-fade",
+        "value": "160ms ease-out",
+        "purpose": "Scrim fade."
+      },
+      {
+        "name": "press-invert",
+        "value": "80ms ease-out",
+        "purpose": "Background/colour inversion on button press."
+      }
     ],
     "breakpoints": [
-      { "name": "notation-wrap", "value": "container max-width 560px" },
-      { "name": "spread", "value": "min-width 900px and landscape" }
+      {
+        "name": "notation-wrap",
+        "value": "container max-width 560px"
+      },
+      {
+        "name": "spread",
+        "value": "min-width 900px and landscape"
+      },
+      {
+        "name": "short-screen",
+        "value": "max-height 780px"
+      },
+      {
+        "name": "ladder-row-stack",
+        "value": "max-width 419px"
+      }
     ]
   },
   "components": [
@@ -122,6 +325,53 @@
       "description": "Signature: engraved notes on one staff line between heavy rules, with the orange pencil ring on the live note.",
       "html": "<ol class=\"ds-line\"><li><span class=\"ds-note\"><svg viewBox=\"0 0 60 100\"><path d=\"M14 7 L48 15.5 L14 24 L14 19.6 L35.5 15.5 L14 11.4 Z\"/><path d=\"M40.2 76 L40.6 29 L42.6 29 L43 76 Z\"/><ellipse cx=\"31\" cy=\"79\" rx=\"11.5\" ry=\"8\" transform=\"rotate(-22 31 79)\"/></svg><svg class=\"ds-ring\" viewBox=\"0 0 100 100\"><path d=\"M50 7 C77 6 95 25 93 51 C91 78 71 94 46 92 C20 90 5 71 8 46 C10 24 27 9 55 9\"/></svg></span><span class=\"ds-count\">1</span></li><li><span class=\"ds-note\"><svg viewBox=\"0 0 60 100\"><path d=\"M40.2 76 L40.6 29 L42.6 29 L43 76 Z\"/><ellipse cx=\"31\" cy=\"79\" rx=\"11.5\" ry=\"8\" transform=\"rotate(-22 31 79)\"/></svg></span><span class=\"ds-count\">2</span></li><li><span class=\"ds-note ds-ghost\"><svg viewBox=\"0 0 60 100\"><path d=\"M40.2 76 L40.6 29 L42.6 29 L43 76 Z\"/><ellipse cx=\"31\" cy=\"79\" rx=\"11.5\" ry=\"8\" transform=\"rotate(-22 31 79)\"/><path d=\"M15 65 C7.5 73 7.5 87 15 95 C11.8 87 11.8 73 15 65 Z\"/><path d=\"M48 65 C55.5 73 55.5 87 48 95 C51.2 87 51.2 73 48 65 Z\"/></svg></span><span class=\"ds-count\">3</span></li><li><span class=\"ds-note\"><svg viewBox=\"0 0 60 100\"><path d=\"M40.2 76 L40.6 29 L42.6 29 L43 76 Z\"/><ellipse cx=\"31\" cy=\"79\" rx=\"11.5\" ry=\"8\" transform=\"rotate(-22 31 79)\"/></svg></span><span class=\"ds-count\">4</span></li></ol>",
       "css": ".ds-line { --note-h: 110px; list-style: none; margin: 0; padding: 10px 0 4px; border-top: 2px solid var(--ink, #141414); border-bottom: 2px solid var(--ink, #141414); display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); } .ds-line li { position: relative; display: grid; justify-items: center; gap: 2px; } .ds-line li::before { content: ''; position: absolute; left: 0; right: 0; top: calc(var(--note-h) * 0.79 - 1px); height: 2px; background: var(--ink, #141414); } .ds-note { position: relative; width: 100%; height: var(--note-h); color: var(--ink, #141414); cursor: pointer; } .ds-note svg { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; fill: currentColor; } .ds-ghost { color: var(--ink-ghost, #74746d); } .ds-ghost svg { transform: scale(0.82); transform-origin: 50% 80%; } .ds-note svg.ds-ring { left: 50%; top: 78%; width: calc(var(--note-h) * 0.46); height: auto; aspect-ratio: 1; transform: translate(-50%, -50%) rotate(-9deg); } .ds-ring path { fill: none; stroke: var(--pencil, #ff4f00); stroke-width: 7; stroke-linecap: round; } .ds-note:focus-visible { outline: 3px solid var(--select, #008fa6); outline-offset: 3px; } .ds-count { font: 400 1.375rem/1 'Libre Caslon Text', Georgia, serif; color: var(--ink-soft, #55554f); }"
+    },
+    {
+      "name": "Tab Bar",
+      "kind": "nav",
+      "refersTo": "tab",
+      "description": "Bottom navigation: three 64px tabs under a 2px ink rule; selected tab in ink with a 4px inset teal underline.",
+      "html": "<nav class=\"ds-tabbar\"><div role=\"tablist\"><button role=\"tab\" aria-selected=\"true\">Today</button><button role=\"tab\" aria-selected=\"false\">Ladder</button><button role=\"tab\" aria-selected=\"false\">Metro</button></div></nav>",
+      "css": ".ds-tabbar { background: var(--paper, #f2f2ee); border-top: 2px solid var(--ink, #141414); } .ds-tabbar [role=tablist] { display: grid; grid-template-columns: repeat(3, 1fr); padding: 0 16px; } .ds-tabbar [role=tab] { height: 64px; border: 0; background: transparent; color: var(--ink-soft, #55554f); font: 800 0.9375rem 'Libre Franklin', system-ui, sans-serif; letter-spacing: 0.14em; text-transform: uppercase; cursor: pointer; transition: background-color 80ms ease-out, color 80ms ease-out; } .ds-tabbar [role=tab][aria-selected=true] { color: var(--ink, #141414); box-shadow: inset 0 -4px 0 var(--select, #008fa6); } .ds-tabbar [role=tab]:active { background: var(--ink, #141414); color: var(--paper, #f2f2ee); } .ds-tabbar [role=tab]:focus-visible { outline: 3px solid var(--select, #008fa6); outline-offset: -6px; }"
+    },
+    {
+      "name": "Sticking Pattern",
+      "kind": "custom",
+      "description": "Signature: Caslon sticking letters, one unwrapped bar per voice, accent wedge, raised grace, ghost parentheses, rest dot, Pencil Rule beat dividers.",
+      "html": "<div class=\"ds-pattern\"><div class=\"ds-pline\"><span class=\"ds-plabel\">Hands</span><div class=\"ds-pbeats\"><span class=\"ds-beat\"><span class=\"ds-slot\"><svg class=\"ds-acc\" viewBox=\"12 5 38 21\"><path d=\"M14 7 L48 15.5 L14 24 L14 19.6 L35.5 15.5 L14 11.4 Z\"/></svg><span class=\"ds-g\"><span class=\"ds-grace\">l</span><span class=\"ds-st\">R</span></span></span><span class=\"ds-slot\"><span class=\"ds-g\"><span class=\"ds-st\">L</span></span></span></span><span class=\"ds-beat\"><span class=\"ds-slot\"><span class=\"ds-g ds-ghost\"><span class=\"ds-par\">(</span><span class=\"ds-st\">R</span><span class=\"ds-par\">)</span></span></span><span class=\"ds-slot ds-rest\">·</span></span></div></div><div class=\"ds-pline\"><span class=\"ds-plabel\">Kick</span><div class=\"ds-pbeats\"><span class=\"ds-beat\"><span class=\"ds-slot\"><span class=\"ds-g\"><span class=\"ds-st\">K</span></span></span><span class=\"ds-slot ds-rest\">·</span></span><span class=\"ds-beat\"><span class=\"ds-slot\"><span class=\"ds-g\"><span class=\"ds-st\">K</span></span></span><span class=\"ds-slot ds-rest\">·</span></span></div></div></div>",
+      "css": ".ds-pattern { --slot: 44px; display: grid; gap: 12px; padding: 16px 10px 18px; border-top: 2px solid var(--ink, #141414); border-bottom: 2px solid var(--ink, #141414); color: var(--ink, #141414); } .ds-pline { display: grid; gap: 4px; } .ds-plabel { font: 500 0.75rem/1.2 'Libre Franklin', system-ui, sans-serif; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-soft, #55554f); } .ds-pbeats { display: flex; flex-wrap: nowrap; align-items: end; } .ds-beat { display: inline-flex; align-items: end; } .ds-beat + .ds-beat { border-left: 1px solid var(--rule-soft, #b9b9b2); margin-left: 5px; padding-left: 5px; } .ds-slot { width: var(--slot); display: inline-grid; grid-template-rows: calc(var(--slot) * 0.3) auto; justify-items: center; align-items: end; } .ds-acc { grid-row: 1; width: calc(var(--slot) * 0.4); height: calc(var(--slot) * 0.23); align-self: center; fill: currentColor; } .ds-g { grid-row: 2; display: inline-flex; align-items: baseline; white-space: nowrap; } .ds-st { font: 700 calc(var(--slot) * 0.95)/1 'Libre Caslon Text', Georgia, serif; } .ds-ghost .ds-st { font-weight: 400; color: var(--ink-ghost, #74746d); } .ds-grace { font: 700 calc(var(--slot) * 0.5)/1 'Libre Caslon Text', Georgia, serif; vertical-align: super; margin-right: 1px; } .ds-par { font: 400 calc(var(--slot) * 0.8)/1 'Libre Caslon Text', Georgia, serif; color: var(--ink-ghost, #74746d); } .ds-rest { grid-template-rows: auto; font: 400 calc(var(--slot) * 0.95)/1 'Libre Caslon Text', Georgia, serif; color: var(--ink-ghost, #74746d); }"
+    },
+    {
+      "name": "Ladder Row",
+      "kind": "card",
+      "refersTo": "ladder-row",
+      "description": "Exercise row with a rank mark filling by rank (outline, quarter band, half, full), Caslon name and status, Franklin Next line.",
+      "html": "<ul class=\"ds-rows\"><li><button class=\"ds-lrow\"><span class=\"ds-mark\" data-rank=\"silver\"></span><span class=\"ds-name\">Single Stroke Roll</span><span class=\"ds-status\"><b>Silver</b> · Best 92 · 16ths</span><span class=\"ds-next\">Next: Gold 105</span></button></li><li><button class=\"ds-lrow\"><span class=\"ds-mark\" data-rank=\"gold\"></span><span class=\"ds-name\">Paradiddle</span><span class=\"ds-status\"><b>Gold</b> · Best 110 · 16ths</span><span class=\"ds-next\">Next: Master 130</span></button></li><li><button class=\"ds-lrow\" aria-disabled=\"true\"><span class=\"ds-mark\" data-rank=\"unranked\"></span><span class=\"ds-name\">Flam Tap</span><span class=\"ds-status\">Not started</span></button></li></ul>",
+      "css": ".ds-rows { list-style: none; margin: 0; padding: 0; } .ds-lrow { width: 100%; min-height: 64px; padding: 14px 0; border: 0; border-bottom: 1px solid var(--rule-soft, #b9b9b2); background: none; color: var(--ink, #141414); text-align: left; cursor: pointer; display: grid; grid-template-columns: 14px minmax(0, 1fr) auto; grid-template-areas: 'mark name next' '. status next'; column-gap: 12px; row-gap: 4px; align-items: center; } .ds-rows li:last-child .ds-lrow { border-bottom: 0; } .ds-lrow[aria-disabled=true] { color: var(--ink-soft, #55554f); cursor: default; } .ds-lrow:focus-visible { outline: 3px solid var(--select, #008fa6); outline-offset: 3px; } .ds-mark { grid-area: mark; width: 14px; height: 14px; box-sizing: border-box; border: 2px solid var(--ink, #141414); } .ds-mark[data-rank=unranked] { border-color: var(--rule-soft, #b9b9b2); } .ds-mark[data-rank=silver] { background: linear-gradient(to top, var(--ink, #141414) 4px, transparent 4px); } .ds-mark[data-rank=gold] { background: linear-gradient(to top, var(--ink, #141414) 50%, transparent 50%); } .ds-mark[data-rank=master] { background: var(--ink, #141414); } .ds-name { grid-area: name; font: 700 1.25rem/1.2 'Libre Caslon Text', Georgia, serif; } .ds-status { grid-area: status; font: 400 1rem/1.3 'Libre Caslon Text', Georgia, serif; color: var(--ink-soft, #55554f); } .ds-status b { color: var(--ink, #141414); } .ds-next { grid-area: next; font: 800 0.8125rem/1 'Libre Franklin', system-ui, sans-serif; letter-spacing: 0.08em; text-transform: uppercase; }"
+    },
+    {
+      "name": "Targets Row",
+      "kind": "chip",
+      "refersTo": "target-cell",
+      "description": "Four rank targets in Pencil Rule boxes; the next rank to earn is bold, ink-outlined, with a 4px teal underline.",
+      "html": "<ol class=\"ds-targets\"><li><span>Bronze</span><b>55</b></li><li aria-current=\"true\"><span>Silver</span><b>80</b></li><li data-future=\"true\"><span>Gold</span><b>105</b></li><li data-future=\"true\"><span>Master</span><b>130</b></li></ol>",
+      "css": ".ds-targets { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; } .ds-targets li { display: flex; flex-direction: column; gap: 4px; padding: 10px 8px; border: 1px solid var(--rule-soft, #b9b9b2); font: 400 0.9375rem/1.1 'Libre Caslon Text', Georgia, serif; color: var(--ink, #141414); } .ds-targets b { font-weight: inherit; font-size: 1.375rem; font-variant-numeric: lining-nums tabular-nums; } .ds-targets li[data-future=true] { color: var(--ink-soft, #55554f); } .ds-targets li[aria-current=true] { font-weight: 700; border-color: var(--ink, #141414); box-shadow: inset 0 -4px 0 var(--select, #008fa6); }"
+    },
+    {
+      "name": "Stop Test / Click Label",
+      "kind": "button",
+      "refersTo": "button-stop-test",
+      "description": "Rank test running state: Click/Silent label that inverts for a silent bar, and the 84px Stop test.",
+      "html": "<div class=\"ds-rt\"><p class=\"ds-click\">Click</p><p class=\"ds-click\" data-muted=\"true\">Silent</p><button class=\"ds-stop\">Stop test</button></div>",
+      "css": ".ds-rt { display: grid; gap: 8px; } .ds-click { justify-self: start; margin: 0; padding: 4px 12px; border: 2px solid var(--ink, #141414); font: 700 2rem/1.1 'Libre Caslon Text', Georgia, serif; color: var(--ink, #141414); } .ds-click[data-muted=true] { background: var(--ink, #141414); color: var(--paper, #f2f2ee); } .ds-stop { width: 100%; min-height: 84px; border: 2px solid var(--ink, #141414); border-radius: 0; background: var(--paper, #f2f2ee); color: var(--ink, #141414); font: 800 1.75rem/1 'Libre Franklin', system-ui, sans-serif; letter-spacing: 0.16em; text-transform: uppercase; cursor: pointer; } .ds-stop:active { background: var(--ink, #141414); color: var(--paper, #f2f2ee); } .ds-stop:focus-visible { outline: 3px solid var(--select, #008fa6); outline-offset: 3px; }"
+    },
+    {
+      "name": "Practice Stats",
+      "kind": "custom",
+      "refersTo": "calendar-day",
+      "description": "Today stats: Caslon sentence-case heading, ink bar chart with half-width captions, practice calendar in five ink levels, no streaks.",
+      "html": "<div class=\"ds-stats\"><h3>Sessions per week</h3><div class=\"ds-bars\"><div><span>2</span><i style=\"height:36px\"></i></div><div><span>3</span><i style=\"height:54px\"></i></div><div><span>0</span><i data-zero style=\"height:3px\"></i></div><div><span>4</span><i style=\"height:72px\"></i></div><small>4 weeks ago</small><small class=\"now\">This week</small></div><h3>Practice days</h3><div class=\"ds-cal\"><b data-l=\"0\"></b><b data-l=\"1\"></b><b data-l=\"2\"></b><b data-l=\"3\"></b><b data-l=\"4\"></b><b data-l=\"2\"></b><b data-l=\"0\"></b></div></div>",
+      "css": ".ds-stats { color: var(--ink, #141414); } .ds-stats h3 { margin: 0 0 10px; font: 700 1.375rem/1.2 'Libre Caslon Text', Georgia, serif; } .ds-bars { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 6px; max-width: 220px; align-items: end; margin-bottom: 24px; } .ds-bars div { display: grid; justify-items: center; gap: 4px; } .ds-bars span { font: 400 0.875rem/1 'Libre Caslon Text', Georgia, serif; } .ds-bars i { display: block; width: 100%; background: var(--ink, #141414); } .ds-bars i[data-zero] { background: var(--rule-soft, #b9b9b2); } .ds-bars small { grid-column: 1 / 3; font: 500 0.6875rem/1 'Libre Franklin', system-ui, sans-serif; letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink-soft, #55554f); white-space: nowrap; } .ds-bars small.now { grid-column: 3 / 5; text-align: right; } .ds-cal { display: grid; grid-template-rows: repeat(7, 14px); grid-auto-flow: column; gap: 3px; width: max-content; } .ds-cal b { width: 14px; height: 14px; box-sizing: border-box; } .ds-cal [data-l='0'] { border: 1px solid var(--rule-soft, #b9b9b2); } .ds-cal [data-l='1'] { background: color-mix(in srgb, var(--ink, #141414) 25%, transparent); } .ds-cal [data-l='2'] { background: color-mix(in srgb, var(--ink, #141414) 50%, transparent); } .ds-cal [data-l='3'] { background: color-mix(in srgb, var(--ink, #141414) 75%, transparent); } .ds-cal [data-l='4'] { background: var(--ink, #141414); }"
     }
   ],
   "narrative": {
@@ -132,23 +382,58 @@
       "Libre Caslon Text for everything read (numerals, headings, notation counts, choice text); Libre Franklin for labels and control verbs.",
       "Notation drawn as filled engraved shapes, not icons: wedge accent, tapered stem, rotated notehead, crescent ghost parentheses, quarter rest.",
       "Square corners everywhere, 2px ink outlines, 2px heavy rules around the notation, 1px rules under heads.",
-      "State never carried by colour alone: accents differ in shape, ghosts in size and parentheses, play state in inversion and label."
+      "State never carried by colour alone: accents differ in shape, ghosts in size and parentheses, play state in inversion and label.",
+      "The book has three sections (Today, Ladder, Metro) behind a printed tab bar; exercises are written as sticking letters in Caslon, the way a method book prints R and L under the staff."
     ],
     "rules": [
-      { "name": "The One Pencil Rule", "body": "Orange appears only as the ring on the note being played. If orange is on screen while the metronome is stopped, something is wrong.", "section": "colors" },
-      { "name": "The Teal Means Chosen Rule", "body": "Teal marks selection and keyboard focus, and nothing else. A checked choice also gains a bold weight and an inset underline, so it never relies on hue.", "section": "colors" },
-      { "name": "The Read-In-Caslon Rule", "body": "Any number or word the drummer reads for meaning (tempo, bar, time, counts, option names, sheet titles) is Caslon. Franklin is for labels and verbs on controls.", "section": "typography" },
-      { "name": "The Running Head Rule", "body": "Uppercase tracked Franklin belongs to the page's running head and to form-field labels, as a printed book uses it. It does not appear as a decorative line above headings.", "section": "typography" },
-      { "name": "The Printed Depth Rule", "body": "No shadows on page elements. Separation comes from 2px ink rules and outlines; only an overlay sheet casts a shadow.", "section": "elevation" }
+      {
+        "name": "The One Pencil Rule",
+        "body": "Orange appears only as the ring on the note being played. If orange is on screen while the metronome is stopped, something is wrong.",
+        "section": "colors"
+      },
+      {
+        "name": "The Teal Means Chosen Rule",
+        "body": "Teal marks selection and keyboard focus, and nothing else. A checked choice also gains a bold weight and an inset underline, so it never relies on hue.",
+        "section": "colors"
+      },
+      {
+        "name": "The Ink Quantity Rule",
+        "body": "Progress is shown by how much ink is laid down (a rank mark filling, a bar rising, a day darkening), never by a new hue. Rank has no bronze, silver, or gold colour.",
+        "section": "colors"
+      },
+      {
+        "name": "The Read-In-Caslon Rule",
+        "body": "Any number or word the drummer reads for meaning (tempo, bar, time, counts, option names, sheet titles) is Caslon. Franklin is for labels and verbs on controls.",
+        "section": "typography"
+      },
+      {
+        "name": "The Running Head Rule",
+        "body": "Uppercase tracked Franklin belongs to the page's running head and to form-field labels, as a printed book uses it. It does not appear as a decorative line above headings. The same register names a staff (a voice label above its pattern line, as a score names its instrument), the tab-bar sections, and a chart's axis; headings themselves, including stat headings, are Caslon sentence case.",
+        "section": "typography"
+      },
+      {
+        "name": "The Printed Depth Rule",
+        "body": "No shadows on page elements. Separation comes from 2px ink rules and outlines; only an overlay sheet casts a shadow.",
+        "section": "elevation"
+      },
+      {
+        "name": "The One Bar Rule",
+        "body": "A pattern is one bar per line and its voices never wrap apart: slots shrink to 18px, and only then does the bar scroll sideways as a whole.",
+        "section": "components"
+      }
     ],
     "dos": [
       "Do set tempo, bar, time and counts in Libre Caslon Text with lining tabular figures, large enough to read from 2 m.",
-      "Do keep orange (`pencil`) for the live-note ring alone, and teal (`select`) for selection and focus alone.",
+      "Do keep orange (pencil) for the live-note ring alone, and teal (select) for selection and focus alone.",
       "Do draw controls as square, 2px ink outlines on paper, with one solid ink primary per screen; press and active states invert.",
       "Do draw notation as filled engraved shapes in the same hand as the existing glyphs.",
       "Do give every state a non-colour signal: shape, weight, size, inversion, or label.",
       "Do keep transport targets at 64px minimum (84px for Play/Stop) in the bottom thumb zone.",
-      "Do ship every new surface on both pages by using the tokens; never hard-code a light-page hex."
+      "Do ship every new surface on both pages by using the tokens; never hard-code a light-page hex.",
+      "Do keep every voice of a pattern in one unwrapped bar, shrinking slots before scrolling, so the feet always sit under the hands they go with.",
+      "Do show rank as a filling square plus the written rank word; progress is ink quantity, not colour.",
+      "Do chart practice in ink alone (solid bars, ink-level days) with plain captions.",
+      "Do size anything pressed mid-practice like transport: 64px for actions, 84px for the one stop or play."
     ],
     "donts": [
       "Don't use glowing dots, LED readouts, dark chassis styling, or a thin numeral on black; that is the category default this world replaces.",
@@ -156,7 +441,11 @@
       "Don't cast shadows on page elements; only an overlay sheet lifts.",
       "Don't use orange for buttons, accents, links, or text.",
       "Don't put uppercase tracked lines above headings as decoration; uppercase Franklin is for the running head and field labels.",
-      "Don't substitute icon-font or emoji glyphs for notation or controls."
+      "Don't substitute icon-font or emoji glyphs for notation or controls.",
+      "Don't wrap a pattern's voices apart or break a bar across lines; voices never wrap apart.",
+      "Don't count streaks, flames, or chains of days; the calendar shows practice, it does not punish a missed day.",
+      "Don't set stat or section headings as uppercase eyebrows; they are Caslon sentence case.",
+      "Don't let the tab bar overlay content; the panel scrolls above it."
     ]
   }
 }
