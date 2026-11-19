@@ -73,15 +73,16 @@
 .section-meta {
   display: flex;
   flex-wrap: wrap;
-  font: 500 0.8125rem/1.4 var(--font-label);
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
+  gap: 0 0.4em;
+  font: 400 1rem/1.4 var(--font-book);
   color: var(--ink-soft);
-  font-variant-numeric: tabular-nums;
+  font-variant-numeric: lining-nums tabular-nums;
 }
 
+/* Read in Caslon (DESIGN.md): range and best tempo are read for meaning, not labels. */
 .section-meta span + span::before {
-  content: ' \00b7  ';
+  content: '\00b7';
+  margin-right: 0.4em;
 }
 
 .section-exercise-link {

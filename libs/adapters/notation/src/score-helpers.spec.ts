@@ -46,4 +46,15 @@ describe('score helpers', () => {
     expect(info.title).toBe('');
     expect(info.markers).toEqual([{ bar: 2, name: 'Chorus' }]);
   });
+
+  it('scoreInfoFrom falls back to the section marker when the text is empty', () => {
+    const info = scoreInfoFrom({ title: 'X', tempo: 100, masterBars: [{ section: { text: '', marker: 'Verse' } }] });
+    expect(info.markers).toEqual([{ bar: 1, name: 'Verse' }]);
+  });
+
+  it('scoreInfoFrom turns non-breaking spaces into normal ones', () => {
+    const info = scoreInfoFrom({ title: 'Demo Groove  (x)', tempo: 100, masterBars: [{ section: { text: 'Pre Chorus' } }] });
+    expect(info.title).toBe('Demo Groove (x)');
+    expect(info.markers[0].name).toBe('Pre Chorus');
+  });
 });

@@ -9,6 +9,8 @@
 .shell-panel {
   min-width: 0;
   display: grid;
+  /* One column as wide as the screen: wide content (a rendered score) scrolls inside, never widens the page. */
+  grid-template-columns: minmax(0, 1fr);
   overflow-y: auto;
   overscroll-behavior: contain;
 }

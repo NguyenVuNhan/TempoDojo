@@ -24,20 +24,26 @@ export function barRangeToTicks(
   };
 }
 
+/** Collapses whitespace, including the non-breaking spaces some imports produce, so titles can wrap. */
+function clean(text: string): string {
+  return text.replace(/\s+/gu, ' ').trim();
+}
+
 export function scoreInfoFrom(score: {
   title: string;
   tempo: number;
-  masterBars: { section: { text: string } | null }[];
+  masterBars: { section: { text: string; marker?: string } | null }[];
 }): ScoreInfo {
   const markers: { bar: number; name: string }[] = [];
   score.masterBars.forEach((bar, index) => {
-    const name = bar.section?.text.trim() ?? '';
+    // GP sections carry a name in text; MusicXML rehearsal marks can arrive with only the marker.
+    const name = bar.section ? clean(bar.section.text) || clean(bar.section.marker ?? '') : '';
     if (name.length > 0) {
       markers.push({ bar: index + 1, name });
     }
   });
   return {
-    title: score.title.trim(),
+    title: clean(score.title),
     barCount: score.masterBars.length,
     tempo: score.tempo,
     markers,

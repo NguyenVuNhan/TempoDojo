@@ -1,6 +1,7 @@
 .yt-page {
   --gutter: clamp(16px, 5.5vw, 32px);
-  min-height: 100dvh;
+  min-height: 100%;
+  grid-template-columns: minmax(0, 1fr);
   max-width: 640px;
   margin: 0 auto;
   padding: 0 var(--gutter);
@@ -48,6 +49,7 @@
 
 .yt-title {
   margin: 0;
+  overflow-wrap: break-word;
   font: 700 clamp(2rem, 9vw, 3rem) / 1 var(--font-book);
   font-variant-numeric: lining-nums tabular-nums;
 }
@@ -159,6 +161,7 @@
 .yt-transport {
   position: sticky;
   bottom: 0;
+  z-index: 3;
   background: var(--paper);
   border-top: 2px solid var(--ink);
   padding: 12px 0 calc(16px + env(safe-area-inset-bottom));
@@ -196,7 +199,7 @@
   .yt-page {
     max-width: 1180px;
     column-gap: 56px;
-    grid-template-columns: 1.5fr 1fr;
+    grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr);
     grid-template-rows: auto 1fr;
     grid-template-areas: 'head head' 'main side';
   }
@@ -214,4 +217,12 @@
     padding-top: 16px;
     padding-bottom: 24px;
   }
+}
+
+/* Grid children shrink to the column: a wide score, video or page scrolls inside instead of widening the screen. */
+.yt-main,
+.yt-side,
+.yt-controls {
+  min-width: 0;
+  grid-template-columns: minmax(0, 1fr);
 }
