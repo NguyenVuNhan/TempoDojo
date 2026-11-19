@@ -14,6 +14,8 @@ export interface MetronomeEngineLike {
   update(settings: MetronomeSettings): void;
   stop(): void;
   onEvent(cb: (e: ClickEvent, delayMs: number) => void): () => void;
+  onAudioState?(cb: (s: string) => void): () => void;
+  resumeAudio?(): Promise<boolean>;
 }
 
 export interface MetronomeDeps {

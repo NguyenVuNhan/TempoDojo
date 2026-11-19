@@ -121,6 +121,10 @@ export function createYouTubePlayer(el: HTMLElement, videoId: string): VideoPlay
   return {
     ready,
     play() {
+      if (typeof navigator !== 'undefined') {
+        const nav = navigator as unknown as { audioSession?: { type: string } };
+        if (nav.audioSession) nav.audioSession.type = 'playback';
+      }
       if (isReady) player?.playVideo();
     },
     pause() {

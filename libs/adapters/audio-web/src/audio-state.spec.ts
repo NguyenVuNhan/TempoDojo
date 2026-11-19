@@ -3,11 +3,11 @@ import type { AudioContextLike, AudioState } from './web-audio-metronome';
 import { WebAudioMetronome } from './web-audio-metronome';
 
 class StubContext {
-  state: string = 'running';
+  state = 'running';
   currentTime = 0;
   sampleRate = 48000;
   destination = {};
-  resumeTo: string = 'running';
+  resumeTo = 'running';
   private listeners = new Set<() => void>();
   resume = vi.fn(async () => {
     this.setState(this.resumeTo);

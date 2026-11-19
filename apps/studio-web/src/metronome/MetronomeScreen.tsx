@@ -1,4 +1,4 @@
-import { useMemo, useRef, useState } from 'react';
+import { useMemo, useRef, useState, type ReactNode } from 'react';
 import { WebAudioMetronome } from '@tempodojo/audio-web';
 import { nextAccent, pulsesPerBar, type AccentLevel, type MetronomeSettings } from '@tempodojo/core-metronome';
 import { createDexiePresetRepository } from '@tempodojo/storage';
@@ -8,6 +8,8 @@ import { PencilRing } from './PencilRing';
 import { PresetsSheet } from './PresetsSheet';
 import { SettingsSheet } from './SettingsSheet';
 import { TrainerSheet } from './TrainerSheet';
+import { SoundBanner } from '../platform/SoundBanner';
+import { useSoundState } from '../platform/useSoundState';
 import { useMetronome, type MetronomeDeps, type MetronomeOptions } from './useMetronome';
 import { usePracticeTimer } from './usePracticeTimer';
 import './metronome.css';
@@ -33,6 +35,8 @@ export interface MetronomeScreenProps {
   deps?: MetronomeDeps;
   /** Receives every play/stop for the practice log. */
   onTransport?: MetronomeOptions['onTransport'];
+  /** One-time notice shown above the transport (the Apple sound tip). */
+  tip?: ReactNode;
 }
 
 type SheetName = 'settings' | 'trainer' | 'presets';
@@ -52,10 +56,11 @@ function trainerSummary(s: MetronomeSettings): string {
   return parts.length ? parts.join(' · ') : 'off';
 }
 
-export function MetronomeScreen({ deps, onTransport }: MetronomeScreenProps) {
+export function MetronomeScreen({ deps, onTransport, tip }: MetronomeScreenProps) {
   const resolved = useMemo(() => deps ?? getDefaultDeps(), [deps]);
   const m = useMetronome(resolved, { onTransport });
   const { settings, position, playing } = m;
+  const sound = useSoundState(resolved.engine, playing);
   const [sheet, setSheet] = useState<SheetName | null>(null);
   const [presetName, setPresetName] = useState<string | null>(null);
   const [countdownSec, setCountdownSec] = useState<number | null>(null);
@@ -160,6 +165,8 @@ export function MetronomeScreen({ deps, onTransport }: MetronomeScreenProps) {
       </section>
 
       <section className="transport" aria-label="Transport">
+        <SoundBanner blocked={sound.blocked} onResume={() => void sound.resume()} />
+        {tip}
         <div className="nudges">
           <button type="button" onClick={() => m.nudge(-5)} aria-label="Decrease tempo by 5">
             −5

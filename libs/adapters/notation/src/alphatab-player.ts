@@ -172,6 +172,10 @@ export function createAlphaTabPlayer(el: HTMLElement, opts: NotationOptions): No
     },
 
     play(): void {
+      if (typeof navigator !== 'undefined') {
+        const nav = navigator as unknown as { audioSession?: { type: string } };
+        if (nav.audioSession) nav.audioSession.type = 'playback';
+      }
       api.play();
     },
 
