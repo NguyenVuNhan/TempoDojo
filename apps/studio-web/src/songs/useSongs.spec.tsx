@@ -1,4 +1,5 @@
 import { act, renderHook, waitFor } from '@testing-library/react';
+import type { Song } from '@tempodojo/core-songlab';
 import { fakeFactories, memorySongRepos, songRow, storedFile } from './test-utils';
 import { SongImportError } from './types';
 import { useSongs } from './useSongs';
@@ -36,7 +37,7 @@ describe('useSongs', () => {
     const { hook, files } = await setup({
       score: { title: 'Back in Black', barCount: 20, tempo: 94, markers: [{ bar: 1, name: 'Intro' }, { bar: 9, name: 'Verse' }] },
     });
-    let song;
+    let song: Song | undefined;
     await act(async () => {
       song = await hook.result.current.importFile(fileOf('bib.gp5', [7, 8, 9]));
     });
@@ -53,7 +54,7 @@ describe('useSongs', () => {
 
   it('falls back to the file name when the score has no title', async () => {
     const { hook } = await setup({ score: { title: '', barCount: 4, tempo: 100, markers: [] } });
-    let song;
+    let song: Song | undefined;
     await act(async () => {
       song = await hook.result.current.importFile(fileOf('My Fill.musicxml'));
     });
@@ -73,7 +74,7 @@ describe('useSongs', () => {
 
   it('imports a PDF titled from its file name, and refuses a fake one', async () => {
     const { hook, factories } = await setup();
-    let song;
+    let song: Song | undefined;
     await act(async () => {
       song = await hook.result.current.importFile(fileOf('Rosanna drums.pdf', '%PDF-1.7 rest'));
     });
@@ -97,12 +98,12 @@ describe('useSongs', () => {
 
   it('adds a YouTube link with its BPM, and refuses other links', async () => {
     const { hook } = await setup();
-    let song;
+    let song: Song | undefined;
     await act(async () => {
       song = await hook.result.current.addYoutube({ url: 'https://youtu.be/dQw4w9WgXcQ?si=x', title: '  Rosanna (drum sheet) ', bpm: 86 });
     });
     expect(song).toMatchObject({ kind: 'youtube', youtubeId: 'dQw4w9WgXcQ', title: 'Rosanna (drum sheet)', bpm: 86, fileId: null });
-    let blank;
+    let blank: Song | undefined;
     await act(async () => {
       blank = await hook.result.current.addYoutube({ url: 'youtube.com/watch?v=dQw4w9WgXcQ', title: '', bpm: null });
     });
