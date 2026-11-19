@@ -1,13 +1,7 @@
-// Uncomment this line to use CSS modules
-// import styles from './app.module.css';
-import NxWelcome from './nx-welcome';
+import { MetronomeScreen } from '../metronome/MetronomeScreen';
 
 export function App() {
-  return (
-    <div>
-      <NxWelcome title="studio-web" />
-    </div>
-  );
+  return <MetronomeScreen />;
 }
 
 export default App;
