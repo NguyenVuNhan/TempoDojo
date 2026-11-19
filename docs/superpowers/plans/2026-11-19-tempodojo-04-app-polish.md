@@ -12,7 +12,7 @@
 
 ## Global Constraints
 
-- All Plan 1–3 constraints hold. Core libs untouched except nothing; this plan changes adapters and the app only.
+- All Plan 1–3 constraints hold. Core libraries are untouched; this plan changes adapters and the app only.
 - The browser cannot report the hardware volume or the silent switch directly. What the app can know: the AudioContext state (`running`, `suspended`, `interrupted` on iOS) after a user tap. "Tell the user if muted" therefore means: when playback is on but the context is not running, say so and offer a one-tap resume; and on Apple devices, a one-time sound tip.
 - `navigator.audioSession.type = 'playback'` (already set by the metronome engine) is also set before alphaTab and YouTube playback, so song audio plays through the silent switch on iPadOS 17+.
 - Updates never interrupt practice: the update bar appears only while nothing is playing, never reloads by itself, and is dismissible.
