@@ -19,7 +19,7 @@ const setup = async (rows: Progress[] = [], prefs: Partial<Prefs> = {}) => {
   return { ...m, onOpen };
 };
 
-const row = (name: string) => screen.getByRole('button', { name: new RegExp(`^${name}(?![-\w])`) });
+const row = (name: string) => screen.getByRole('button', { name: new RegExp(`^${name}(?![-\\w])`) });
 
 describe('LadderScreen', () => {
   it('lists the 40 hands rudiments in 4 tiers by default', async () => {

@@ -1,0 +1,136 @@
+.ladder {
+  --gutter: clamp(16px, 5.5vw, 32px);
+  max-width: 640px;
+  margin: 0 auto;
+  padding: 0 var(--gutter) calc(32px + env(safe-area-inset-bottom));
+}
+
+.ladder-tracks {
+  margin-top: 18px;
+}
+
+.ladder-double-pedal {
+  margin-top: 12px;
+}
+
+.tier {
+  margin-top: 32px;
+}
+
+.tier h2 {
+  margin: 0 0 6px;
+  font: 700 1.75rem/1.1 var(--font-book);
+}
+
+.tier-lock {
+  margin: 0 0 8px;
+  font: 400 1.125rem/1.3 var(--font-book);
+  color: var(--ink-soft);
+}
+
+.ladder-rows {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.ladder-row {
+  width: 100%;
+  min-height: 64px;
+  padding: 14px 0;
+  border: 0;
+  border-bottom: 1px solid var(--rule-soft);
+  background: none;
+  color: var(--ink);
+  text-align: left;
+  cursor: pointer;
+  display: grid;
+  grid-template-columns: 14px minmax(0, 1fr) auto;
+  grid-template-areas:
+    'mark name next'
+    '. status next';
+  column-gap: 12px;
+  row-gap: 4px;
+  align-items: center;
+}
+
+.ladder-rows li:last-child .ladder-row {
+  border-bottom: 0;
+}
+
+.ladder-row:not([aria-disabled='true']):active {
+  background: color-mix(in srgb, var(--ink) 8%, transparent);
+}
+
+.ladder-row[aria-disabled='true'] {
+  color: var(--ink-soft);
+  cursor: default;
+}
+
+.rank-mark {
+  grid-area: mark;
+  width: 14px;
+  height: 14px;
+  border: 2px solid var(--ink);
+  flex: none;
+}
+
+.rank-mark[data-rank='unranked'] {
+  border-color: var(--rule-soft);
+}
+
+.rank-mark[data-rank='bronze'] {
+  border-color: var(--ink);
+}
+
+.rank-mark[data-rank='silver'] {
+  background: linear-gradient(to top, var(--ink) 4px, transparent 4px);
+}
+
+.rank-mark[data-rank='gold'] {
+  background: linear-gradient(to top, var(--ink) 50%, transparent 50%);
+}
+
+.rank-mark[data-rank='master'] {
+  background: var(--ink);
+}
+
+.row-name {
+  grid-area: name;
+  font: 700 1.25rem/1.2 var(--font-book);
+}
+
+.row-status {
+  grid-area: status;
+  font: 400 1rem/1.3 var(--font-book);
+  color: var(--ink-soft);
+}
+
+.ladder-row:not([aria-disabled='true']) .row-rank[data-ranked='true'] {
+  font-weight: 700;
+  color: var(--ink);
+}
+
+.row-next {
+  grid-area: next;
+  justify-self: end;
+  font: 800 0.8125rem/1 var(--font-label);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font-variant-numeric: tabular-nums;
+}
+
+@media (max-width: 419px) {
+  .ladder-row {
+    grid-template-columns: 14px minmax(0, 1fr);
+    grid-template-areas:
+      'mark name'
+      '. status'
+      '. next';
+  }
+
+  .row-next {
+    justify-self: start;
+    margin-top: 2px;
+  }
+}
