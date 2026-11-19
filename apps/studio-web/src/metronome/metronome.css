@@ -113,14 +113,15 @@
 
 .line {
   /* Never taller than the column allows (glyph aspect 60:100), so noteheads always sit on the staff line. */
-  --note-h: min(clamp(110px, 19vh, 176px), calc(100cqi / min(var(--pulses), 8) * 1.6));
+  --cols: min(var(--pulses), 8);
+  --note-h: min(clamp(110px, 19vh, 176px), calc(100cqi / var(--cols) * 1.6));
   list-style: none;
   margin: 0;
   padding: 10px 0 4px;
   border-top: 2px solid var(--ink);
   border-bottom: 2px solid var(--ink);
   display: grid;
-  grid-template-columns: repeat(min(var(--pulses), 8), minmax(0, 1fr));
+  grid-template-columns: repeat(var(--cols), minmax(0, 1fr));
   row-gap: 18px;
 }
 
@@ -158,6 +159,43 @@
 
 .line li:last-child::after {
   right: 0;
+}
+
+.sticking:has(.line[data-wrap='true']) {
+  padding-top: clamp(12px, 3vh, 40px);
+}
+
+/* Phones: bars longer than 4 beats wrap into rows of 4 at full size, each row with its own bar lines. */
+@container (max-width: 560px) {
+  .line {
+    --cols: min(var(--pulses), 4);
+  }
+
+  /* Two rows must still fit one phone screen with the transport. */
+  .line[data-wrap='true'] {
+    --note-h: min(clamp(88px, 12.5vh, 140px), calc(100cqi / var(--cols) * 1.6));
+    row-gap: 6px;
+  }
+
+  .line li:nth-child(4n + 1)::after,
+  .line li:nth-child(4n)::after {
+    content: '';
+    position: absolute;
+    top: calc(var(--note-h) * 0.79 - 26px);
+    height: 52px;
+    width: 2px;
+    background: var(--ink);
+  }
+
+  .line li:nth-child(4n + 1)::after {
+    left: 0;
+    right: auto;
+  }
+
+  .line li:nth-child(4n)::after {
+    right: 0;
+    left: auto;
+  }
 }
 
 .note {

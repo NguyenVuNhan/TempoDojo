@@ -124,7 +124,7 @@ export function MetronomeScreen({ deps }: MetronomeScreenProps) {
       </section>
 
       <section className="sticking" aria-label="Beats in the bar" data-muted={position?.muted ?? false}>
-        <ol className="line" style={{ ['--pulses' as string]: pulses }}>
+        <ol className="line" data-wrap={pulses > 4} style={{ ['--pulses' as string]: pulses }}>
           {settings.accents.map((level, i) => {
             const active = playing && position?.pulse === i;
             return (
