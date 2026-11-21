@@ -65,6 +65,14 @@ describe('createDexieRepositories (schema v2)', () => {
     expect(await prefs.load()).toEqual({ ...DEFAULT_PREFS, hasDoublePedal: true });
   });
 
+  it('prefs: showCounts is off for prefs saved before it existed, and round-trips', async () => {
+    const repos = fresh();
+    await repos.db.kv.put({ key: 'prefs', value: { hasDoublePedal: false } });
+    expect((await repos.prefs.load()).showCounts ?? false).toBe(false);
+    await repos.prefs.save({ ...(await repos.prefs.load()), showCounts: true });
+    expect((await repos.prefs.load()).showCounts).toBe(true);
+  });
+
   it('prefs: a partial stored value is merged with defaults', async () => {
     const repos = fresh();
     await repos.db.kv.put({ key: 'prefs', value: { hasDoublePedal: true } });
