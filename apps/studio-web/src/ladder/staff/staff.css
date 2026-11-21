@@ -23,8 +23,9 @@
   position: absolute;
   left: var(--ring-left, 50%);
   top: var(--ring-top, 50%);
-  width: clamp(52px, 14cqi, 76px);
-  height: clamp(52px, 14cqi, 76px);
+  width: var(--ring-size, 8%);
+  height: auto;
+  aspect-ratio: 1;
   transform: translate(-50%, -50%) rotate(-9deg);
   pointer-events: none;
   z-index: 0;

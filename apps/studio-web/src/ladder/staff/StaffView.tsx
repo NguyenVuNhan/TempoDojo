@@ -18,6 +18,9 @@ const MAX_SCALE = 1.5;
 const COUNT_BAND = 26;
 /** One sticking row (letter height). */
 const STICK_ROW = 20;
+/** Live-beat ring diameter in viewBox units: around a sticking letter, or on the staff when there is none. */
+const RING_ON_LETTER = 26;
+const RING_ON_STAFF = 56;
 const LINE_GAP = 12;
 const HALF_SPACE = LINE_GAP / 2;
 
@@ -79,13 +82,18 @@ export function StaffView({
         const hasLiveRing = live !== null && system.beats.includes(live.pulse);
         let liveSlotXPercent = 50;
         let liveSlotYPercent = 50;
+        let ringSizePercent = 0;
 
         if (hasLiveRing) {
           const liveSlotIndex = system.slots.findIndex((s) => s.beat === live.pulse);
           const targetSlotIdx = liveSlotIndex >= 0 ? liveSlotIndex : 0;
           const targetSlotX = MARGIN_LEFT + (targetSlotIdx + 0.5) * SLOT_WIDTH;
           liveSlotXPercent = (targetSlotX / viewBoxWidth) * 100;
-          liveSlotYPercent = ((L0 + 24) / viewBoxHeight) * 100;
+          // Circle the top sticking letter of the beat; feet-only exercises have none, so circle the staff.
+          const ringCenterY = stickRows > 0 ? stickTop + 12 : L0 + 24;
+          const ringSize = stickRows > 0 ? RING_ON_LETTER : RING_ON_STAFF;
+          liveSlotYPercent = (ringCenterY / viewBoxHeight) * 100;
+          ringSizePercent = (ringSize / viewBoxWidth) * 100;
         }
 
         return (
@@ -100,6 +108,7 @@ export function StaffView({
                   ? {
                       '--ring-left': `${liveSlotXPercent}%`,
                       '--ring-top': `${liveSlotYPercent}%`,
+                      '--ring-size': `${ringSizePercent}%`,
                     }
                   : {}),
               } as CSSProperties
