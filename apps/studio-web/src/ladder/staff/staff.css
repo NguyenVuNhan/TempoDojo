@@ -8,9 +8,15 @@
   overflow: hidden;
 }
 
+.staff-lines {
+  display: grid;
+  gap: 16px;
+  width: 100%;
+  justify-self: center;
+}
+
 .staff-system {
   position: relative;
-  width: 100%;
 }
 
 .staff .pencil-ring {
@@ -88,38 +94,38 @@
 .staff text[data-stick] {
   font-family: var(--font-book);
   font-weight: 700;
-  font-size: 20px;
+  font-size: 30px;
   text-anchor: middle;
   fill: var(--ink);
 }
 
 .staff text[data-stick][data-ghost='true'] {
   font-weight: 400;
-  font-size: 16px;
+  font-size: 23px;
   fill: var(--ink-ghost);
 }
 
 .staff text[data-grace] {
   font-family: var(--font-book);
   font-weight: 700;
-  font-size: 13px;
+  font-size: 17px;
   text-anchor: end;
   fill: var(--ink);
 }
 
-.staff text[data-accent] {
-  font-family: var(--font-book);
-  font-weight: 700;
-  font-size: 16px;
-  text-anchor: middle;
-  fill: var(--ink);
+.staff-accent {
+  fill: none;
+  stroke: var(--ink);
+  stroke-width: 2.6;
+  stroke-linejoin: miter;
+  stroke-linecap: square;
 }
 
 /* Foot row */
 .staff text[data-foot] {
   font-family: var(--font-book);
   font-weight: 700;
-  font-size: 16px;
+  font-size: 22px;
   text-anchor: middle;
   fill: var(--ink);
 }
@@ -134,14 +140,14 @@
 .staff text[data-count] {
   font-family: var(--font-book);
   font-weight: 400;
-  font-size: 13px;
+  font-size: 15px;
   text-anchor: middle;
   fill: var(--ink-soft);
 }
 
 .staff text[data-count][data-downbeat='true'] {
   font-weight: 700;
-  font-size: 14px;
+  font-size: 16px;
   fill: var(--ink);
 }
 

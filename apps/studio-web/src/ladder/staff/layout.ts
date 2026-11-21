@@ -94,7 +94,8 @@ export function beatsPerLineFor(widthPx: number, ex: Exercise): number {
   if (widthPx <= 0) {
     return beats;
   }
-  const fit = Math.floor((widthPx - 32) / (ex.subdivision * MIN_SLOT_PX));
+  // widthPx is the content width (padding already excluded).
+  const fit = Math.floor(widthPx / (ex.subdivision * MIN_SLOT_PX));
   return Math.min(Math.max(fit, 1), beats);
 }
 

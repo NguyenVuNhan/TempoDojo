@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState, type CSSProperties, Fragment } from 'react';
 import type { Exercise } from '@tempodojo/core-ladder';
+import { pulsesPerBar } from '@tempodojo/core-metronome';
 import { PencilRing } from '../../metronome/PencilRing';
 import { beatsPerLineFor, describeStaff, layoutStaff, STAFF_STEP } from './layout';
 import './staff.css';
@@ -12,6 +13,11 @@ export interface PatternLive {
 const SLOT_WIDTH = 44;
 const MARGIN_LEFT = 24;
 const MARGIN_RIGHT = 16;
+/** Largest on-screen scale of the staff drawing (CSS px per viewBox unit), so wide screens don't blow it up. */
+const MAX_SCALE = 1.5;
+const COUNT_BAND = 26;
+/** One sticking row: accent band + letter. */
+const STICK_ROW = 42;
 const LINE_GAP = 12;
 const HALF_SPACE = LINE_GAP / 2;
 
@@ -48,13 +54,21 @@ export function StaffView({
   const beatsPerLine = beatsPerLineFor(width, exercise);
   const systems = layoutStaff(exercise, beatsPerLine);
 
-  const C = showCounts ? 24 : 0;
-  const L0 = 92 + C;
-  const beamY = 50 + C;
-  const viewBoxHeight = 196 + C;
+  // Vertical bands, top to bottom: counts, sticking rows (each with room for its accent), beams, staff, feet.
+  const C = showCounts ? COUNT_BAND : 0;
+  const stickRows = Math.max(0, ...systems.flatMap((sys) => sys.slots.map((sl) => sl.sticking.length)));
+  const stickTop = C + 4;
+  const beamY = stickTop + stickRows * STICK_ROW + 10;
+  const L0 = beamY + 40;
+  const hasFootLetters = systems.some((sys) => sys.slots.some((sl) => sl.foot));
+  const footY = L0 + 106;
+  const viewBoxHeight = L0 + 84 + (hasFootLetters ? 32 : 0);
+  // Every line shares one scale: a full line's width. A short last line stays the same size, left-aligned.
+  const fullLineWidth = Math.min(beatsPerLine, pulsesPerBar(exercise.meter)) * exercise.subdivision * SLOT_WIDTH + MARGIN_LEFT + MARGIN_RIGHT;
 
   return (
     <div className="staff" role="img" aria-label={describeStaff(exercise)} ref={rootRef}>
+      <div className="staff-lines" style={{ maxWidth: `${fullLineWidth * MAX_SCALE}px` }}>
       {systems.map((system, sysIdx) => {
         const slotCount = system.slots.length;
         const viewBoxWidth = slotCount * SLOT_WIDTH + MARGIN_LEFT + MARGIN_RIGHT;
@@ -81,6 +95,7 @@ export function StaffView({
             style={
               {
                 position: 'relative',
+                width: `${(viewBoxWidth / fullLineWidth) * 100}%`,
                 ...(hasLiveRing
                   ? {
                       '--ring-left': `${liveSlotXPercent}%`,
@@ -187,7 +202,6 @@ export function StaffView({
               {/* Slots */}
               {system.slots.map((slot, slotIndex) => {
                 const cx = MARGIN_LEFT + (slotIndex + 0.5) * SLOT_WIDTH;
-                const isStacked = slot.sticking.length > 1;
 
                 const upNotes = slot.notes.filter((n) => n.stem === 'up');
                 const downNotes = slot.notes.filter((n) => n.stem === 'down');
@@ -301,31 +315,31 @@ export function StaffView({
                               {note.head === 'x' ? (
                                 <path
                                   className="staff-note-x"
-                                  d={`M ${cx - 11 - 3.5} ${noteY - 3.5} L ${cx - 11 + 3.5} ${noteY + 3.5} M ${cx - 11 - 3.5} ${noteY + 3.5} L ${cx - 11 + 3.5} ${noteY - 3.5}`}
+                                  d={`M ${cx - 17 - 3.5} ${noteY - 3.5} L ${cx - 17 + 3.5} ${noteY + 3.5} M ${cx - 17 - 3.5} ${noteY + 3.5} L ${cx - 17 + 3.5} ${noteY - 3.5}`}
                                   strokeWidth={1.5}
                                 />
                               ) : (
                                 <ellipse
                                   className="staff-grace-head"
-                                  cx={cx - 11}
+                                  cx={cx - 17}
                                   cy={noteY}
                                   rx={4.5}
                                   ry={3.2}
-                                  transform={`rotate(-20 ${cx - 11} ${noteY})`}
+                                  transform={`rotate(-20 ${cx - 17} ${noteY})`}
                                 />
                               )}
                               <line
                                 className="staff-grace-stem"
-                                x1={cx - 11 + 4}
+                                x1={cx - 17 + 4}
                                 y1={noteY}
-                                x2={cx - 11 + 4}
+                                x2={cx - 17 + 4}
                                 y2={noteY - 13}
                               />
                               <line
                                 className="staff-grace-slash"
-                                x1={cx - 11 + 1}
+                                x1={cx - 17 + 1}
                                 y1={noteY - 5}
-                                x2={cx - 11 + 7}
+                                x2={cx - 17 + 7}
                                 y2={noteY - 9}
                               />
                             </g>
@@ -333,7 +347,7 @@ export function StaffView({
 
                           {note.grace === 'drag' && (
                             <g className="staff-grace-group">
-                              {[-17, -10].map((dx, i) => (
+                              {[-24, -16].map((dx, i) => (
                                 <Fragment key={i}>
                                   {note.head === 'x' ? (
                                     <path
@@ -362,9 +376,9 @@ export function StaffView({
                               ))}
                               <line
                                 className="staff-grace-slash"
-                                x1={cx - 15}
+                                x1={cx - 23}
                                 y1={noteY - 5}
-                                x2={cx - 7}
+                                x2={cx - 13}
                                 y2={noteY - 9}
                               />
                             </g>
@@ -390,7 +404,7 @@ export function StaffView({
                         data-downbeat={slot.slot % exercise.subdivision === 0 || undefined}
                         className="staff-count"
                         x={cx}
-                        y={16}
+                        y={18}
                       >
                         {slot.count}
                       </text>
@@ -398,30 +412,20 @@ export function StaffView({
 
                     {/* Sticking letters row */}
                     {slot.sticking.map((letter, letterIdx) => {
-                      const letY = isStacked
-                        ? letterIdx === 0
-                          ? 24 + C
-                          : 42 + C
-                        : 34 + C;
-                      const accentY = isStacked
-                        ? letterIdx === 0
-                          ? 11 + C
-                          : 30 + C
-                        : 15 + C;
+                      const rowTop = stickTop + letterIdx * STICK_ROW;
+                      const letY = rowTop + 40;
+                      const accentY = rowTop + 13;
                       const graceY = letY - 3;
-                      const graceX = cx - (letter.ghost ? 9 : 11);
+                      const graceX = cx - (letter.ghost ? 11 : 14);
 
                       return (
                         <Fragment key={letterIdx}>
                           {letter.accent && (
-                            <text
+                            <path
                               data-accent
                               className="staff-accent"
-                              x={cx}
-                              y={accentY}
-                            >
-                              {'>'}
-                            </text>
+                              d={`M ${cx - 8} ${accentY - 10} L ${cx + 8} ${accentY - 5} L ${cx - 8} ${accentY}`}
+                            />
                           )}
                           {letter.grace && (
                             <text
@@ -453,7 +457,7 @@ export function StaffView({
                         data-ghost={slot.foot.ghost || undefined}
                         className="staff-foot"
                         x={cx}
-                        y={L0 + 94}
+                        y={footY}
                       >
                         {slot.foot.text}
                       </text>
@@ -465,6 +469,7 @@ export function StaffView({
           </div>
         );
       })}
+      </div>
     </div>
   );
 }
