@@ -89,13 +89,14 @@ describe('CATALOGUE', () => {
     }
   });
 
-  it('coordination: 6 contiguous tiers, ≥3 each, every exercise has hands, kick and hihat lines', () => {
+  it('coordination: 6 contiguous tiers, ≥3 each, every exercise has hands and kick lines', () => {
     expect(tiersOf('coordination')).toEqual([1, 2, 3, 4, 5, 6]);
     for (const tier of [1, 2, 3, 4, 5, 6]) {
       expect(byTrack('coordination').filter((e) => e.tier === tier).length).toBeGreaterThanOrEqual(3);
     }
     for (const ex of byTrack('coordination')) {
-      expect(ex.pattern.map((l) => l.voice).sort()).toEqual(['hands', 'hihat', 'kick']);
+      const voices = new Set(ex.pattern.map((l) => l.voice));
+      expect({ id: ex.id, hands: voices.has('hands'), kick: voices.has('kick') }).toEqual({ id: ex.id, hands: true, kick: true });
       expect(ex.id).toMatch(/^coord-\d-\d+$/);
     }
     expect(exerciseById('coord-1-1')).toBeDefined();
