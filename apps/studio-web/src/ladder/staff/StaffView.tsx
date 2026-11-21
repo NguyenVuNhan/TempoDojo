@@ -1,16 +1,7 @@
 import { useEffect, useRef, useState, type CSSProperties, Fragment } from 'react';
 import type { Exercise } from '@tempodojo/core-ladder';
 import { PencilRing } from '../../metronome/PencilRing';
-import {
-  beatsPerLineFor,
-  describeStaff,
-  layoutStaff,
-  STAFF_STEP,
-  type StaffNote,
-  type StaffSlot,
-  type StaffSystem,
-  type StickLetter,
-} from './layout';
+import { beatsPerLineFor, describeStaff, layoutStaff, STAFF_STEP } from './layout';
 import './staff.css';
 
 export interface PatternLive {

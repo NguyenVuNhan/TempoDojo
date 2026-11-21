@@ -1,5 +1,5 @@
 import type { Subdivision } from '@tempodojo/core-metronome';
-import type { Rank, Track, Voice } from '@tempodojo/core-ladder';
+import type { Rank, Track } from '@tempodojo/core-ladder';
 import type { StaffDrum } from './staff/layout';
 
 export const NOTE_VALUE: Record<Subdivision, string> = {
@@ -23,12 +23,6 @@ export const TRACK_LABEL: Record<Track, string> = {
   hands: 'Hands',
   coordination: 'Coordination',
   feet: 'Feet',
-};
-
-export const VOICE_LABEL: Record<Voice, string> = {
-  hands: 'Hands',
-  kick: 'Kick',
-  hihat: 'Hi-hat foot',
 };
 
 export const DRUM_LABEL: Record<StaffDrum, string> = {

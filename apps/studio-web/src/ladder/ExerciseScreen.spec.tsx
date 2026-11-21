@@ -63,7 +63,7 @@ describe('ExerciseScreen', () => {
     expect(screen.getByRole('heading', { level: 1, name: 'Single Paradiddle' })).toBeTruthy();
     expect(bpm()).toBe('55');
     expect(screen.getByText('16ths')).toBeTruthy();
-    expect(document.querySelectorAll('.slot')).toHaveLength(8);
+    expect(document.querySelectorAll('[data-slot]')).toHaveLength(8);
     const targets = screen.getByRole('list', { name: 'Targets' });
     expect([...targets.querySelectorAll('li')].map((li) => li.textContent)).toEqual(['Bronze65', 'Silver95', 'Gold125', 'Master155']);
   });
@@ -142,5 +142,32 @@ describe('ExerciseScreen', () => {
     expect(bpm()).toBe('90');
     expect(screen.getByText('Hands · Tier 1')).toBeTruthy();
     expect(screen.getByRole('checkbox', { name: 'Climb to Gold 125' })).toBeTruthy();
+  });
+  it('the counts switch shows the count row and remembers it', async () => {
+    const { prefs } = await setup();
+    expect(document.querySelectorAll('[data-count]')).toHaveLength(0);
+    const sw = screen.getByRole('switch', { name: 'Show counts' });
+    expect(sw.getAttribute('aria-checked') ?? String((sw as HTMLInputElement).checked)).toBe('false');
+    await act(async () => fireEvent.click(sw));
+    await waitFor(() => expect(document.querySelectorAll('[data-count]')).toHaveLength(8));
+    expect(prefs.save).toHaveBeenCalledWith(expect.objectContaining({ showCounts: true }));
+    expect((screen.getByRole('switch', { name: 'Show counts' }) as HTMLInputElement).checked).toBe(true);
+  });
+
+  it('opens with counts showing when the pref is on', async () => {
+    const m = memoryLadderRepos([], { showCounts: true });
+    render(
+      <Harness
+        repos={m.repos}
+        exercise={exerciseById('pas-16')!}
+        engine={new FakeEngine()}
+        presets={new MemoryRepo()}
+        onBack={vi.fn()}
+        onTransport={vi.fn()}
+        now={() => 0}
+      />,
+    );
+    await screen.findByTestId('exercise-bpm');
+    expect(document.querySelectorAll('[data-count]')).toHaveLength(8);
   });
 });
