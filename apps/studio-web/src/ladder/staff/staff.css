@@ -94,32 +94,25 @@
 .staff text[data-stick] {
   font-family: var(--font-book);
   font-weight: 700;
-  font-size: 30px;
+  font-size: 15px;
   text-anchor: middle;
   fill: var(--ink);
 }
 
 .staff text[data-stick][data-ghost='true'] {
   font-weight: 400;
-  font-size: 23px;
+  font-size: 12px;
   fill: var(--ink-ghost);
 }
 
 .staff text[data-grace] {
   font-family: var(--font-book);
   font-weight: 700;
-  font-size: 17px;
+  font-size: 10px;
   text-anchor: end;
   fill: var(--ink);
 }
 
-.staff-accent {
-  fill: none;
-  stroke: var(--ink);
-  stroke-width: 2.6;
-  stroke-linejoin: miter;
-  stroke-linecap: square;
-}
 
 /* Foot row */
 .staff text[data-foot] {

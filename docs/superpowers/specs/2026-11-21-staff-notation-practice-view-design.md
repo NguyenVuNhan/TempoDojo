@@ -153,3 +153,9 @@ Things the data change must keep working:
 - Whether rests are drawn as rest glyphs or left as empty space (keep it uncluttered; the mockup
   leaves empty space).
 - Housekeeping: add `.superpowers/` to `.gitignore`.
+
+## Revision after device review (2026-11-21)
+
+- Sticking letters are half the original size.
+- No accent wedge. Case shows the stroke: accented (full) strokes are upper case (`R`, `L`), every other
+  stroke is lower case (`r`, `l`), ghosts stay lower case and dim. Same rule for double-pedal foot letters.

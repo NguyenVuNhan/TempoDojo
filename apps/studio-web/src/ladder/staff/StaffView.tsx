@@ -16,8 +16,8 @@ const MARGIN_RIGHT = 16;
 /** Largest on-screen scale of the staff drawing (CSS px per viewBox unit), so wide screens don't blow it up. */
 const MAX_SCALE = 1.5;
 const COUNT_BAND = 26;
-/** One sticking row: accent band + letter. */
-const STICK_ROW = 42;
+/** One sticking row (letter height). */
+const STICK_ROW = 20;
 const LINE_GAP = 12;
 const HALF_SPACE = LINE_GAP / 2;
 
@@ -54,7 +54,7 @@ export function StaffView({
   const beatsPerLine = beatsPerLineFor(width, exercise);
   const systems = layoutStaff(exercise, beatsPerLine);
 
-  // Vertical bands, top to bottom: counts, sticking rows (each with room for its accent), beams, staff, feet.
+  // Vertical bands, top to bottom: counts, sticking rows, beams, staff, feet.
   const C = showCounts ? COUNT_BAND : 0;
   const stickRows = Math.max(0, ...systems.flatMap((sys) => sys.slots.map((sl) => sl.sticking.length)));
   const stickTop = C + 4;
@@ -413,20 +413,12 @@ export function StaffView({
                     {/* Sticking letters row */}
                     {slot.sticking.map((letter, letterIdx) => {
                       const rowTop = stickTop + letterIdx * STICK_ROW;
-                      const letY = rowTop + 40;
-                      const accentY = rowTop + 13;
-                      const graceY = letY - 3;
-                      const graceX = cx - (letter.ghost ? 11 : 14);
+                      const letY = rowTop + 17;
+                      const graceY = letY - 1;
+                      const graceX = cx - (letter.ghost ? 6 : 7);
 
                       return (
                         <Fragment key={letterIdx}>
-                          {letter.accent && (
-                            <path
-                              data-accent
-                              className="staff-accent"
-                              d={`M ${cx - 8} ${accentY - 10} L ${cx + 8} ${accentY - 5} L ${cx - 8} ${accentY}`}
-                            />
-                          )}
                           {letter.grace && (
                             <text
                               data-grace

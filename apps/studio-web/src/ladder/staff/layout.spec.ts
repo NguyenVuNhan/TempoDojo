@@ -46,7 +46,7 @@ describe('staff layout', () => {
       ['snare', 'normal', 'up'],
     ]);
     expect(slot.sticking.map((l) => [l.text, l.accent])).toEqual([
-      ['R', false],
+      ['r', false],
       ['L', true],
     ]);
     expect(slot.beat).toBe(1);
@@ -71,7 +71,7 @@ describe('staff layout', () => {
     const para = layoutStaff(ex('pas-16'), 2)[0];
     expect(para.slots.every((s) => s.notes.every((n) => n.drum === 'snare'))).toBe(true);
     const flam = layoutStaff(ex('pas-20'), 9)[0].slots[0];
-    expect(flam.sticking[0]).toMatchObject({ text: 'R', grace: 'l' });
+    expect(flam.sticking[0]).toMatchObject({ text: 'r', grace: 'l' });
     expect(flam.notes[0].grace).toBe('flam');
     const drag = layoutStaff(ex('pas-31'), 9)[0].slots.find((s) => s.notes[0]?.grace === 'drag')!;
     expect(drag.sticking[0].grace).toMatch(/^(ll|rr)$/);
@@ -87,7 +87,7 @@ describe('staff layout', () => {
     const e = CATALOGUE.find((c) => c.pattern.some((l) => l.voice === 'kick' && /[RL]/.test(l.steps)))!;
     const slot = layoutStaff(e, 9)[0].slots[0];
     expect(slot.sticking).toEqual([]);
-    expect(slot.foot?.text).toMatch(/^[RL]$/);
+    expect(slot.foot?.text).toMatch(/^[rlRL]$/);
     expect(slot.notes[0]).toMatchObject({ drum: 'kick', stem: 'down' });
   });
 
@@ -103,5 +103,9 @@ describe('staff layout', () => {
     expect(describeStaff(ex('coord-1-1'))).toBe(
       'Hi-hat: R, R, R, R, R, R, R, R; Snare: rest, rest, accent L, rest, rest, rest, accent L, rest; Kick: K, rest, rest, rest, K, rest, rest, rest',
     );
+  });
+  it('case shows the stroke: accented upper case, everything else lower case', () => {
+    const para = layoutStaff(ex('pas-16'), 9)[0];
+    expect(para.slots.map((s) => s.sticking[0].text).join('')).toBe('RlrrLrll');
   });
 });

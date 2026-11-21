@@ -116,7 +116,8 @@ function stickingGrace(step: Step): string | null {
 function makeStickLetter(step: Step): StickLetter {
   const hand = step.hand ?? '';
   return {
-    text: step.ghost ? hand.toLowerCase() : hand,
+    // Case shows the stroke: accented (full) strokes upper case, everything else lower case.
+    text: step.accent ? hand.toUpperCase() : hand.toLowerCase(),
     accent: step.accent,
     ghost: step.ghost,
     grace: stickingGrace(step),

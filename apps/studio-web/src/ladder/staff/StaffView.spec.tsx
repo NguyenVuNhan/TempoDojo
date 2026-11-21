@@ -8,11 +8,11 @@ const view = (id: string, p: { live?: PatternLive; showCounts?: boolean } = {}) 
 const texts = (c: Element, sel: string) => [...c.querySelectorAll(sel)].map((t) => t.textContent);
 
 describe('StaffView', () => {
-  it('pas-16: 8 slots, sticking RLRRLRLL, 2 accents, no counts by default', () => {
+  it('pas-16: 8 slots, accents as upper case, no accent marks, no counts by default', () => {
     const c = view('pas-16');
     expect(c.querySelectorAll('[data-slot]')).toHaveLength(8);
-    expect(texts(c, '[data-stick]').join('')).toBe('RLRRLRLL');
-    expect(c.querySelectorAll('[data-accent]')).toHaveLength(2);
+    expect(texts(c, '[data-stick]').join('')).toBe('RlrrLrll');
+    expect(c.querySelectorAll('[data-accent]')).toHaveLength(0);
     expect(c.querySelectorAll('[data-count]')).toHaveLength(0);
   });
 
@@ -22,7 +22,7 @@ describe('StaffView', () => {
 
   it('stacks two sticking letters on the backbeat', () => {
     const slot = view('coord-1-1').querySelector('[data-slot="2"]')!;
-    expect(texts(slot, '[data-stick]')).toEqual(['R', 'L']);
+    expect(texts(slot, '[data-stick]')).toEqual(['r', 'L']);
   });
 
   it('ghost notes get parentheses', () => {
