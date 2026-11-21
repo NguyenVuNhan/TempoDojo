@@ -9,10 +9,15 @@ export const RANKS: Rank[] = ['unranked', 'bronze', 'silver', 'gold', 'master'];
 /** hihat = the hi-hat foot (pedal). */
 export type Voice = 'hands' | 'kick' | 'hihat';
 
+/** Drum a hands line is played on. */
+export type HandDrum = 'crash' | 'hihat' | 'ride' | 'tom1' | 'tom2' | 'snare' | 'floortom';
+
 /** One bar of one voice; tokens separated by single spaces, one token per subdivision slot. */
 export interface PatternLine {
   voice: Voice;
   steps: string;
+  /** Hands lines only; omitted means snare. Two hands hit together by sitting on different lines. */
+  drum?: HandDrum;
 }
 
 export interface Targets {

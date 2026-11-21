@@ -115,4 +115,20 @@ describe('CATALOGUE', () => {
     }
     expect(exerciseById('feet-1-1')).toBeDefined();
   });
+  it('drum is only set on hands lines', () => {
+    for (const ex of CATALOGUE)
+      for (const l of ex.pattern)
+        if (l.drum) expect({ id: ex.id, voice: l.voice }).toEqual({ id: ex.id, voice: 'hands' });
+  });
+
+  it('no hand plays two drums in the same slot', () => {
+    for (const ex of CATALOGUE) {
+      const lines = ex.pattern.filter((l) => l.voice === 'hands').map((l) => parseSteps(l.steps));
+      const n = lines[0]?.length ?? 0;
+      for (let i = 0; i < n; i++) {
+        const hands = lines.map((s) => s[i].hand).filter(Boolean);
+        expect({ id: ex.id, slot: i, dup: hands.length !== new Set(hands).size }).toEqual({ id: ex.id, slot: i, dup: false });
+      }
+    }
+  });
 });
