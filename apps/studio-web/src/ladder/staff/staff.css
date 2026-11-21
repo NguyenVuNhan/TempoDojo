@@ -1,0 +1,180 @@
+.staff {
+  container-type: inline-size;
+  display: grid;
+  align-content: center;
+  height: 100%;
+  gap: 16px;
+  padding: 10px 8px 12px;
+  overflow: hidden;
+}
+
+.staff-system {
+  position: relative;
+  width: 100%;
+}
+
+.staff .pencil-ring {
+  position: absolute;
+  left: var(--ring-left, 50%);
+  top: var(--ring-top, 50%);
+  width: clamp(52px, 14cqi, 76px);
+  height: clamp(52px, 14cqi, 76px);
+  transform: translate(-50%, -50%) rotate(-9deg);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.staff svg[data-system] {
+  position: relative;
+  z-index: 1;
+  display: block;
+  width: 100%;
+  height: auto;
+  overflow: visible;
+}
+
+/* Staff lines & barlines */
+.staff-line {
+  stroke: var(--ink-soft);
+  stroke-width: 1;
+}
+
+.staff-barline {
+  stroke: var(--ink);
+  stroke-width: 2;
+}
+
+.staff-ledger {
+  stroke: var(--ink-soft);
+  stroke-width: 1.2;
+}
+
+/* Notes, stems, beams */
+.staff-note-normal {
+  fill: var(--ink);
+}
+
+.staff-note-normal[data-ghost='true'] {
+  fill: var(--ink-ghost);
+}
+
+.staff-note-x {
+  stroke: var(--ink);
+  stroke-width: 2;
+  stroke-linecap: round;
+}
+
+.staff-note-x[data-ghost='true'] {
+  stroke: var(--ink-ghost);
+}
+
+.staff-stem {
+  stroke: var(--ink);
+  stroke-width: 1.6;
+  stroke-linecap: round;
+}
+
+.staff-beam {
+  fill: var(--ink);
+}
+
+.staff-tuplet {
+  fill: var(--ink-soft);
+  font: 700 12px/1 var(--font-label);
+  text-anchor: middle;
+}
+
+/* Sticking row */
+.staff text[data-stick] {
+  font-family: var(--font-book);
+  font-weight: 700;
+  font-size: 20px;
+  text-anchor: middle;
+  fill: var(--ink);
+}
+
+.staff text[data-stick][data-ghost='true'] {
+  font-weight: 400;
+  font-size: 16px;
+  fill: var(--ink-ghost);
+}
+
+.staff text[data-grace] {
+  font-family: var(--font-book);
+  font-weight: 700;
+  font-size: 13px;
+  text-anchor: end;
+  fill: var(--ink);
+}
+
+.staff text[data-accent] {
+  font-family: var(--font-book);
+  font-weight: 700;
+  font-size: 16px;
+  text-anchor: middle;
+  fill: var(--ink);
+}
+
+/* Foot row */
+.staff text[data-foot] {
+  font-family: var(--font-book);
+  font-weight: 700;
+  font-size: 16px;
+  text-anchor: middle;
+  fill: var(--ink);
+}
+
+.staff text[data-foot][data-ghost='true'] {
+  font-weight: 400;
+  font-size: 14px;
+  fill: var(--ink-ghost);
+}
+
+/* Counts row */
+.staff text[data-count] {
+  font-family: var(--font-book);
+  font-weight: 400;
+  font-size: 13px;
+  text-anchor: middle;
+  fill: var(--ink-soft);
+}
+
+.staff text[data-count][data-downbeat='true'] {
+  font-weight: 700;
+  font-size: 14px;
+  fill: var(--ink);
+}
+
+/* Ghost parentheses */
+.staff text[data-paren] {
+  font-family: var(--font-book);
+  font-weight: 400;
+  font-size: 16px;
+  text-anchor: middle;
+  fill: var(--ink-ghost);
+}
+
+/* Grace notes on staff */
+.staff-grace-head {
+  fill: var(--ink);
+}
+
+.staff-grace-stem {
+  stroke: var(--ink);
+  stroke-width: 1.2;
+}
+
+.staff-grace-slash {
+  stroke: var(--ink);
+  stroke-width: 1.2;
+}
+
+/* Buzz */
+.staff-buzz {
+  font-family: var(--font-book);
+  font-style: italic;
+  font-weight: 700;
+  font-size: 13px;
+  text-anchor: middle;
+  fill: var(--ink);
+}
