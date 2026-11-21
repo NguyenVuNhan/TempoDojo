@@ -1,4 +1,4 @@
-import { parseSteps } from './pattern';
+import { handDrumOf, parseSteps } from './pattern';
 
 const base = { rest: false, accent: false, ghost: false, grace: null };
 
@@ -25,5 +25,12 @@ describe('parseSteps', () => {
 
   it.each(['>(R)', '(R', 'R)', 'X', 'fK', 'zH', 'R  L', ' R', 'R ', '', '>', 'RL', 'ff R'])('rejects %j', (bad) => {
     expect(() => parseSteps(bad)).toThrow(/Bad token|Empty pattern/);
+  });
+});
+
+describe('handDrumOf', () => {
+  it('defaults to snare', () => {
+    expect(handDrumOf({ voice: 'hands', steps: 'R' })).toBe('snare');
+    expect(handDrumOf({ voice: 'hands', steps: 'R', drum: 'ride' })).toBe('ride');
   });
 });

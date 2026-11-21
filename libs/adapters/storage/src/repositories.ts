@@ -32,6 +32,8 @@ export interface EventRepository {
 export interface Prefs {
   weeklyTarget: WeeklyTarget;
   hasDoublePedal: boolean;
+  /** Show the "1 e & a" count row above the practice staff. Missing means off. */
+  showCounts?: boolean;
 }
 
 export const DEFAULT_PREFS: Prefs = {

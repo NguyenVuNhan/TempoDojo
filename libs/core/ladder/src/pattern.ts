@@ -1,4 +1,4 @@
-import type { Step } from './types';
+import type { HandDrum, PatternLine, Step } from './types';
 
 const TOKEN_RE = /^(>)?(\()?(f|d|z)?(R|L|K|H)(\))?$/;
 
@@ -65,4 +65,9 @@ export function parseSteps(steps: string): Step[] {
   }
 
   return steps.split(' ').map(parseToken);
+}
+
+/** The drum a hands line is played on; snare when the line doesn't say. */
+export function handDrumOf(line: PatternLine): HandDrum {
+  return line.drum ?? 'snare';
 }

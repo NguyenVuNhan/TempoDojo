@@ -13,7 +13,7 @@ import { useMetronome, type MetronomeDeps, type MetronomeOptions } from '../metr
 import { SoundBanner } from '../platform/SoundBanner';
 import { useSoundState } from '../platform/useSoundState';
 import { useWakeLock } from '../platform/useWakeLock';
-import { PatternView } from './PatternView';
+import { StaffView } from './staff/StaffView';
 import { RankTestSheet } from './RankTestSheet';
 import { NOTE_VALUE, RANK_LABEL, TRACK_LABEL } from './labels';
 import type { LadderState } from './types';
@@ -40,6 +40,7 @@ export function ExerciseScreen({
   now = Date.now,
 }: ExerciseScreenProps) {
   const progress = ladder.progressOf(exercise.id);
+  const showCounts = ladder.prefs.showCounts ?? false;
   const [practice] = useState<MetronomeSettings>(() => ({
     ...exerciseSettings(exercise, progress, DEFAULT_SETTINGS),
     automator: { speedUp: null, gap: null },
@@ -255,7 +256,22 @@ export function ExerciseScreen({
       </div>
 
       <div id="ex-panel-practice" role="tabpanel" aria-labelledby="ex-tab-practice" className="ex-panel-practice">
-        <PatternView exercise={exercise} live={playing && position && !position.countIn ? position : null} />
+        <label className="ex-count-switch">
+          <input
+            type="checkbox"
+            role="switch"
+            aria-label="Show counts"
+            checked={showCounts}
+            onChange={() => void ladder.setPrefs({ ...ladder.prefs, showCounts: !showCounts })}
+          />
+          <span className="ex-count-switch-track" aria-hidden="true" />
+          <span className="ex-count-switch-text" aria-hidden="true">Counts</span>
+        </label>
+        <StaffView
+          exercise={exercise}
+          showCounts={showCounts}
+          live={playing && position && !position.countIn ? position : null}
+        />
         <div className="ex-bar-count">
           <h1 className="ex-title">{exercise.name}</h1>
           <span className="ex-timer">

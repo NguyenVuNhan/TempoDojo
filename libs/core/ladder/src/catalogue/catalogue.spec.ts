@@ -89,13 +89,14 @@ describe('CATALOGUE', () => {
     }
   });
 
-  it('coordination: 6 contiguous tiers, ≥3 each, every exercise has hands, kick and hihat lines', () => {
+  it('coordination: 6 contiguous tiers, ≥3 each, every exercise has hands and kick lines', () => {
     expect(tiersOf('coordination')).toEqual([1, 2, 3, 4, 5, 6]);
     for (const tier of [1, 2, 3, 4, 5, 6]) {
       expect(byTrack('coordination').filter((e) => e.tier === tier).length).toBeGreaterThanOrEqual(3);
     }
     for (const ex of byTrack('coordination')) {
-      expect(ex.pattern.map((l) => l.voice).sort()).toEqual(['hands', 'hihat', 'kick']);
+      const voices = new Set(ex.pattern.map((l) => l.voice));
+      expect({ id: ex.id, hands: voices.has('hands'), kick: voices.has('kick') }).toEqual({ id: ex.id, hands: true, kick: true });
       expect(ex.id).toMatch(/^coord-\d-\d+$/);
     }
     expect(exerciseById('coord-1-1')).toBeDefined();
@@ -114,5 +115,51 @@ describe('CATALOGUE', () => {
       }
     }
     expect(exerciseById('feet-1-1')).toBeDefined();
+  });
+  it('drum is only set on hands lines', () => {
+    for (const ex of CATALOGUE)
+      for (const l of ex.pattern)
+        if (l.drum) expect({ id: ex.id, voice: l.voice }).toEqual({ id: ex.id, voice: 'hands' });
+  });
+
+  it('no hand plays two drums in the same slot', () => {
+    for (const ex of CATALOGUE) {
+      const lines = ex.pattern.filter((l) => l.voice === 'hands').map((l) => parseSteps(l.steps));
+      const n = lines[0]?.length ?? 0;
+      for (let i = 0; i < n; i++) {
+        const hands = lines.map((s) => s[i].hand).filter(Boolean);
+        expect({ id: ex.id, slot: i, dup: hands.length !== new Set(hands).size }).toEqual({ id: ex.id, slot: i, dup: false });
+      }
+    }
+  });
+  it('rock foundation is the real groove: hat 8ths, snare 2 and 4, no foot', () => {
+    expect(exerciseById('coord-1-1')?.pattern).toEqual([
+      { voice: 'hands', drum: 'hihat', steps: 'R R R R R R R R' },
+      { voice: 'hands', drum: 'snare', steps: '- - >L - - - >L -' },
+      { voice: 'kick', steps: 'K - - - K - - -' },
+    ]);
+  });
+
+  it('closed hi-hat hand and a written hi-hat foot never coexist', () => {
+    for (const ex of byTrack('coordination')) {
+      const hatHand = ex.pattern.some((l) => l.voice === 'hands' && l.drum === 'hihat');
+      const foot = ex.pattern.some((l) => l.voice === 'hihat');
+      expect({ id: ex.id, both: hatHand && foot }).toEqual({ id: ex.id, both: false });
+    }
+  });
+
+  it('coordination focus no longer mentions a foot chick where the foot line was dropped', () => {
+    for (const ex of byTrack('coordination').filter((e) => !e.pattern.some((l) => l.voice === 'hihat')))
+      expect({ id: ex.id, hit: /chick|left[- ]foot|hi-hat on 2 ?& ?4/i.test(ex.focus) }).toEqual({ id: ex.id, hit: false });
+  });
+
+  it('coordination grooves keep the right-hand timekeeping under the backbeat', () => {
+    const slot = (id: string, drum: string, i: number) =>
+      parseSteps(exerciseById(id)!.pattern.find((l) => l.drum === drum)!.steps)[i];
+    expect(slot('coord-3-1', 'hihat', 4).hand).toBe('R');
+    expect(slot('coord-3-1', 'snare', 4)).toMatchObject({ hand: 'L', accent: true });
+    expect(slot('coord-2-1', 'ride', 2).hand).toBe('R');
+    expect(exerciseById('coord-6-2')!.pattern.map((l) => l.drum ?? l.voice)).toEqual(['ride', 'snare', 'kick', 'hihat']);
+    expect(exerciseById('coord-4-3')!.pattern.map((l) => l.drum ?? l.voice)).toEqual(['hands', 'kick', 'hihat']);
   });
 });

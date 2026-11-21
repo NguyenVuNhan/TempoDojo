@@ -13,7 +13,7 @@ import {
   rankTestSettings,
   visibleExercises,
 } from './rules';
-import type { Progress } from './types';
+import type { Exercise, Progress } from './types';
 
 const T = { bronze: 60, silver: 80, gold: 100, master: 120 };
 const ex = (id: string) => exerciseById(id)!;
@@ -143,5 +143,23 @@ describe('metronome settings for an exercise', () => {
     expect(checklistFor(ex('coord-1-1'))).toHaveLength(4);
     expect(checklistFor(ex('feet-1-1'))).toHaveLength(4);
     expect(checklistFor(ex('coord-1-1')).map((c) => c.label)).toContain('Feet never flinched or sped up');
+  });
+});
+
+describe('exercise accents across hands lines', () => {
+  it('merges accents from every hands line', () => {
+    const groove = {
+      ...ex('coord-1-1'),
+      pattern: [
+        { voice: 'hands', drum: 'hihat', steps: 'R R R R R R R R' },
+        { voice: 'hands', drum: 'snare', steps: '- - >L - - - >L -' },
+      ],
+    } as Exercise;
+    expect(exerciseSettings(groove, emptyProgress('coord-1-1'), DEFAULT_SETTINGS).accents).toEqual([
+      'normal',
+      'accent',
+      'normal',
+      'accent',
+    ]);
   });
 });

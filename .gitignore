@@ -60,3 +60,5 @@ vitest.config.*.timestamp*
 # impeccable local state
 apps/studio-web/.impeccable/questions/
 apps/studio-web/.impeccable/review/
+
+.superpowers/

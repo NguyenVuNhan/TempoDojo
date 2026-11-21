@@ -97,7 +97,7 @@
   align-self: stretch;
   height: 100%;
   display: grid;
-  grid-template-rows: minmax(0, 1fr) auto;
+  grid-template-rows: auto minmax(0, 1fr) auto;
   gap: 10px;
   padding: 0 0 10px;
   min-height: 0;
@@ -369,5 +369,69 @@
     border-top: 0;
     padding-top: 24px;
     padding-bottom: 24px;
+  }
+}
+
+/* Counts switch: a plain track-and-thumb toggle above the staff. */
+.ex-count-switch {
+  justify-self: end;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding-top: 10px;
+  min-height: 44px;
+  cursor: pointer;
+  font: 500 0.75rem/1 var(--font-label);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+
+.ex-count-switch input {
+  position: absolute;
+  opacity: 0;
+  width: 1px;
+  height: 1px;
+}
+
+.ex-count-switch-track {
+  position: relative;
+  width: 36px;
+  height: 20px;
+  border: 2px solid var(--ink);
+  border-radius: 999px;
+  transition: background-color 120ms ease-out;
+}
+
+.ex-count-switch-track::after {
+  content: '';
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--ink);
+  transition: transform 120ms ease-out;
+}
+
+.ex-count-switch input:checked + .ex-count-switch-track {
+  background: var(--select);
+}
+
+.ex-count-switch input:checked + .ex-count-switch-track::after {
+  transform: translateX(16px);
+  background: var(--paper);
+}
+
+.ex-count-switch input:focus-visible + .ex-count-switch-track {
+  outline: 2px solid var(--select);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ex-count-switch-track,
+  .ex-count-switch-track::after {
+    transition: none;
   }
 }

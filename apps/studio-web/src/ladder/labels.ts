@@ -1,5 +1,6 @@
 import type { Subdivision } from '@tempodojo/core-metronome';
-import type { Rank, Track, Voice } from '@tempodojo/core-ladder';
+import type { Rank, Track } from '@tempodojo/core-ladder';
+import type { StaffDrum } from './staff/layout';
 
 export const NOTE_VALUE: Record<Subdivision, string> = {
   1: 'quarters',
@@ -24,10 +25,16 @@ export const TRACK_LABEL: Record<Track, string> = {
   feet: 'Feet',
 };
 
-export const VOICE_LABEL: Record<Voice, string> = {
-  hands: 'Hands',
+export const DRUM_LABEL: Record<StaffDrum, string> = {
+  crash: 'Crash',
+  hihat: 'Hi-hat',
+  ride: 'Ride',
+  tom1: 'High tom',
+  tom2: 'Mid tom',
+  snare: 'Snare',
+  floortom: 'Floor tom',
   kick: 'Kick',
-  hihat: 'Hi-hat foot',
+  'hihat-foot': 'Hi-hat foot',
 };
 
 /** "95 BPM · 16ths" — BPM always travels with its note value. */

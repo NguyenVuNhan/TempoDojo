@@ -199,13 +199,13 @@ export function nextUp(
 }
 
 function accentsForExercise(ex: Exercise): AccentLevel[] {
-  const line = ex.pattern.find((p) => p.voice === 'hands') ?? ex.pattern[0];
-  const steps = line ? parseSteps(line.steps) : [];
+  const handLines = ex.pattern.filter((p) => p.voice === 'hands');
+  const lines = handLines.length > 0 ? handLines : ex.pattern.slice(0, 1);
+  const parsed = lines.map((l) => parseSteps(l.steps));
   const pulseCount = pulsesPerBar(ex.meter);
-  const accents: AccentLevel[] = Array.from({ length: pulseCount }, (_, i) => {
-    const step = steps[i * ex.subdivision];
-    return step?.accent ? 'accent' : 'normal';
-  });
+  const accents: AccentLevel[] = Array.from({ length: pulseCount }, (_, i) =>
+    parsed.some((steps) => steps[i * ex.subdivision]?.accent) ? 'accent' : 'normal',
+  );
 
   if (accents.length > 0 && !accents.some((a) => a === 'accent')) {
     accents[0] = 'accent';
